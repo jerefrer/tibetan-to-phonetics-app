@@ -1,0 +1,75 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Transliterator</title>
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="stylesheet" href="vendor/stylesheets/semantic.min.css">
+  <link rel="stylesheet" href="stylesheets/layout.css">
+  <link rel="stylesheet" href="stylesheets/progress-bar.css">
+  <script src="vendor/javascripts/howler.min.js"></script>
+  <script src="vendor/javascripts/jquery-3.2.0.min.js"></script>
+  <script src="vendor/javascripts/clipboard.min.js"></script>
+  <script src="vendor/javascripts/moment.js"></script>
+  <script src="vendor/javascripts/semantic.min.js"></script>
+  <script src="vendor/javascripts/sugar.js"></script>
+  <script src="vendor/javascripts/underscore.min.js"></script>
+  <script src="vendor/javascripts/vue.js"></script>
+  <script src="javascripts/transliterator.js"></script>
+  <script src="javascripts/tests.js"></script>
+  <script>
+    $(function() {
+      Vue.component('test-result', {
+        props: {
+          test: Object
+        },
+        methods: {
+          transliterated: function() {
+            return new Transliterator(this.test.tibetan).transliterate();
+          },
+          pass: function() {
+            return this.test.transliteration == this.transliterated();
+          }
+        },
+        template: `
+          <div class="ui gray label test">
+            <span class="tibetan">{{test.tibetan}}</span>
+            <span>{{test.transliteration}}</span>
+            <span>
+              <i v-if=" pass()" class="check green icon"></i>
+              <i v-if="!pass()" class="times red icon"></i>
+            </span>
+          </div>
+        `
+      })
+      Vue.component('results-group', {
+        props: ['tests'],
+        template: `
+          <div class="results-group">
+            <test-result
+              v-for="(test, index) in tests"
+              v-bind:test="test"
+              v-bind:key="index"
+            >
+            </test-result>
+          </div>
+        `
+      })
+      new Vue({
+        el: '#main',
+        data: {
+          alphabetWithVowels: alphabetWithVowels
+        },
+        template: `
+          <div>
+            <results-group v-bind:tests="alphabetWithVowels"></results-group>
+          </div>
+        `
+      })
+    })
+  </script>
+  <style>
+  </style>
+  <body>
+    <div id="main" class="ui container"></div>
+  </body>
+</html>

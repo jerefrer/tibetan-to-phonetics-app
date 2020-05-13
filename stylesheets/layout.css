@@ -1,0 +1,31 @@
+body {
+  background: #001211;
+  color: rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+}
+
+.tibetan {
+  font-family: TibetanChogyalUnicode-170221;
+  font-size: 36px;
+  line-height: 1em;
+  vertical-align: middle;
+}
+
+
+.results-group {
+  width: 1380px;
+  margin: 0 auto;
+}
+
+.ui.label.test {
+  width: 65px;
+  margin: 2px;
+  padding: 0 0 0 5px;
+}
+.ui.label.test .tibetan {
+  display: inline-block;
+  margin-right: 2px;
+}
+.ui.label i {
+  margin: 0;
+}
