@@ -1,7 +1,7 @@
 body {
+  padding: 30px;
   background: #001211;
   color: rgba(255, 255, 255, 0.9);
-  overflow: hidden;
 }
 
 .tibetan {
@@ -12,20 +12,25 @@ body {
 }
 
 
-.results-group {
-  width: 1380px;
-  margin: 0 auto;
+table .header {
+  width: 600px;
+  padding: 15px !important;
+}
+
+.results-group .header {
+  cursor: pointer;
 }
 
 .ui.label.test {
-  width: 65px;
   margin: 2px;
   padding: 0 0 0 5px;
+  font-weight: normal;
+}
+.ui.label.test:hover {
+  background: #333 !important;
+  cursor: pointer;
 }
 .ui.label.test .tibetan {
   display: inline-block;
   margin-right: 2px;
-}
-.ui.label i {
-  margin: 0;
 }

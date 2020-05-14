@@ -15,38 +15,57 @@
   <script src="vendor/javascripts/underscore.min.js"></script>
   <script src="vendor/javascripts/vue.js"></script>
   <script src="javascripts/transliterator.js"></script>
-  <script src="javascripts/tests.js"></script>
+  <script src="tests/var.js"></script>
+  <script src="tests/alphabet-with-vowels.js"></script>
+  <script src="tests/superscribed.js"></script>
+  <script src="tests/subscribed.js"></script>
   <script>
     $(function() {
       Vue.component('test-result', {
         props: {
           test: Object
         },
-        methods: {
-          transliterated: function() {
-            return new Transliterator(this.test.tibetan).transliterate();
-          },
-          pass: function() {
-            return this.test.transliteration == this.transliterated();
-          }
-        },
         template: `
           <div class="ui gray label test">
             <span class="tibetan">{{test.tibetan}}</span>
             <span>{{test.transliteration}}</span>
             <span>
-              <i v-if=" pass()" class="check green icon"></i>
-              <i v-if="!pass()" class="times red icon"></i>
+              <i v-if=" test.pass" class="check green icon"></i>
+              <i v-if="!test.pass" class="times red icon"></i>
             </span>
           </div>
         `
       })
       Vue.component('results-group', {
-        props: ['tests'],
+        props: {
+          name: String,
+          tests: Array
+        },
+        data: function() {
+          var ranTests = this.tests.each(function(test) {
+            test.transliterated = new Transliterator(test.tibetan).transliterate();
+            test.pass = test.transliterated == test.transliteration;
+          });
+          var allPassed = ranTests.all(function(test) { return test.pass });
+          return {
+            ranTests: ranTests,
+            allPassed: allPassed,
+            opened: allPassed
+          }
+        },
         template: `
-          <div class="results-group">
+          <div
+            class="ui inverted segment results-group"
+            v-on:click="opened=!opened"
+            >
+            <div class="header">
+              {{name}}
+              <i v-if=" allPassed" class="check green icon"></i>
+              <i v-if="!allPassed" class="times red icon"></i>
+            </div>
             <test-result
-              v-for="(test, index) in tests"
+              v-if="!opened"
+              v-for="(test, index) in ranTests"
               v-bind:test="test"
               v-bind:key="index"
             >
@@ -57,11 +76,15 @@
       new Vue({
         el: '#main',
         data: {
-          alphabetWithVowels: alphabetWithVowels
+          tests: tests
         },
         template: `
           <div>
-            <results-group v-bind:tests="alphabetWithVowels"></results-group>
+            <results-group
+             v-for="test in tests"
+             v-bind:name="test.name"
+             v-bind:tests="test.tests">
+            </results-group>
           </div>
         `
       })

@@ -37,3 +37,4 @@
     tibetan: 'གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ༔',
     transliteration: "Guru padma siddhi hūṃ"
   }
+

@@ -36,8 +36,7 @@ var Syllable = function(syllable) {
     syllable: syllable,
     transliterate: function() {
       if (!this.syllable) return;
-      var consonant;
-      var vowel = 'a';
+      vowel = 'a';
       switch(this.syllable[0]) {
         case 'ཀ':
         case 'ག': consonant = 'k'; break;
