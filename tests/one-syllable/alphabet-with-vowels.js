@@ -1,4 +1,4 @@
-tests.push({
+testGroups.push({
   name: 'Alphabet with vowels',
   tests: [
     { tibetan: 'ཀ',  transliteration: 'ka'},
@@ -79,11 +79,11 @@ tests.push({
     { tibetan: 'པེ', transliteration: 'pe'},
     { tibetan: 'པོ', transliteration: 'po'},
 
-    { tibetan: 'ཕ',  transliteration: 'pha'},
-    { tibetan: 'ཕི', transliteration: 'phi'},
-    { tibetan: 'ཕུ', transliteration: 'phu'},
-    { tibetan: 'ཕེ', transliteration: 'phe'},
-    { tibetan: 'ཕོ', transliteration: 'pho'},
+    { tibetan: 'ཕ',  transliteration: "p'a"},
+    { tibetan: 'ཕི', transliteration: "p'i"},
+    { tibetan: 'ཕུ', transliteration: "p'u"},
+    { tibetan: 'ཕེ', transliteration: "p'e"},
+    { tibetan: 'ཕོ', transliteration: "p'o"},
 
     { tibetan: 'བ',  transliteration: 'pa'},
     { tibetan: 'བི', transliteration: 'pi'},

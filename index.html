@@ -1,8 +1,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Transliterator</title>
-  <link rel="shortcut icon" href="favicon.png">
+  <title>Tibetan Transliterator</title>
   <link rel="stylesheet" href="vendor/stylesheets/semantic.min.css">
   <link rel="stylesheet" href="stylesheets/layout.css">
   <link rel="stylesheet" href="stylesheets/scrollbar.css">
@@ -14,77 +13,141 @@
   <script src="vendor/javascripts/sugar.js"></script>
   <script src="vendor/javascripts/underscore.min.js"></script>
   <script src="vendor/javascripts/vue.js"></script>
+  <script src="javascripts/parser.js"></script>
   <script src="javascripts/transliterator.js"></script>
   <script src="tests/var.js"></script>
-  <script src="tests/alphabet-with-vowels.js"></script>
-  <script src="tests/superscribed.js"></script>
-  <script src="tests/subscribed.js"></script>
+  <script src="tests/one-syllable/alphabet-with-vowels.js"></script>
+  <script src="tests/one-syllable/prefixes.js"></script>
+  <script src="tests/one-syllable/superscribed.js"></script>
+  <script src="tests/one-syllable/subscribed.js"></script>
+  <script src="tests/one-syllable/subscribed-with-prefix.js"></script>
+  <script src="tests/one-syllable/subscribed-with-superscribed.js"></script>
+  <script src="tests/one-syllable/subscribed-with-both.js"></script>
+  <script src="tests/two-syllable/exceptions.js"></script>
+  <script src="tests/excerpts/seven-lines.js"></script>
   <script>
     $(function() {
       Vue.component('test-result', {
         props: {
           test: Object
         },
+        computed: {
+          expected: function() {
+            return this.test.transliteration;
+          },
+          actual: function() {
+            return this.test.transliterated;
+          },
+          spanStyle: function() {
+            var s = {};
+            if (this.sentence) s['width'] = '120px;'
+            else s['display'] = 'block';
+            return s;
+          },
+          tibetanStyle: function() {
+            var s = {};
+            if (this.sentence) s['width'] = '30px;'
+            return s;
+          }
+        },
         template: `
-          <div class="ui gray label test">
-            <span class="tibetan">{{test.tibetan}}</span>
-            <span>{{test.transliteration}}</span>
+          <span
+            class="ui black label test" v-bind:style="spanStyle"
+            v-on:click="test.runTest()"
+            >
             <span>
               <i v-if=" test.pass" class="check green icon"></i>
               <i v-if="!test.pass" class="times red icon"></i>
             </span>
-          </div>
+            <span class="tibetan" v-bind:style="tibetanStyle">{{test.tibetan}}</span>
+            <span v-if="expected != actual">
+              <span style="color: #2185d0">{{expected}}</span>
+              <span style="color: #db2828">{{actual || 'Ø'}}</span>
+            </span>
+          </span>
         `
       })
       Vue.component('results-group', {
         props: {
           name: String,
+          sentences: Boolean,
           tests: Array
         },
         data: function() {
-          var ranTests = this.tests.each(function(test) {
-            test.transliterated = new Transliterator(test.tibetan).transliterate();
-            test.pass = test.transliterated == test.transliteration;
-          });
-          var allPassed = ranTests.all(function(test) { return test.pass });
+          var passedCount = this.tests.count(function(test) { return test.pass; });
+          var allPassed = passedCount == this.tests.length;
           return {
-            ranTests: ranTests,
             allPassed: allPassed,
-            opened: allPassed
+            opened: allPassed,
+            passedCount: passedCount,
+            total: this.tests.length
           }
         },
         template: `
-          <div
-            class="ui inverted segment results-group"
-            v-on:click="opened=!opened"
+          <tr
+            class="ui inverted segment results-group">
+            <td class="header"
+              v-on:click="opened=!opened"
             >
-            <div class="header">
               {{name}}
+            </td>
+            <td class="count">{{passedCount}}/{{total}}</td>
+            <td class="result">
               <i v-if=" allPassed" class="check green icon"></i>
               <i v-if="!allPassed" class="times red icon"></i>
-            </div>
-            <test-result
-              v-if="!opened"
-              v-for="(test, index) in ranTests"
-              v-bind:test="test"
-              v-bind:key="index"
-            >
-            </test-result>
-          </div>
+            </td>
+            <td>
+              <test-result
+                v-if="!opened"
+                v-for="(test, index) in tests"
+                v-bind:sentence="sentences"
+                v-bind:test="test"
+                v-bind:key="index"
+              >
+              </test-result>
+            </td>
+          </tr>
         `
       })
       new Vue({
         el: '#main',
-        data: {
-          tests: tests
+        data: function() {
+          var passedCount = 0;
+          var ranTests = testGroups.map(function(testGroup) {
+            testGroup.tests.each(function(test) {
+              test.runTest = function() {
+                this.transliterated = new Transliterator(this.tibetan).transliterate();
+                return this.transliterated == this.transliteration;
+              }
+              test.pass = test.runTest();
+              if (test.pass) passedCount++;
+            })
+            return testGroup;
+          });
+          return {
+            tests: ranTests,
+            passedCount: passedCount,
+            total: _(testGroups).pluck('tests').flatten().length
+          };
         },
         template: `
           <div>
-            <results-group
-             v-for="test in tests"
-             v-bind:name="test.name"
-             v-bind:tests="test.tests">
-            </results-group>
+            <table class="ui inverted definition table">
+              <thead>
+                <tr>
+                  <td class="ui inverted header">Total: {{passedCount}}/{{total}}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <results-group
+                 v-for="(test, index) in tests"
+                 v-bind:key="index"
+                 v-bind:name="test.name"
+                 v-bind:sentences="test.sentences"
+                 v-bind:tests="test.tests">
+                </results-group>
+              </tbody>
+            </table>
           </div>
         `
       })

@@ -1,4 +1,4 @@
-tests.push({
+testGroups.push({
   name: 'Superscribed mono-syllables',
   tests: [
     // Rago
@@ -18,7 +18,7 @@ tests.push({
     { tibetan: 'ལྐ',  transliteration: 'ka'},
     { tibetan: 'ལྒ',  transliteration: 'ga'},
     { tibetan: 'ལྔ',  transliteration: 'nga'},
-    { tibetan: 'ལྕ',  transliteration: 'tsa'},
+    { tibetan: 'ལྕ',  transliteration: 'cha'},
     { tibetan: 'ལྗ',  transliteration: 'ja'},
     { tibetan: 'ལྟ',  transliteration: 'ta'},
     { tibetan: 'ལྡ',  transliteration: 'da'},

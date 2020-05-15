@@ -1,4 +1,4 @@
-tests.push({
+testGroups.push({
   name: 'Subscribed mono-syllables',
   tests: [
     // Yata
@@ -11,13 +11,13 @@ tests.push({
     { tibetan: 'མྱ',  transliteration: 'nya'},
     // Rata
     { tibetan: 'ཀྲ',  transliteration: 'tra'},
-    { tibetan: 'ཁྲ',  transliteration: 'tra'},
+    { tibetan: 'ཁྲ',  transliteration: "tr'a"},
     { tibetan: 'གྲ',  transliteration: 'tra'},
     { tibetan: 'ཏྲ',  transliteration: 'tra'},
-    { tibetan: 'ཐྲ',  transliteration: 'tra'},
+    { tibetan: 'ཐྲ',  transliteration: "tr'a"},
     { tibetan: 'དྲ',  transliteration: 'tra'},
     { tibetan: 'པྲ',  transliteration: 'tra'},
-    { tibetan: 'ཕྲ',  transliteration: 'tra'},
+    { tibetan: 'ཕྲ',  transliteration: "tr'a"},
     { tibetan: 'བྲ',  transliteration: 'tra'},
     { tibetan: 'མྲ',  transliteration: 'ma'},
     { tibetan: 'ཤྲ',  transliteration: 'sha'},
