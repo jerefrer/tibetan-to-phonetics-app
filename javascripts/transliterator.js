@@ -14,17 +14,17 @@ var findException = function(tibetan) {
     case 'གོ་འཕང': transliteration = "kom_p'ang"; break;
     case 'རྗེ་འབངས': transliteration = "jem_bang"; break;
     // Sanskrit stuff
-    case 'ཧཱུྃ༔': transliteration = 'hūṃ'; break;
+    case 'ཧཱུྃ': transliteration = 'hūṃ'; break;
     case 'པདྨ': transliteration = 'pe_ma'; break;
     case 'མ་ཧཱ': transliteration = 'ma_ha'; break;
     case 'གུ་རུ': transliteration = 'gu_ru'; break;
     case 'ཨེ་མ་ཧོ': transliteration = 'e_ma_ho'; break;
     case 'སམྦྷ་ཝར': transliteration = 'sam_bha_war'; break;
-    case 'གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ༔': transliteration = 'gu_ru pad_ma si_ddhi hūṃ'; break;
+    case 'གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ': transliteration = 'gu_ru pad_ma si_ddhi hūṃ'; break;
   }
   if (transliteration) {
     var numberOfSyllables = 1;
-    var syllablesMatch = transliteration.match(/[_ ]/);
+    var syllablesMatch = transliteration.match(/[_ ]/g);
     if (syllablesMatch) numberOfSyllables = syllablesMatch.length + 1;
     return {
       numberOfSyllables: numberOfSyllables,
@@ -39,31 +39,36 @@ var Transliterator = function(tibetan) {
     removeLineEndings: function() {
       this.tibetan = this.tibetan.replace(/[།༑ཿ༔]$/, '');
     },
-    exception: function() {
-      return findException(this.tibetan);
+    findLongestException: function(syllable, restOfSyllables) {
+      if (!restOfSyllables.length)
+        return findException(syllable);
+      else {
+        var exception;
+        (restOfSyllables.length).downto(1, function(index) {
+          subset = [syllable].add(restOfSyllables.slice(0, index));
+          if (!exception) exception = findException(subset.join('་'));
+        })
+        return exception;
+      }
     },
     transliterate: function() {
+      this.removeLineEndings();
       var line = '';
-      if (this.exception()){
-        line = this.exception().transliterated;
-      } else {
-        this.removeLineEndings();
-        var syllablesCount = 0;
-        var syllables = this.tibetan.split('་');
-        while (syllable = syllables.shift()) {
-          var result;
-          var exception = findException([syllable, syllables[0]].join('་'));
-          if (exception) {
-            result = exception;
-            syllables.shift();
-          } else
-            result = new Syllable(syllable).transliterate();
-          // If the two syllables connect with the same letter we display it only once
-          if (line.last() == result.transliterated.first()) line = line.slice(0, line.length-1);
-          line += result.transliterated;
-          syllablesCount += result.numberOfSyllables;
-          if (syllablesCount % 2 == 0) line += ' ';
-        }
+      var syllablesCount = 0;
+      var syllables = this.tibetan.split('་');
+      while (syllable = syllables.shift()) {
+        var result;
+        var exception = this.findLongestException(syllable, syllables);
+        if (exception) {
+          result = exception;
+          _(exception.numberOfSyllables-1).times(function() { syllables.shift(); });
+        } else
+          result = new Syllable(syllable).transliterate();
+        // If the two syllables connect with the same letter we display it only once
+        if (line.last() == result.transliterated.first()) line = line.slice(0, line.length-1);
+        line += result.transliterated;
+        syllablesCount += result.numberOfSyllables;
+        if (syllablesCount % 2 == 0) line += ' ';
       }
       return line.trim();
     }

@@ -4,7 +4,7 @@ testGroups.push({
   sentences: true,
   tests: [
     { tibetan: 'ཨེ་མ་ཧོ༔', transliteration: 'emaho' },
-    { tibetan: 'ཀ་དག་མི་ཤིག་ཆོས་སྐུ་འོད་མཐའ་ཡས།', transliteration: 'katak mishik chöku öntaye' },
+    { tibetan: 'ཀ་དག་མི་ཤིག་ཆོས་སྐུ་འོད་མཐའ་ཡས།', transliteration: 'katak mishik chöku önthaye' },
     { tibetan: 'གསོལ་བ་འདེབས་སོ་ཕྱི་ནང་བར་ཆད་སོལ།', transliteration: 'sölwa depso chinang parche söl' },
     { tibetan: 'བྱིན་གྱིས་རློབས་ཤིག་མ་ཧཱ་གུ་རུ་རྗེ།', transliteration: 'chinkyi lopshik maha guru je' },
     { tibetan: 'མཆོག་ཐུན་དངོས་གྲུབ་གེགས་མེད་འགྲུབ་མཛད་གསོལ།', transliteration: 'chokthün ngötrup kekme drupdze söl' },
