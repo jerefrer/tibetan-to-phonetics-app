@@ -2,6 +2,8 @@
 
 ## Features
 * Use diff.js
+* Add tests for the rest of prefixes
+* Add tests for suffixes
 * Handle འི
 * Try to find exceptions for the remaining of the syllables,
   then one less, then on less, then only transliterate.
