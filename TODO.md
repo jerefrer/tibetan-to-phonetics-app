@@ -3,7 +3,6 @@
 ## Features
 * Use diff.js
 * Handle འི
-* Handle དབ, དབི, དབྱེ
 * Try to find exceptions for the remaining of the syllables,
   then one less, then on less, then only transliterate.
   That should get rid of searching for exceptions at different levels

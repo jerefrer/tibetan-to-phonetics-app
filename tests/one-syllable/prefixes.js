@@ -11,7 +11,7 @@ testGroups.push({
     { tibetan: 'བཏི',  transliteration: 'ti'},
     { tibetan: 'བདི',  transliteration: 'di'},
     { tibetan: 'བནི',  transliteration: 'ni'},
-    { tibetan: 'དབི',  transliteration: 'bi'},
+    { tibetan: 'དབི',  transliteration:  'i'},
     { tibetan: 'བམི',  transliteration: 'mi'},
     { tibetan: 'བཙི',  transliteration: 'tsi'},
     { tibetan: 'བཛི',  transliteration: 'dzi'},

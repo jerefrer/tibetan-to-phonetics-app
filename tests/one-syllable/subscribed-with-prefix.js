@@ -7,7 +7,7 @@ testGroups.push({
     { tibetan: 'དགྱ',  transliteration:  'gya'},
     { tibetan: 'དཔྱ',  transliteration:  'cha'},
     { tibetan: 'དཕྱ',  transliteration:  'cha'},
-    { tibetan: 'དབྱ',  transliteration:   'ja'},
+    { tibetan: 'དབྱ',  transliteration:   'ya'},
     { tibetan: 'དམྱ',  transliteration:  'nya'},
     // Rata
     { tibetan: 'དཀྲ',  transliteration: 'tra'},

@@ -102,10 +102,18 @@ var Syllable = function(syllable) {
     lata: function() {
       return this.subscribed == 'ླ';
     },
+    daoWa: function() {
+      return this.syllable.match(/^དབ[ྱ]?[ིེོུ]?$/);
+    },
     consonant: function() {
       if (this.lata()) {
-        if (this.main == 'ཟ') return 'd';
-        else                  return 'l';
+        if (this.main == 'ཟ')                        return  'd';
+        else                                         return  'l';
+      }
+      if (this.daoWa()) {
+        if      (this.yata())                        return  'y';
+        else if (this.vowel)                         return   '';
+        else                                         return  'w';
       }
       switch(this.main) {
         case 'ཀ':
@@ -186,6 +194,7 @@ var Syllable = function(syllable) {
       }
     },
     getSuffix: function() {
+      if (this.daoWa()) return '';
       switch(this.suffix) {
         case 'ག': return 'k';
         case 'ང': return 'ng';
