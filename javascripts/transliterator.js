@@ -12,6 +12,7 @@ var findException = function(tibetan) {
     case 'མཁའ་འགྲོ': transliteration = 'khan_dro'; break;
     case 'འོད་མཐའ་ཡས': transliteration = 'ön_tha_ye'; break;
     case 'གོ་འཕང': transliteration = "kom_p'ang"; break;
+    case 'རྗེ་འབངས': transliteration = "jem_bang"; break;
     // Sanskrit stuff
     case 'ཧཱུྃ༔': transliteration = 'hūṃ'; break;
     case 'པདྨ': transliteration = 'pe_ma'; break;
