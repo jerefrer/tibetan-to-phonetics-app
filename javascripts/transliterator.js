@@ -1,9 +1,34 @@
 var findException = function(tibetan) {
+  var transliteration;
   switch(tibetan) {
-    case 'ཧཱུྃ༔': return 'Hūṃ'; break;
-    case 'པདྨ་': return 'pema'; break;
-    case 'ཨོ་རྒྱན': return 'orgyen'; break;
-    case 'གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ༔': return 'guru padma siddhi hūṃ'; break;
+    // Wa's
+    case 'གསོལ་བ': transliteration = 'söl_wa'; break;
+    // Mute suffixes
+    case 'བདག': transliteration = 'da'; break;
+    case 'ཤོག': transliteration = 'sho'; break;
+    // Links between syllables
+    case 'ཡ་མཚན': transliteration = 'yam_tsen'; break;
+    case 'ཨོ་རྒྱན': transliteration = 'or_gyen'; break;
+    case 'མཁའ་འགྲོ': transliteration = 'khan_dro'; break;
+    case 'འོད་མཐའ་ཡས': transliteration = 'ön_tha_ye'; break;
+    case 'གོ་འཕང': transliteration = "kom_p'ang"; break;
+    // Sanskrit stuff
+    case 'ཧཱུྃ༔': transliteration = 'hūṃ'; break;
+    case 'པདྨ': transliteration = 'pe_ma'; break;
+    case 'མ་ཧཱ': transliteration = 'ma_ha'; break;
+    case 'གུ་རུ': transliteration = 'gu_ru'; break;
+    case 'ཨེ་མ་ཧོ': transliteration = 'e_ma_ho'; break;
+    case 'སམྦྷ་ཝར': transliteration = 'sam_bha_war'; break;
+    case 'གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ༔': transliteration = 'gu_ru pad_ma si_ddhi hūṃ'; break;
+  }
+  if (transliteration) {
+    var numberOfSyllables = 1;
+    var syllablesMatch = transliteration.match(/[_ ]/);
+    if (syllablesMatch) numberOfSyllables = syllablesMatch.length + 1;
+    return {
+      numberOfSyllables: numberOfSyllables,
+      transliterated: transliteration.replace(/_/g, '')
+    }
   }
 }
 
@@ -17,28 +42,29 @@ var Transliterator = function(tibetan) {
       return findException(this.tibetan);
     },
     transliterate: function() {
-      if (this.exception()) return this.exception();
-      this.removeLineEndings();
-      var syllables = this.tibetan.split('་');
-      return syllables.inGroupsOf(2).map(function(group) {
-        return new PairOfSyllables(group).transliterate();
-      }).join(' ');
-    }
-  }
-}
-
-var PairOfSyllables = function(pair) {
-  return {
-    pair: pair,
-    exception: function() {
-      return findException(this.pair.join('་'));
-    },
-    transliterate: function() {
-      if (this.exception()) return this.exception();
-      var first  = new Syllable(pair[0]).transliterate();
-      var second = pair[1] && new Syllable(pair[1]).transliterate();
-      if (second == 'kyi') second = ' ' + second;
-      return [first, second].join('');
+      var line = '';
+      if (this.exception()){
+        line = this.exception().transliterated;
+      } else {
+        this.removeLineEndings();
+        var syllablesCount = 0;
+        var syllables = this.tibetan.split('་');
+        while (syllable = syllables.shift()) {
+          var result;
+          var exception = findException([syllable, syllables[0]].join('་'));
+          if (exception) {
+            result = exception;
+            syllables.shift();
+          } else
+            result = new Syllable(syllable).transliterate();
+          // If the two syllables connect with the same letter we display it only once
+          if (line.last() == result.transliterated.first()) line = line.slice(0, line.length-1);
+          line += result.transliterated;
+          syllablesCount += result.numberOfSyllables;
+          if (syllablesCount % 2 == 0) line += ' ';
+        }
+      }
+      return line.trim();
     }
   }
 }
@@ -171,10 +197,13 @@ var Syllable = function(syllable) {
       }
     },
     exception: function() {
-      return findException(this.syllable);
+      return findException(this.syllable)
     },
     transliterate: function() {
-      return this.exception() || this.consonant() + this.getVowel() + this.getSuffix();
+      return this.exception() || {
+        transliterated: this.consonant() + this.getVowel() + this.getSuffix(),
+        numberOfSyllables: 1
+      }
     }
   });
 }

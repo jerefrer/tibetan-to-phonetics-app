@@ -25,28 +25,36 @@
   <script src="tests/one-syllable/subscribed-with-both.js"></script>
   <script src="tests/two-syllable/exceptions.js"></script>
   <script src="tests/excerpts/seven-lines.js"></script>
+  <script src="tests/excerpts/shower-of-blessings-lineage-prayer.js"></script>
   <script>
     $(function() {
       Vue.component('test-result', {
         props: {
-          test: Object
+          test: Object,
+          sentence: Boolean
+        },
+        methods: {
+          wrap: function(value) {
+            if (this.sentence) return '"'+value+'"';
+            else               return value;
+          }
         },
         computed: {
           expected: function() {
-            return this.test.transliteration;
+            return this.wrap(this.test.transliteration);
           },
           actual: function() {
-            return this.test.transliterated;
+            return this.wrap(this.test.transliterated);
           },
           spanStyle: function() {
             var s = {};
-            if (this.sentence) s['width'] = '120px;'
+            if (!this.sentence) s['width'] = '120px;'
             else s['display'] = 'block';
             return s;
           },
           tibetanStyle: function() {
             var s = {};
-            if (this.sentence) s['width'] = '30px;'
+            if (!this.sentence) s['width'] = '30px;'
             return s;
           }
         },
@@ -113,6 +121,8 @@
         el: '#main',
         data: function() {
           var passedCount = 0;
+          var percentagePassed = 0;
+          var percentageTotal = 0;
           var ranTests = testGroups.map(function(testGroup) {
             testGroup.tests.each(function(test) {
               test.runTest = function() {
@@ -121,12 +131,17 @@
               }
               test.pass = test.runTest();
               if (test.pass) passedCount++;
+              if (testGroup.includeInPercentage) {
+                if (test.pass) percentagePassed++;
+                percentageTotal++;
+              }
             })
             return testGroup;
           });
           return {
             tests: ranTests,
             passedCount: passedCount,
+            percentage:  Math.round(percentagePassed / percentageTotal * 100),
             total: _(testGroups).pluck('tests').flatten().length
           };
         },
@@ -136,6 +151,7 @@
               <thead>
                 <tr>
                   <td class="ui inverted header">Total: {{passedCount}}/{{total}}</td>
+                  <td class="ui inverted header" colspan="3" style="font-size: 1em">Percentage of excerpts: {{percentage}}%</td>
                 </tr>
               </thead>
               <tbody>
