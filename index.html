@@ -54,18 +54,12 @@
           test: Object,
           sentence: Boolean
         },
-        methods: {
-          wrap: function(value) {
-            if (this.sentence) return '"'+value+'"';
-            else               return value;
-          }
-        },
         computed: {
           expected: function() {
-            return this.wrap(this.test.transliteration);
+            return this.test.transliteration;
           },
           actual: function() {
-            return this.wrap(this.test.transliterated);
+            return this.test.transliterated;
           },
           spanStyle: function() {
             var s = {};
