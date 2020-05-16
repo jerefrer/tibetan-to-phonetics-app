@@ -7,7 +7,10 @@ var Parser = function(syllable, options) {
     suffix: null,
     secondSuffix: null,
     syllable: syllable,
-    length: syllable.length,
+    dreldraAi: false,
+    length: function() {
+      return this.syllable.length;
+    },
     at: function(element, delta, fromEnd) {
       var index;
       if (fromEnd) index = _(this.syllable).lastIndexOf(element);
@@ -86,29 +89,39 @@ var Parser = function(syllable, options) {
     secondLetterIsGaNgaBaMa: function() {
       return this.syllable[1].match(/[གངབམ]/);
     },
+    handleDreldraAi: function() {
+      if (this.length() > 2 && this.syllable.match(/འི$/)) {
+        if (this.length() <= 3) this.syllable = this.syllable.replace(/འི$/, '');
+        else                    this.syllable = this.syllable.replace(/འི$/,  'འ');
+        this.dreldraAi = true;
+      }
+    },
     parse: function() {
+      var dreldraAi = false;
       if (this.isAnException()) return this.returnObject();
-      if (this.length == 1) this.main = this.syllable;
+      this.handleDreldraAi();
+      if (this.length() == 1) this.main = this.syllable;
       if (this.vowel()) this.main = this.at(this.vowel(), -1);
       if (this.subscribed()) this.main = this.at(this.subscribed(), -1);
       if (this.superscribed()) this.main = this.at(this.superscribed(), 1);
       if (!this.main) {
-        if (this.length == 2) {
+        if (this.length() == 2) {
           this.main = this.syllable[0];
           this.suffix = this.syllable[1];
-        } else if (this.length == 4) {
+        } else if (this.length() == 4) {
           this.prefix = this.syllable[0];
           this.main = this.syllable[1];
           this.suffix = this.syllable[2];
           this.secondSuffix = this.syllable[3];
-        } else if (this.length == 3) {
+        } else if (this.length() == 3) {
           if (!(this.syllable.last() == 'ས')) this.main = this.syllable[1];
           else if (!this.secondLetterIsGaNgaBaMa()) this.main = this.syllable[1];
           else if ( this.secondLetterIsGaNgaBaMa()) this.main = this.syllable[0];
-          else throw "Welcome to the unknown!";
+          else alert("There has been an error:\n\nThe syllable "+this.syllable+" could not be parsed.\n\nAre you sure it's correct?")
         }
       }
       this.figureOutPrefixAndSuffixes();
+      if (this.dreldraAi) this.suffix = 'འི';
       if (this.superscribed() && !this.options.keepMainAsSuperscribed) this.translateMainAsRegularChar();
       return this.returnObject();
     }

@@ -21,7 +21,7 @@ testGroups.push({
     { tibetan: 'བྱིན་གྱིས་རློབས་ཤིག་མ་ཧཱ་གུ་རུ་རྗེ།', transliteration: 'chinkyi lopshik maha guru je' },
     { tibetan: 'མཆོག་ཐུན་དངོས་གྲུབ་གེགས་མེད་འགྲུབ་མཛད་གསོལ།', transliteration: 'chokthün ngötrup kekme drupdze söl' },
     { tibetan: 'དེ་ལྟར་གསོལ་བ་བཏབ་པའི་བྱིན་རླབས་ཀྱིས།', transliteration: 'tetar sölwa tape chinlap kyi' },
-    { tibetan: 'རིག་འཛིན་རྣམ་བཞིའི་གོ་འཕང་བདེ་བླག་བགྲོད།', transliteration: "rikdzin namzhi komp'ang dela drö" },
+    { tibetan: 'རིག་འཛིན་རྣམ་བཞིའི་གོ་འཕང་བདེ་བླག་བགྲོད།', transliteration: "rikdzin namzhi komp'ang delak drö" },
     { tibetan: 'ཀ་དག་གདོད་མའི་དགོངས་པ་མངོན་གྱུར་ནས།', transliteration: 'katak döme gongpa ngönkyur ne' },
     { tibetan: 'མཐའ་ཡས་འགྲོ་ཀུན་སྤྲུལ་པས་འདྲེན་པར་ཤོག', transliteration: 'thaye drokün trülpe drenpar sho' }
   ]

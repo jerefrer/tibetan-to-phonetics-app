@@ -24,7 +24,7 @@ testGroups.push({
     { tibetan: 'ལྡ',  transliteration: 'da'},
     { tibetan: 'ལྤ',  transliteration: 'pa'},
     { tibetan: 'ལྦ',  transliteration: 'ba'},
-    { tibetan: 'ལྷ',  transliteration: 'hla'},
+    { tibetan: 'ལྷ',  transliteration: 'lha'},
     // Sago
     { tibetan: 'སྐ',  transliteration: 'ka'},
     { tibetan: 'སྒ',  transliteration: 'ga'},
@@ -42,6 +42,6 @@ testGroups.push({
     { tibetan: 'ལྗུ',  transliteration: 'ju'},
     { tibetan: 'སྦེ',  transliteration: 'be'},
     { tibetan: 'སྒོ',  transliteration: 'go'},
-    { tibetan: 'ལྷུ',  transliteration: 'hlu'}
+    { tibetan: 'ལྷུ',  transliteration: 'lhu'}
   ]
 })

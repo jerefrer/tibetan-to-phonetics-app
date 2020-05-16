@@ -26,8 +26,9 @@
   <script src="tests/one-syllable/subscribed-with-both.js"></script>
   <script src="tests/one-syllable/dao-wa.js"></script>
   <script src="tests/two-syllable/exceptions.js"></script>
-  <script src="tests/excerpts/seven-lines.js"></script>
-  <script src="tests/excerpts/shower-of-blessings-lineage-prayer.js"></script>
+  <script src="tests/texts/seven-lines.js"></script>
+  <script src="tests/texts/shower-of-blessings-lineage-prayer.js"></script>
+  <script src="tests/texts/trashi-gyepa.js"></script>
   <script>
     $(function() {
       Vue.component('test-diff', {
@@ -45,7 +46,7 @@
             <span
               v-for="part in parts"
               v-bind:style="[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']"
-              >{{part.added ? part.value.replace(/ /, '_') : part.value}}</span>
+              >{{part.added || part.removed ? part.value.replace(/ /, '_') : part.value}}</span>
           </span>
         `
       })
