@@ -1,50 +1,10 @@
-var findException = function(tibetan) {
-  var transliteration;
-  switch(tibetan) {
-    // Wa's
-    case 'གསོལ་བ': transliteration = 'söl_wa'; break;
-    // Mute suffixes
-    case 'བདག': transliteration = 'da'; break;
-    case 'ཤོག': transliteration = 'sho'; break;
-    // Links between syllables
-    case 'ཡ་མཚན': transliteration = 'yam_tsen'; break;
-    case 'གོ་འཕང': transliteration = "kom_p'ang"; break;
-    case 'ཨོ་རྒྱན': transliteration = 'or_gyen'; break;
-    case 'མཁའ་འགྲོ': transliteration = 'khan_dro'; break;
-    case 'རྗེ་འབངས': transliteration = "jem_bang"; break;
-    case 'དགེ་འདུན་': transliteration = "gen_dün"; break;
-    case 'མཆོད་རྟེན': transliteration = 'chor_ten'; break;
-    case 'འོད་མཐའ་ཡས': transliteration = 'ön_tha_ye'; break;
-    // Sanskrit stuff
-    case 'ༀ': transliteration = 'om'; break;
-    case 'ཧཱུྃ': transliteration = 'hūṃ'; break;
-    case 'པདྨ': transliteration = 'pe_ma'; break;
-    case 'མ་ཧཱ': transliteration = 'ma_ha'; break;
-    case 'གུ་རུ': transliteration = 'gu_ru'; break;
-    case 'ཨུཏྤལ': transliteration = 'ut_pal'; break;
-    case 'རྡོ་རྗེ': transliteration = 'dor_je'; break;
-    case 'ཨེ་མ་ཧོ': transliteration = 'e_ma_ho'; break;
-    case 'སམྦྷ་ཝར': transliteration = 'sam_bha_war'; break;
-    case 'གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ': transliteration = 'gu_ru pad_ma si_ddhi hūṃ'; break;
-  }
-  if (transliteration) {
-    var numberOfSyllables = 1;
-    var syllablesMatch = transliteration.match(/[_ ]/g);
-    if (syllablesMatch) numberOfSyllables = syllablesMatch.length + 1;
-    return {
-      numberOfSyllables: numberOfSyllables,
-      transliterated: transliteration.replace(/_/g, '')
-    }
-  }
-}
-
 var Transliterator = function(tibetan) {
   return {
     tibetan: tibetan,
     line: '',
     removeUntranscribedPunctuation: function() {
-      this.tibetan = this.tibetan.replace(/[།༑ཿ༔]/g, '');
-      this.tibetan = this.tibetan.replace(/[ ]/g, '་');
+      this.tibetan = this.tibetan.replace(/[༎།༑༈ཿ༔]/g, '').trim();
+      this.tibetan = this.tibetan.replace(/[ ]+/g, '་').replace(/་+/g, '་');
     },
     findLongestException: function(syllable, restOfSyllables) {
       if (!restOfSyllables.length)
@@ -69,6 +29,13 @@ var Transliterator = function(tibetan) {
         result = new Syllable(syllable).transliterate();
       return result;
     },
+    isVowel: function(char) {
+      return char.match(/[aeiouéiöü]/);
+    },
+    connectWithDashIfTwoVowels: function(result) {
+      if (this.isVowel(this.line.last()) && this.isVowel(result.transliterated.first()))
+        this.line = this.line + '-';
+    },
     mergeDuplicateConnectingLettersWithPreviousSyllable: function(result) {
       if (this.line.last() == result.transliterated.first())
         this.line = this.line.slice(0, this.line.length-1);
@@ -79,6 +46,7 @@ var Transliterator = function(tibetan) {
       this.syllables = this.tibetan.split('་');
       while (syllable = this.syllables.shift()) {
         var result = this.findExceptionOrTransliterate(syllable);
+        this.connectWithDashIfTwoVowels(result);
         this.mergeDuplicateConnectingLettersWithPreviousSyllable(result);
         this.line += result.transliterated;
         syllablesCount += result.numberOfSyllables;
@@ -100,13 +68,13 @@ var Syllable = function(syllable) {
         case 'ེ': return 'e'; break;
         case 'ུ':
           if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ü'
-          else                         return 'u'; break;
+          else                                    return 'u'; break;
         case 'ོ':
           if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ö'
-          else                         return 'o'; break;
+          else                                    return 'o'; break;
         default:
           if (this.dreldraAiOrSuffixIsSaDaNa())   return 'e'
-          else                         return 'a'; break;
+          else                                    return 'a'; break;
       }
     },
     dreldraAiOrSuffixIsSaDaNa: function() {
@@ -124,11 +92,17 @@ var Syllable = function(syllable) {
     lata: function() {
       return this.subscribed == 'ླ';
     },
-    daoWa: function() {
-      return this.syllable.match(/^དབ[ྱ]?[ིེོུ]?[ང]?$/);
+    daoWa: function() { // all cases: དབུ, དབུས, དབུལ, དབུགས, དབུལ , དབུར, དབུབ, དབུབས, དབུས , དབུང, དབུག, དབུངས, དབུད, དབུམ, དབུའི
+      return this.syllable.match(/^དབ[ྱ]?[ིེོུ]?[ངསགརལདའབ]?[ིས]?$/);
     },
     dreldraAi: function() {
       return this.syllable.match(/འི$/);
+    },
+    endingO: function() {
+      return (this.syllable.length > 2 && this.syllable.match(/འོ$/)) ? '-o' : '';
+    },
+    endingU: function() {
+      return (this.syllable.length > 2 && this.syllable.match(/འུ$/)) ? '-u' : '';
     },
     consonant: function() {
       if (this.lata()) {
@@ -191,6 +165,7 @@ var Syllable = function(syllable) {
           }
           else if (this.rata())                      return 'tr';
           else if (this.yata())                      return 'ch';
+          else if (this.dreldraAi())                 return  'w';
           else if (!this.suffix &&
                   (!this.vowel || this.vowel == 'ོ'))return  'w';
           else                                       return  'p'; break;
@@ -224,14 +199,14 @@ var Syllable = function(syllable) {
     },
     getSuffix: function() {
       switch(this.suffix) {
-        case 'ག': return 'k';
-        case 'ང': return 'ng';
-        case 'ན': return 'n';
-        case 'བ': return (this.daoWa()) ? '' : 'p';
-        case 'མ': return 'm';
-        case 'ར': return 'r';
-        case 'ལ': return 'l';
-        default:  return '';
+        case 'ག': return 'k'; break;
+        case 'ང': return 'ng'; break;
+        case 'ན': return 'n'; break;
+        case 'བ': return (this.daoWa()) ? '' : 'p'; break;
+        case 'མ': return 'm'; break;
+        case 'ར': return 'r'; break;
+        case 'ལ': return 'l'; break;
+        default: return '';
       }
     },
     exception: function() {
@@ -239,7 +214,7 @@ var Syllable = function(syllable) {
     },
     transliterate: function() {
       return this.exception() || {
-        transliterated: this.consonant() + this.getVowel() + this.getSuffix(),
+        transliterated: this.consonant() + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU(),
         numberOfSyllables: 1
       }
     }

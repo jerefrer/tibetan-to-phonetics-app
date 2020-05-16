@@ -10,19 +10,19 @@ testGroups.push({
     { tibetan: 'དབྱ',  transliteration:   'ya'},
     { tibetan: 'དམྱ',  transliteration:  'nya'},
     // Rata
-    { tibetan: 'དཀྲ',  transliteration: 'tra'},
+    { tibetan: 'དཀྲ',  transliteration:  'tra'},
     { tibetan: 'དཁྲ',  transliteration: "tr'a"},
-    { tibetan: 'དགྲ',  transliteration: 'dra'},  // TODO: check
-    { tibetan: 'དཏྲ',  transliteration: 'tra'},
+    { tibetan: 'དགྲ',  transliteration:  'dra'},
+    { tibetan: 'དཏྲ',  transliteration:  'tra'},
     { tibetan: 'དཐྲ',  transliteration: "tr'a"},
-    { tibetan: 'འདྲ',  transliteration: 'dra'},  // TODO: check
-    { tibetan: 'དཔྲ',  transliteration: 'tra'},
+    { tibetan: 'འདྲ',  transliteration:  'dra'},
+    { tibetan: 'དཔྲ',  transliteration:  'tra'},
     { tibetan: 'དཕྲ',  transliteration: "tr'a"},
-    { tibetan: 'འབྲ',  transliteration: 'dra'},  // TODO: check
-    { tibetan: 'དམྲ',  transliteration: 'ma'},
-    { tibetan: 'དཤྲ',  transliteration: 'sha'},
-    { tibetan: 'དསྲ',  transliteration: 'sa'},
-    { tibetan: 'དཧྲ',  transliteration: 'hra'},
+    { tibetan: 'འབྲ',  transliteration:  'dra'},
+    { tibetan: 'དམྲ',  transliteration:   'ma'},
+    { tibetan: 'དཤྲ',  transliteration:  'sha'},
+    { tibetan: 'དསྲ',  transliteration:   'sa'},
+    { tibetan: 'དཧྲ',  transliteration:  'hra'},
     // Lata
     { tibetan: 'དཀླ',  transliteration: 'la'},
     { tibetan: 'དགླ',  transliteration: 'la'},
@@ -35,8 +35,8 @@ testGroups.push({
     { tibetan: 'འདྲོ',  transliteration: 'dro'},
     { tibetan: 'དབྲེ',  transliteration: 'dre'},
     { tibetan: 'དཕྱུ',  transliteration: 'chu'},
-    { tibetan: 'དཟླེ',  transliteration: 'de'},
-    { tibetan: 'དབློ',  transliteration: 'lo'},
+    { tibetan: 'དཟླེ',  transliteration:  'de'},
+    { tibetan: 'དབློ',  transliteration:  'lo'},
     { tibetan: 'དཧྲུ',  transliteration: 'hru'}
   ]
 })

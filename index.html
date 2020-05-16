@@ -15,10 +15,12 @@
   <script src="vendor/javascripts/vue.js"></script>
   <script src="vendor/javascripts/diff.js"></script>
   <script src="javascripts/parser.js"></script>
+  <script src="javascripts/exceptions.js"></script>
   <script src="javascripts/transliterator.js"></script>
   <script src="tests/var.js"></script>
   <script src="tests/one-syllable/alphabet-with-vowels.js"></script>
   <script src="tests/one-syllable/prefixes.js"></script>
+  <script src="tests/one-syllable/suffixes.js"></script>
   <script src="tests/one-syllable/superscribed.js"></script>
   <script src="tests/one-syllable/subscribed.js"></script>
   <script src="tests/one-syllable/subscribed-with-prefix.js"></script>
@@ -28,7 +30,9 @@
   <script src="tests/two-syllable/exceptions.js"></script>
   <script src="tests/texts/seven-lines.js"></script>
   <script src="tests/texts/shower-of-blessings-lineage-prayer.js"></script>
+  <script src="tests/texts/shower-of-blessings-visualization.js"></script>
   <script src="tests/texts/trashi-gyepa.js"></script>
+  <script src="tests/texts/remembering-the-three-jewels.js"></script>
   <script>
     $(function() {
       Vue.component('test-diff', {
@@ -162,13 +166,25 @@
             total: _(testGroups).pluck('tests').flatten().length
           };
         },
+        computed: {
+          style: function() {
+            return {
+              color: (this.passedCount == this.total) ? '#21ba45' : '#db2828'
+            }
+          }
+        },
         template: `
           <div>
             <table class="ui inverted definition table">
               <thead>
                 <tr>
-                  <td class="ui inverted header">Total: {{passedCount}}/{{total}}</td>
-                  <td class="ui inverted header" colspan="3" style="font-size: 1em">Percentage of excerpts: {{percentage}}%</td>
+                  <td class="ui inverted header">
+                    Total: <span v-bind:style="style">{{passedCount}}/{{total}}</span>
+                  </td>
+                  <td class="ui inverted header" colspan="3" style="font-size: 1em">
+                    Percentage of excerpts:
+                    <span v-bind:style="style">{{percentage}}%</span>
+                  </td>
                 </tr>
               </thead>
               <tbody>

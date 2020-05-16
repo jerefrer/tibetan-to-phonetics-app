@@ -8,6 +8,7 @@ var Parser = function(syllable, options) {
     secondSuffix: null,
     syllable: syllable,
     dreldraAi: false,
+    completionU: false,
     length: function() {
       return this.syllable.length;
     },
@@ -96,10 +97,24 @@ var Parser = function(syllable, options) {
         this.dreldraAi = true;
       }
     },
+    handleEndingO: function() {
+      if (this.length() > 2 && this.syllable.match(/འོ$/)) {
+        this.syllable = this.syllable.replace(/འོ$/, 'འ');
+        this.completionO = true;
+      }
+    },
+    handleEndingU: function() {
+      if (this.length() > 2 && this.syllable.match(/འུ$/)) {
+        this.syllable = this.syllable.replace(/འུ$/, '');
+        this.completionU = true;
+      }
+    },
     parse: function() {
       var dreldraAi = false;
       if (this.isAnException()) return this.returnObject();
       this.handleDreldraAi();
+      this.handleEndingU();
+      this.handleEndingO();
       if (this.length() == 1) this.main = this.syllable;
       if (this.vowel()) this.main = this.at(this.vowel(), -1);
       if (this.subscribed()) this.main = this.at(this.subscribed(), -1);
@@ -122,6 +137,8 @@ var Parser = function(syllable, options) {
       }
       this.figureOutPrefixAndSuffixes();
       if (this.dreldraAi) this.suffix = 'འི';
+      if (this.completionU) this.suffix = 'འུ';
+      if (this.completionO) this.suffix = 'འོ';
       if (this.superscribed() && !this.options.keepMainAsSuperscribed) this.translateMainAsRegularChar();
       return this.returnObject();
     }
