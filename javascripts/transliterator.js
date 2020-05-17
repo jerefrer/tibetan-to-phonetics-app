@@ -78,10 +78,10 @@ var Syllable = function(syllable) {
       }
     },
     dreldraAiOrSuffixIsSaDaNa: function() {
-      return this.dreldraAi() || (this.suffix && this.suffix.match(/[སདན]/));
+      return this.dreldraAi() || (this.suffix && this.suffix.match(/[སདནཎ]/));
     },
     dreldraAiOrSuffixIsLaSaDaNa: function() {
-      return this.dreldraAi() || (this.suffix && this.suffix.match(/[ལསདན]/));
+      return this.dreldraAi() || (this.suffix && this.suffix.match(/[ལསདནཎ]/));
     },
     rata: function() {
       return this.subscribed == 'ྲ';
@@ -202,6 +202,7 @@ var Syllable = function(syllable) {
         case 'ག': return 'k'; break;
         case 'ང': return 'ng'; break;
         case 'ན': return 'n'; break;
+        case 'ཎ': return 'n'; break;
         case 'བ': return (this.daoWa()) ? '' : 'p'; break;
         case 'མ': return 'm'; break;
         case 'ར': return 'r'; break;
