@@ -22,7 +22,7 @@ testGroups.push({
     { tibetan: 'དཀར་དམར་མདངས་ལྡན་ཞི་ཞིང་འཛུམ༔', transliteration: "karmar dangden shishing dzum" },
     { tibetan: 'ཐེག་དགུའི་ཆས་རྫོགས་དབུར་པཎ་ཞྭ༔', transliteration: "tekgü chedzok urpen sha" },
     { tibetan: 'ཕྱག་གཉིས་མཉམ་བཞག་བདེ་སྐྱོང་གི༔', transliteration: "cha nyi nyamshak dekyong ki" },
-    { tibetan: 'བདུན་རྩིའི་ཐོད་ཞལ་ཨེ་ཝཾ་མཚན༔', transliteration: "dütsi töshal e-wam tsen" },
+    { tibetan: 'བདུད་རྩིའི་ཐོད་ཞལ་ཨེ་ཝཾ་མཚན༔', transliteration: "dütsi töshal e-wam tsen" },
     { tibetan: 'སྐུ་ལས་འོད་ཟེར་སྤྲོ་བསྡུ་ཡིས༔', transliteration: "kule özer trondu yi" },
     { tibetan: 'རྒྱལ་ཀུན་ཞིང་ཁམས་རབ་འབྱམས་དང་༔', transliteration: "gyalkün shingkham rabjam tang" },
     { tibetan: 'རྩ་གསུམ་ཆོས་སྐྱོང་འཕྲོ་འདུ་འགྱེད༔', transliteration: "tsasum chökyong trondu gye" },
