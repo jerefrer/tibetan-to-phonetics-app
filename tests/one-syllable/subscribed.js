@@ -33,7 +33,7 @@ testGroups.push({
     // A few of them mixed with vowels
     { tibetan: 'གྲི',  transliteration: 'tri'},
     { tibetan: 'ཕྱུ',  transliteration: 'chu'},
-    { tibetan: 'ཟླེ',  transliteration: 'de'},
+    { tibetan: 'ཟླེ',  transliteration: 'dé'},
     { tibetan: 'བློ',  transliteration: 'lo'},
     { tibetan: 'ཧྲུ',  transliteration: 'hru'}
   ]

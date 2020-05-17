@@ -33,9 +33,9 @@ testGroups.push({
     // A few of them mixed with vowels
     { tibetan: 'དགྲི',  transliteration: 'dri'},
     { tibetan: 'འདྲོ',  transliteration: 'dro'},
-    { tibetan: 'དབྲེ',  transliteration: 'dre'},
+    { tibetan: 'དབྲེ',  transliteration: 'dré'},
     { tibetan: 'དཕྱུ',  transliteration: 'chu'},
-    { tibetan: 'དཟླེ',  transliteration:  'de'},
+    { tibetan: 'དཟླེ',  transliteration:  'dé'},
     { tibetan: 'དབློ',  transliteration:  'lo'},
     { tibetan: 'དཧྲུ',  transliteration: 'hru'}
   ]

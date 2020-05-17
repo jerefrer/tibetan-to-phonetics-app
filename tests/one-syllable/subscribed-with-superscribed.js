@@ -21,7 +21,7 @@ testGroups.push({
     // === A few of them mixed with vowels
     { tibetan: 'སཀྱོ',  transliteration: 'kyo'},
     { tibetan: 'སྒྱོ',  transliteration: 'gyo'},
-    { tibetan: 'སྦྱེ',  transliteration:  'je'},
+    { tibetan: 'སྦྱེ',  transliteration:  'jé'},
 
     // Rata
     // === Rago
@@ -47,7 +47,7 @@ testGroups.push({
     // === A few of them mixed with vowels
     { tibetan: 'རྟྲི',  transliteration: 'tri'},
     { tibetan: 'རྡྲི',  transliteration: 'dri'},
-    { tibetan: 'སྦྲེ',  transliteration: 'dre'},
+    { tibetan: 'སྦྲེ',  transliteration: 'dré'},
     { tibetan: 'སྒྲོ',  transliteration: 'dro'}
   ]
 })

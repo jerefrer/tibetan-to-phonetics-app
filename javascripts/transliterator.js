@@ -65,7 +65,10 @@ var Syllable = function(syllable) {
     getVowel: function() {
       switch(this.vowel) {
         case 'ི': return 'i'; break;
-        case 'ེ': return 'e'; break;
+        case 'ེ':
+          if      (this.suffix && this.suffix.match(/[མནཎར]/)) return 'è';
+          else if (this.suffix && this.suffix.match(/[གབལང]/)) return 'e';
+          else                                                return 'é'; break;
         case 'ུ':
           if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ü'
           else                                    return 'u'; break;
@@ -73,12 +76,13 @@ var Syllable = function(syllable) {
           if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ö'
           else                                    return 'o'; break;
         default:
-          if (this.dreldraAiOrSuffixIsSaDaNa())   return 'e'
-          else                                    return 'a'; break;
+          if      (this.dreldraAiOrSuffixIsSaDa())          return 'é';
+          else if (this.suffix && this.suffix.match(/[ནཎ]/)) return 'è';
+          else                                              return 'a'; break;
       }
     },
-    dreldraAiOrSuffixIsSaDaNa: function() {
-      return this.dreldraAi() || (this.suffix && this.suffix.match(/[སདནཎ]/));
+    dreldraAiOrSuffixIsSaDa: function() {
+      return this.dreldraAi() || (this.suffix && this.suffix.match(/[སད]/));
     },
     dreldraAiOrSuffixIsLaSaDaNa: function() {
       return this.dreldraAi() || (this.suffix && this.suffix.match(/[ལསདནཎ]/));
