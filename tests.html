@@ -1,0 +1,212 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Tibetan Transliterator</title>
+  <link rel="stylesheet" href="vendor/stylesheets/semantic.min.css">
+  <link rel="stylesheet" href="stylesheets/layout.css">
+  <link rel="stylesheet" href="stylesheets/scrollbar.css">
+  <script src="vendor/javascripts/howler.min.js"></script>
+  <script src="vendor/javascripts/jquery-3.2.0.min.js"></script>
+  <script src="vendor/javascripts/clipboard.min.js"></script>
+  <script src="vendor/javascripts/moment.js"></script>
+  <script src="vendor/javascripts/semantic.min.js"></script>
+  <script src="vendor/javascripts/sugar.js"></script>
+  <script src="vendor/javascripts/underscore.min.js"></script>
+  <script src="vendor/javascripts/vue.js"></script>
+  <script src="vendor/javascripts/diff.js"></script>
+  <script src="javascripts/parser.js"></script>
+  <script src="javascripts/exceptions.js"></script>
+  <script src="javascripts/transliterator.js"></script>
+  <script src="tests/var.js"></script>
+  <script src="tests/one-syllable/alphabet-with-vowels.js"></script>
+  <script src="tests/one-syllable/prefixes.js"></script>
+  <script src="tests/one-syllable/suffixes.js"></script>
+  <script src="tests/one-syllable/superscribed.js"></script>
+  <script src="tests/one-syllable/subscribed.js"></script>
+  <script src="tests/one-syllable/subscribed-with-prefix.js"></script>
+  <script src="tests/one-syllable/subscribed-with-superscribed.js"></script>
+  <script src="tests/one-syllable/subscribed-with-both.js"></script>
+  <script src="tests/one-syllable/dao-wa.js"></script>
+  <script src="tests/two-syllable/exceptions.js"></script>
+  <script src="tests/texts/seven-lines.js"></script>
+  <script src="tests/texts/shower-of-blessings-lineage-prayer.js"></script>
+  <script src="tests/texts/shower-of-blessings-visualization.js"></script>
+  <script src="tests/texts/trashi-gyepa.js"></script>
+  <script src="tests/texts/three-kayas.js"></script>
+  <script src="tests/texts/lineage-prayers.js"></script>
+  <script src="tests/texts/prayer-in-seven-chapters.js"></script>
+  <script>
+    $(function() {
+      Vue.component('test-diff', {
+        props: {
+          expected: String,
+          actual: String
+        },
+        computed: {
+          parts: function() {
+            return JsDiff.diffChars(this.expected, this.actual);
+          }
+        },
+        template: `
+          <span style="margin-left: 20px; font-size: 1.2em">
+            <span
+              v-for="part in parts"
+              v-bind:style="[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']"
+              >{{part.added || part.removed ? part.value.replace(/ /, '_') : part.value}}</span>
+          </span>
+        `
+      })
+      Vue.component('test-result', {
+        props: {
+          test: Object,
+          sentence: Boolean
+        },
+        computed: {
+          expected: function() {
+            return this.test.transliteration;
+          },
+          actual: function() {
+            return this.test.transliterated;
+          },
+          spanStyle: function() {
+            var s = {};
+            if (!this.sentence) s['width'] = '120px;'
+            else s['display'] = 'block';
+            return s;
+          },
+          tibetanStyle: function() {
+            var s = {};
+            if (!this.sentence) s['width'] = '30px;'
+            return s;
+          }
+        },
+        template: `
+          <span
+            class="ui black label test" v-bind:style="spanStyle"
+            v-on:click="test.runTest()"
+            >
+            <span>
+              <i v-if=" test.pass" class="check green icon"></i>
+              <i v-if="!test.pass" class="times red icon"></i>
+            </span>
+            <span class="tibetan" v-bind:style="tibetanStyle">{{test.tibetan}}</span>
+            <test-diff
+              v-if="expected != actual"
+              v-bind:expected="expected"
+              v-bind:actual="actual"
+            ></test-diff>
+          </span>
+        `
+      })
+      Vue.component('results-group', {
+        props: {
+          name: String,
+          sentences: Boolean,
+          tests: Array
+        },
+        data: function() {
+          var passedCount = this.tests.count(function(test) { return test.pass; });
+          var allPassed = passedCount == this.tests.length;
+          return {
+            allPassed: allPassed,
+            opened: allPassed,
+            passedCount: passedCount,
+            total: this.tests.length
+          }
+        },
+        template: `
+          <tr
+            class="ui inverted segment results-group">
+            <td class="header"
+              v-on:click="opened=!opened"
+            >
+              {{name}}
+            </td>
+            <td class="count">{{passedCount}}/{{total}}</td>
+            <td class="result">
+              <i v-if=" allPassed" class="check green icon"></i>
+              <i v-if="!allPassed" class="times red icon"></i>
+            </td>
+            <td>
+              <test-result
+                v-if="!opened"
+                v-for="(test, index) in tests"
+                v-bind:sentence="sentences"
+                v-bind:test="test"
+                v-bind:key="index"
+              >
+              </test-result>
+            </td>
+          </tr>
+        `
+      })
+      new Vue({
+        el: '#main',
+        data: function() {
+          var passedCount = 0;
+          var percentagePassed = 0;
+          var percentageTotal = 0;
+          var ranTests = testGroups.map(function(testGroup) {
+            testGroup.tests.each(function(test) {
+              test.runTest = function() {
+                this.transliterated = new Transliterator(this.tibetan).transliterate();
+                return this.transliterated == this.transliteration;
+              }
+              test.pass = test.runTest();
+              if (test.pass) passedCount++;
+              if (testGroup.includeInPercentage) {
+                if (test.pass) percentagePassed++;
+                percentageTotal++;
+              }
+            })
+            return testGroup;
+          });
+          return {
+            tests: ranTests,
+            passedCount: passedCount,
+            percentage:  Math.round(percentagePassed / percentageTotal * 100),
+            total: _(testGroups).pluck('tests').flatten().length
+          };
+        },
+        computed: {
+          style: function() {
+            return {
+              color: (this.passedCount == this.total) ? '#21ba45' : '#db2828'
+            }
+          }
+        },
+        template: `
+          <div>
+            <table class="ui inverted definition table">
+              <thead>
+                <tr>
+                  <td class="ui inverted header">
+                    Total: <span v-bind:style="style">{{passedCount}}/{{total}}</span>
+                  </td>
+                  <td class="ui inverted header" colspan="3" style="font-size: 1em">
+                    Percentage of excerpts:
+                    <span v-bind:style="style">{{percentage}}%</span>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                <results-group
+                 v-for="(test, index) in tests"
+                 v-bind:key="index"
+                 v-bind:name="test.name"
+                 v-bind:sentences="test.sentences"
+                 v-bind:tests="test.tests">
+                </results-group>
+              </tbody>
+            </table>
+          </div>
+        `
+      })
+    })
+  </script>
+  <style>
+  </style>
+  <body>
+    <div id="main" class="ui container"></div>
+  </body>
+</html>

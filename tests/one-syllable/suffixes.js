@@ -8,8 +8,8 @@ testGroups.push({
     { tibetan: 'རྒྱས', transliteration: 'gyé' },
 
     // na: ümlaut & pronounced & nazalasies
-    { tibetan: 'པན', transliteration: 'pèn' },
-    { tibetan: 'རྒྱན', transliteration: 'gyèn' },
+    { tibetan: 'པན', transliteration: 'pen' },
+    { tibetan: 'རྒྱན', transliteration: 'gyen' },
 
     // la: ümlauts all vowels but a & pronounced & softens
     { tibetan: 'པལ', transliteration: 'pal' },

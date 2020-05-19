@@ -2,15 +2,79 @@ body {
   padding: 30px;
   background: #001211;
   color: rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+}
+
+.ui.container {
+  position: relative;
+}
+
+#scrollable-area {
+  max-height: 90vh;
+  overflow-y: scroll;
+}
+
+.form {
+  display: inline-block;
+  width: 49%;
+}
+
+.form:first-child {
+  margin-right: 1%;
 }
 
 .tibetan {
-  font-family: TibetanChogyalUnicode-170221;
-  font-size: 36px;
-  line-height: 1em;
+  font-family: TibetanChogyalUnicode-170221 !important;
+  font-size: 36px !important;
+  line-height: 1em !important;
   vertical-align: middle;
 }
 
+textarea {
+  width: 100%;
+  min-height: calc(100vh - 60px) !important;
+  max-height: none !important;
+  margin-top: -15px !important;
+  padding: 30px !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  background: #222 !important;
+  border: none !important;
+  overflow: hidden;
+}
+
+
+#transliteration {
+  font-size: 18px !important;
+  line-height: 36px !important;
+}
+
+#tibetan-placeholder {
+  position: absolute;
+  width: 100%;
+  top: 120px;
+  font-size: 20px;
+  color: #777;
+  text-align: center;
+  user-select: none;
+  cursor: text;
+}
+
+#copy-to-clipboard {
+  position: absolute;
+  top: 0px;
+  right: 18px;
+  width: 152px;
+  padding: 10px;
+  color:  rgba(255,255,255,0.7);
+  background: #333;
+  border-bottom-left-radius: 4px;
+  z-index: 999;
+}
+#copy-to-clipboard:hover {
+  color: rgba(255,255,255,0.9);
+  background: #363636;
+  cursor: pointer;
+}
 
 table .header {
   width: 600px;

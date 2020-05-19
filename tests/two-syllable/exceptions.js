@@ -1,8 +1,8 @@
 testGroups.push({
-  name: 'Two-syllablé exceptions',
+  name: 'Two-syllable exceptions',
   sentences: true,
   tests: [
-    { tibetan: 'པདྨ་', transliteration: 'pema' },
-    { tibetan: 'པདྨ་གེ་སར་', transliteration: 'pema késar' }
+    { tibetan: 'པདྨ་', transliteration: 'padma' },
+    { tibetan: 'པདྨ་གེ་སར་', transliteration: 'padma késar' }
   ]
 })

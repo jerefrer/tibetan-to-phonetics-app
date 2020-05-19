@@ -5,9 +5,9 @@ testGroups.push({
   tests: [
     { tibetan: 'ཧཱུྃ༔', transliteration: "hūṃ" },
     { tibetan: 'ཨོ་རྒྱན་ཡུལ་གྱི་ནུབ་བྱང་མཚམས༔', transliteration: "orgyen yülkyi nupchang tsam" },
-    { tibetan: 'པདྨ་གེ་སར་སྡོང་པོ་ལ༔', transliteration: "pema késar dongpo la" },
-    { tibetan: 'ཡ་མཚན་མཆོག་གི་དངོས་གྲུབ་བཪྙེས༔', transliteration: "yamtsèn choki ngötrup nyé" },
-    { tibetan: 'པདྨ་འབྱུང་གནས་ཞེས་སུ་གྲགས༔', transliteration: "pema jungné zhésu trak" },
+    { tibetan: 'པདྨ་གེ་སར་སྡོང་པོ་ལ༔', transliteration: "padma késar dongpo la" },
+    { tibetan: 'ཡ་མཚན་མཆོག་གི་དངོས་གྲུབ་བཪྙེས༔', transliteration: "yamtsen choki ngötrup nyé" },
+    { tibetan: 'པདྨ་འབྱུང་གནས་ཞེས་སུ་གྲགས༔', transliteration: "padma jung-né zhésu trak" },
     { tibetan: 'འཁོར་དུ་མཁའ་འགྲོ་མང་པོས་བསྐོར༔', transliteration: "khortu khandro mangpö kor" },
     { tibetan: 'ཁྱེད་ཀྱི་རྗེས་སུ་བདག་བསྒྲུབ་ཀྱིས༔', transliteration: "khyékyi jésu dadrup kyi" },
     { tibetan: 'བྱིན་གྱིས་བརླབ་ཕྱིར་གཤེགས་སུ་གསོལ༔', transliteration: "chinkyi lapchir sheksu söl" },

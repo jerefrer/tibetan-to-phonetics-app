@@ -1,9 +1,14 @@
 # TODO
 
 ## Features
-* Add tests for the rest of prefixes
-* Add tests for suffixes
-* Prefer joining words with their pa/wa/ma['i/'o]
+* Add tests for all the latest special cases:
+  * aFollowedByN
+  * oFollowedByN
+  * gFollowedByN
+  * removeUntranscribedPunctuation
+  * spaces before/after, exception or not
+  * wa for duo-syllables
+* Try to handle all suffixes for exceptions (པདྨའི, པདྨས, ...)
 * Use dictionary?
 
 ## Questions to Tibetan savants
@@ -13,7 +18,7 @@
   * Do we do like he says and use 'à'?
   * Or put it always?
   * Or only when followed by a syllable part of the word?
-  * For now ག at the end is always present
+  * For now ག at the end is always present except for dak which is always da (even in khyapda)
 * John Rockwell's second suffixes a.
   * Do we use à when གས?
 * Would there be a way to automate links between syllables? (i.e. ཡ་**མ**ཚན)
@@ -27,9 +32,15 @@
 * What to do when two syllables share the same letter: དག་གིས་
   * Do we merge it? taki
   * Or join with a dash? tak-ki
+* jiktral? jigdrel?
+* rapjam? rabjam?
+* ngakwang
+* སྣང་སྲིད་ཟིལ་གནོན་ : silnön? zilnön?
+* བཅུ་གསུམ་ : chuksum? chusum?
+* ཚེ་དཔག་མེད : tsepakme? tsepame?
 
 ## Questions about Padmakara's style
-* Is there a logic behind the accent on é? (i.e. Yamts**e**n choki ngötrup ny**é**)
+* Are the rules for eéè okay?
 * What's the rule with ཤ and ཞ? (Sha/zha? Both sha? Then how do we differentiate?)
 * བསླབ་ == l**h**ap?
 
