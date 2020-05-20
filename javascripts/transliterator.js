@@ -2,45 +2,27 @@ var Transliterator = function(tibetan) {
   return {
     tibetan: tibetan,
     line: '',
-    removeUntranscribedPunctuation: function() {
-      this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
-      this.tibetan = this.tibetan.replace(/[ཿ ]+/g, '་').replace(/་+/g, '་');
-    },
-    findLongestException: function(syllable) {
-      var restOfSyllables = this.syllables;
-      if (!restOfSyllables.length)
-        return findException(syllable);
-      else {
-        var exception;
-        (restOfSyllables.length).downto(0, function(index) {
-          subset = [syllable].add(restOfSyllables.slice(0, index));
-          if (!exception) exception = findException(subset.join('་'));
-        })
-        return exception;
+    transliterate: function() {
+      var syllablesCount = 0;
+      this.removeUntranscribedPunctuation();
+      this.syllables = this.tibetan.split('་');
+      while (syllable = this.syllables.shift()) {
+        var exception = this.findLongestException(syllable, this.syllables);
+        if (exception) {
+          this.line += exception.transliterated;
+          if (exception.numberOfSyllables == 1) {
+            if (exception.spaceAfter) this.line += ' ';
+            this.handleSecondSyllable();
+          } else
+            this.line = this.line + ' ';
+          this.shiftSyllables(exception.numberOfShifts);
+        } else {
+          firstTransliteration = new Syllable(syllable).transliterate();
+          if (this.handleSecondSyllable(firstTransliteration));
+          else this.line += firstTransliteration;
+        }
       }
-    },
-    isVowel: function(char) {
-      return char.match(/[aeiouéiöü]/);
-    },
-    connectWithDashIfNecessary: function(firstSyllable, secondSyllable) {
-      var twoVowels = this.isVowel(firstSyllable.last()) && this.isVowel(secondSyllable.first());
-      var aFollowedByN = firstSyllable.last() == 'a' && secondSyllable.first() == 'n';
-      var oFollowedByN = firstSyllable.last() == 'o' && secondSyllable.first() == 'n';
-      var gFollowedByN = firstSyllable.last() == 'g' && secondSyllable.first() == 'n';
-      if (twoVowels || aFollowedByN || oFollowedByN || gFollowedByN)
-        return firstSyllable = firstSyllable + '-';
-      else
-        return firstSyllable;
-    },
-    mergeDuplicateConnectingLettersWithPreviousSyllable: function(firstSyllable, secondSyllable) {
-      if (firstSyllable.last() == secondSyllable.first())
-        return firstSyllable = firstSyllable.slice(0, firstSyllable.length-1);
-      else
-        return firstSyllable;
-    },
-    shiftSyllables: function(numberOfShifts) {
-      var that = this;
-      _(numberOfShifts).times(function() { that.syllables.shift(); });
+      return this.line.trim();
     },
     handleSecondSyllable: function(firstTransliteration) {
       var secondSyllable = this.syllables.shift();
@@ -68,27 +50,45 @@ var Transliterator = function(tibetan) {
         return true;
       }
     },
-    transliterate: function() {
-      var syllablesCount = 0;
-      this.removeUntranscribedPunctuation();
-      this.syllables = this.tibetan.split('་');
-      while (syllable = this.syllables.shift()) {
-        var exception = this.findLongestException(syllable, this.syllables);
-        if (exception) {
-          this.line += exception.transliterated;
-          if (exception.numberOfSyllables == 1) {
-            if (exception.spaceAfter) this.line += ' ';
-            this.handleSecondSyllable();
-          } else
-            this.line = this.line + ' ';
-          this.shiftSyllables(exception.numberOfShifts);
-        } else {
-          firstTransliteration = new Syllable(syllable).transliterate();
-          if (this.handleSecondSyllable(firstTransliteration));
-          else this.line += firstTransliteration;
-        }
+    findLongestException: function(syllable) {
+      var restOfSyllables = this.syllables;
+      if (!restOfSyllables.length)
+        return findException(syllable);
+      else {
+        var exception;
+        (restOfSyllables.length).downto(0, function(index) {
+          subset = [syllable].add(restOfSyllables.slice(0, index));
+          if (!exception) exception = findException(subset.join('་'));
+        })
+        return exception;
       }
-      return this.line.trim();
+    },
+    connectWithDashIfNecessary: function(firstSyllable, secondSyllable) {
+      var twoVowels = this.isVowel(firstSyllable.last()) && this.isVowel(secondSyllable.first());
+      var aFollowedByN = firstSyllable.last() == 'a' && secondSyllable.first() == 'n';
+      var oFollowedByN = firstSyllable.last() == 'o' && secondSyllable.first() == 'n';
+      var gFollowedByN = firstSyllable.last() == 'g' && secondSyllable.first() == 'n';
+      if (twoVowels || aFollowedByN || oFollowedByN || gFollowedByN)
+        return firstSyllable = firstSyllable + '-';
+      else
+        return firstSyllable;
+    },
+    mergeDuplicateConnectingLettersWithPreviousSyllable: function(firstSyllable, secondSyllable) {
+      if (firstSyllable.last() == secondSyllable.first())
+        return firstSyllable = firstSyllable.slice(0, firstSyllable.length-1);
+      else
+        return firstSyllable;
+    },
+    shiftSyllables: function(numberOfShifts) {
+      var that = this;
+      _(numberOfShifts).times(function() { that.syllables.shift(); });
+    },
+    removeUntranscribedPunctuation: function() {
+      this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
+      this.tibetan = this.tibetan.replace(/[ཿ ]+/g, '་').replace(/་+/g, '་');
+    },
+    isVowel: function(char) {
+      return char.match(/[aeiouéiöü]/);
     }
   }
 }
@@ -98,51 +98,8 @@ var Syllable = function(syllable) {
   var object = _.omit(parsed, (_.functions(parsed)));
   return _(object).extend({
     syllable: syllable,
-    getVowel: function() {
-      switch(this.vowel) {
-        case 'ི': return 'i'; break;
-        case 'ེ':
-          if      (this.suffix && this.suffix.match(/[མནཎར]/)) return 'e';
-          else if (this.suffix && this.suffix.match(/[གབལང]/)) return 'e';
-          else                                                return 'é'; break;
-        case 'ུ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ü'
-          else                                    return 'u'; break;
-        case 'ོ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ö'
-          else                                    return 'o'; break;
-        default:
-          if      (this.dreldraAiOrSuffixIsSaDa())          return 'é';
-          else if (this.suffix && this.suffix.match(/[ནཎ]/)) return 'e';
-          else                                              return 'a'; break;
-      }
-    },
-    dreldraAiOrSuffixIsSaDa: function() {
-      return this.dreldraAi() || (this.suffix && this.suffix.match(/[སད]/));
-    },
-    dreldraAiOrSuffixIsLaSaDaNa: function() {
-      return this.dreldraAi() || (this.suffix && this.suffix.match(/[ལསདནཎ]/));
-    },
-    rata: function() {
-      return this.subscribed == 'ྲ';
-    },
-    yata: function() {
-      return this.subscribed == 'ྱ';
-    },
-    lata: function() {
-      return this.subscribed == 'ླ';
-    },
-    daoWa: function() { // all cases: དབུ, དབུས, དབུལ, དབུགས, དབུལ , དབུར, དབུབ, དབུབས, དབུས , དབུང, དབུག, དབུངས, དབུད, དབུམ, དབུའི
-      return this.syllable.match(/^དབ[ྱ]?[ིེོུ]?[ངསགརལདའབ]?[ིས]?$/);
-    },
-    dreldraAi: function() {
-      return this.syllable.match(/འི$/);
-    },
-    endingO: function() {
-      return (this.syllable.length > 2 && this.syllable.match(/འོ$/)) ? '-o' : '';
-    },
-    endingU: function() {
-      return (this.syllable.length > 2 && this.syllable.match(/འུ$/)) ? '-u' : '';
+    transliterate: function() {
+      return this.consonant() + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU()
     },
     consonant: function() {
       if (this.lata()) {
@@ -237,6 +194,25 @@ var Syllable = function(syllable) {
         case 'ཨ':                                    return  ''; break;
       }
     },
+    getVowel: function() {
+      switch(this.vowel) {
+        case 'ི': return 'i'; break;
+        case 'ེ':
+          if      (this.suffix && this.suffix.match(/[མནཎར]/)) return 'e';
+          else if (this.suffix && this.suffix.match(/[གབལང]/)) return 'e';
+          else                                                return 'é'; break;
+        case 'ུ':
+          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ü'
+          else                                    return 'u'; break;
+        case 'ོ':
+          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ö'
+          else                                    return 'o'; break;
+        default:
+          if      (this.dreldraAiOrSuffixIsSaDa())          return 'é';
+          else if (this.suffix && this.suffix.match(/[ནཎ]/)) return 'e';
+          else                                              return 'a'; break;
+      }
+    },
     getSuffix: function() {
       switch(this.suffix) {
         case 'ག': return 'k'; break;
@@ -250,8 +226,32 @@ var Syllable = function(syllable) {
         default: return '';
       }
     },
-    transliterate: function() {
-      return this.consonant() + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU()
+    dreldraAiOrSuffixIsSaDa: function() {
+      return this.dreldraAi() || (this.suffix && this.suffix.match(/[སད]/));
+    },
+    dreldraAiOrSuffixIsLaSaDaNa: function() {
+      return this.dreldraAi() || (this.suffix && this.suffix.match(/[ལསདནཎ]/));
+    },
+    daoWa: function() {
+      return this.syllable.match(/^དབ[ྱ]?[ིེོུ]?[ངསགརལདའབ]?[ིས]?$/);
+    },
+    dreldraAi: function() {
+      return this.syllable.match(/འི$/);
+    },
+    endingO: function() {
+      return (this.syllable.length > 2 && this.syllable.match(/འོ$/)) ? '-o' : '';
+    },
+    endingU: function() {
+      return (this.syllable.length > 2 && this.syllable.match(/འུ$/)) ? '-u' : '';
+    },
+    rata: function() {
+      return this.subscribed == 'ྲ';
+    },
+    yata: function() {
+      return this.subscribed == 'ྱ';
+    },
+    lata: function() {
+      return this.subscribed == 'ླ';
     }
   });
 }
