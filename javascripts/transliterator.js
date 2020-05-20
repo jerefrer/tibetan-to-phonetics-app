@@ -6,7 +6,8 @@ var Transliterator = function(tibetan) {
       this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
       this.tibetan = this.tibetan.replace(/[ཿ ]+/g, '་').replace(/་+/g, '་');
     },
-    findLongestException: function(syllable, restOfSyllables) {
+    findLongestException: function(syllable) {
+      var restOfSyllables = this.syllables;
       if (!restOfSyllables.length)
         return findException(syllable);
       else {
@@ -41,6 +42,32 @@ var Transliterator = function(tibetan) {
       var that = this;
       _(numberOfShifts).times(function() { that.syllables.shift(); });
     },
+    handleSecondSyllable: function(firstTransliteration) {
+      var secondSyllable = this.syllables.shift();
+      if (secondSyllable) {
+        var spaceBefore = false;
+        var secondTransliteration;
+        var secondException = this.findLongestException(secondSyllable, this.syllables);
+        if (secondException) {
+          this.shiftSyllables(secondException.numberOfShifts);
+          secondTransliteration = secondException.transliterated;
+        } else {
+          if      (secondSyllable == 'བ')   { secondTransliteration = 'wa'; spaceBefore = true; }
+          else if (secondSyllable == 'བར')  { secondTransliteration = 'war'; spaceBefore = true; }
+          else if (secondSyllable == 'བས')  { secondTransliteration = 'wé'; spaceBefore = true; }
+          else if (secondSyllable == 'བའི') { secondTransliteration = 'wé'; spaceBefore = true; }
+          else                               secondTransliteration = new Syllable(secondSyllable).transliterate();
+        }
+        if (firstTransliteration) {
+          firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
+          firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
+          if (spaceBefore) this.line = this.line.trim() + ' ';
+          this.line += firstTransliteration;
+        }
+        this.line += secondTransliteration + ' ';
+        return true;
+      }
+    },
     transliterate: function() {
       var syllablesCount = 0;
       this.removeUntranscribedPunctuation();
@@ -50,50 +77,15 @@ var Transliterator = function(tibetan) {
         if (exception) {
           this.line += exception.transliterated;
           if (exception.numberOfSyllables == 1) {
-            secondSyllable = this.syllables.shift();
-            if (secondSyllable) {
-              var secondException = this.findLongestException(secondSyllable, this.syllables);
-              if (secondException) {
-                if (exception.spaceAfter) this.line += ' ';
-                this.line += secondException.transliterated + ' ';
-                this.shiftSyllables(secondException.numberOfShifts);
-              } else {
-                if      (secondSyllable == 'བ')   { secondTransliteration = 'wa'; spaceBefore = true; }
-                else if (secondSyllable == 'བར')  { secondTransliteration = 'war'; spaceBefore = true; }
-                else if (secondSyllable == 'བས')  { secondTransliteration = 'wé'; spaceBefore = true; }
-                else if (secondSyllable == 'བའི') { secondTransliteration = 'wé'; spaceBefore = true; }
-                else                             secondTransliteration = new Syllable(secondSyllable).transliterate();
-                if (exception.spaceAfter) this.line += ' ';
-                this.line += secondTransliteration + ' ';
-              }
-            }
+            if (exception.spaceAfter) this.line += ' ';
+            this.handleSecondSyllable();
           } else
             this.line = this.line + ' ';
           this.shiftSyllables(exception.numberOfShifts);
         } else {
-          secondSyllable = this.syllables.shift();
           firstTransliteration = new Syllable(syllable).transliterate();
-          if (secondSyllable) {
-            var secondTransliteration;
-            var exception = this.findLongestException(secondSyllable, this.syllables);
-            if (exception) {
-              this.line += firstTransliteration + exception.transliterated + ' ';
-              this.shiftSyllables(exception.numberOfShifts);
-            } else {
-              var spaceBefore = false;
-              if      (secondSyllable == 'བ')   { secondTransliteration = 'wa'; spaceBefore = true; }
-              else if (secondSyllable == 'བར')  { secondTransliteration = 'war'; spaceBefore = true; }
-              else if (secondSyllable == 'བས')  { secondTransliteration = 'wé'; spaceBefore = true; }
-              else if (secondSyllable == 'བའི') { secondTransliteration = 'wé'; spaceBefore = true; }
-              else                             secondTransliteration = new Syllable(secondSyllable).transliterate();
-              firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
-              firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
-              if (spaceBefore) this.line = this.line.trim() + ' ';
-              this.line += firstTransliteration + secondTransliteration + ' ';
-            }
-          } else {
-            this.line += firstTransliteration;
-          }
+          if (this.handleSecondSyllable(firstTransliteration));
+          else this.line += firstTransliteration;
         }
       }
       return this.line.trim();
