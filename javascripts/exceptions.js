@@ -1,31 +1,36 @@
+var tr = function(word) {
+  var tsheks = word.match(/་/);
+  return new Transliterator(word).transliterate().replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
+}
+
 var findException = function(tibetan) {
   var transliteration;
   var spaceAfter = false;
   switch(tibetan) {
     // Complicated spaces
-    case 'ལ་གསོལ་བ་འདེབས': transliteration = 'la sölwa dep'; break;
+    case 'ལ་གསོལ་བ་འདེབས': transliteration = 'la '+tr('གསོལ་བ')+' dep'; break;
     // Mute suffixes
     case 'བདག': transliteration = 'da'; break;
     case 'ཤོག': transliteration = 'sho'; break;
     // Links between syllables
-    case 'ཡ་མཚན': transliteration = 'yam_tsen'; break;
-    case 'གོ་འཕང': transliteration = "kom_p'ang"; break;
-    case 'ཨོ་རྒྱན': transliteration = 'or_gyen'; break;
-    case 'རྒྱ་མཚོ': transliteration = 'gyam_tso'; break;
-    case 'མཁའ་འགྲོ': transliteration = 'khan_dro'; break;
-    case 'རྗེ་འབངས': transliteration = "jem_bang"; break;
-    case 'དགེ་འདུན': transliteration = "gen_dün"; break;
-    case 'འཕྲོ་འདུ': transliteration = "tr'on_du"; break;
-    case 'མི་འགྱུར': transliteration = 'min_gyur'; break;
-    case 'རྒྱ་མཚོའི': transliteration = 'gyam_tsö'; break;
-    case 'མཆོད་རྟེན': transliteration = 'chor_ten'; break;
-    case 'སྤྲོ་བསྡུ': transliteration = 'tron_du'; break;
-    case 'འོད་མཐའ་ཡས': transliteration = 'ön_tha_yé'; break;
-    case 'རྡོ་རྗེ': transliteration = 'dor_jé'; break;
-    case 'རྡོ་རྗེར': transliteration = 'dor_jer'; break;
-    case 'རྡོ་རྗེའི': transliteration = 'dor_jé'; break;
+    case 'ཡ་མཚན': transliteration = tr('ཡམ་མཚན'); break;
+    case 'གོ་འཕང': transliteration = tr('གོམ་འཕང'); break;
+    case 'ཨོ་རྒྱན': transliteration = tr('ཨོར་རྒྱན'); break;
+    case 'རྒྱ་མཚོ': transliteration = tr('རྒྱམ་མཚོ'); break;
+    case 'མཁའ་འགྲོ': transliteration = tr('མཁའ')+'n_'+tr('འགྲོ'); break;
+    case 'རྗེ་འབངས': transliteration = tr('རྗེམ་འབངས'); break;
+    case 'དགེ་འདུན': transliteration = tr('དགེན་འདུན'); break;
+    case 'འཕྲོ་འདུ': transliteration = tr('འཕྲོ')+'n_'+tr('འདུ'); break;
+    case 'མི་འགྱུར': transliteration = tr('མིན་འགྱུར'); break;
+    case 'རྒྱ་མཚོའི': transliteration = tr('རྒྱམ་མཚོའི'); break;
+    case 'མཆོད་རྟེན': transliteration = tr('མཆོར་རྟེན'); break;
+    case 'སྤྲོ་བསྡུ': transliteration = tr('སྤྲོ')+'n_'+tr('འདུ'); break;
+    case 'འོད་མཐའ་ཡས': transliteration = tr('འོན་མཐའ་ཡས'); break;
+    case 'རྡོ་རྗེ': transliteration = tr('རྡོར་རྗེ'); break;
+    case 'རྡོ་རྗེར': transliteration = tr('རྡོར་རྗེར'); break;
+    case 'རྡོ་རྗེའི': transliteration = tr('རྡོར་རྗེ'); break;
     // Mistakes that become so common we keep them
-    case 'རབ་འབྱམས': transliteration = 'rab_jam'; break;
+    case 'རབ་འབྱམས': transliteration = tr('ར')+'b_'+tr('འབྱམས'); break;
     // Sanskrit stuff
     case 'ༀ': transliteration = 'om'; spaceAfter = true; break;
     case 'ཨཱ': transliteration = 'ah'; spaceAfter = true; break;
@@ -49,7 +54,7 @@ var findException = function(tibetan) {
     case 'བཾ་རོ': transliteration = 'pam_ro'; break;
     case 'ཤྲཱི': transliteration = 'shi_ri'; break;
     case 'གུ་རུ': transliteration = 'gu_ru'; break;
-    case 'ཨུཏྤལ': transliteration = 'ut_pal'; break;
+    case 'ཨུཏྤལ': transliteration = tr('ཨུ') + 't_' + tr('པལ'); break;
     case 'ཁ་ཊྭཾ་ག': transliteration = 'ka_tang_ka'; break;
     case 'ཨེ་མ་ཧོ': transliteration = 'é_ma_ho'; break;
     case 'གུ་རུའི': transliteration = 'gu_rü'; break;

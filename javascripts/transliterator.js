@@ -43,6 +43,7 @@ var Transliterator = function(tibetan) {
         if (firstTransliteration) {
           firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
           firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
+          firstTransliteration = this.addDoubleSIfNecesary(firstTransliteration, secondTransliteration);
           if (spaceBefore) this.line = this.line.trim() + ' ';
           this.line += firstTransliteration;
         }
@@ -76,6 +77,12 @@ var Transliterator = function(tibetan) {
     mergeDuplicateConnectingLettersWithPreviousSyllable: function(firstSyllable, secondSyllable) {
       if (firstSyllable.last() == secondSyllable.first())
         return firstSyllable = firstSyllable.slice(0, firstSyllable.length-1);
+      else
+        return firstSyllable;
+    },
+    addDoubleSIfNecesary: function(firstSyllable, secondSyllable) {
+      if (Settings.get('doubleS') && secondSyllable[0] == 's' && secondSyllable[1] != 'h' && !(firstSyllable.last().match(/[gk]/)))
+        return firstSyllable + 's';
       else
         return firstSyllable;
     },
@@ -119,22 +126,23 @@ var Syllable = function(syllable) {
         case 'ག':
           if      (this.superscribed || this.prefix) {
             if      (this.rata())                    return 'dr';
-            else if (this.yata())                    return 'gy';
-            else                                     return  'g';
+            else if (this.yata())                    return t('gy');
+            else if (this.getVowel() == 'o')         return 'g' // For french 'gong' and not 'guong'
+            else                                     return t('g');
           }
           else if (this.rata())                      return 'tr';
           else if (this.yata())                      return 'ky';
           else                                       return  'k'; break;
         case 'ཁ':
-          if      (this.rata())                      return "tr'";
+          if      (this.rata())                      return t("tr'");
           else if (this.yata())                      return 'khy';
           else                                       return  'kh'; break;
         case 'ང':                                    return  'ng'; break;
-        case 'ཅ':                                    return  'ch'; break;
-        case 'ཆ':                                    return  'ch'; break;
+        case 'ཅ':                                    return  t('c'); break;
+        case 'ཆ':                                    return  t('ch'); break;
         case 'ཇ':
-          if      (this.superscribed || this.prefix) return  'j';
-          else                                       return  'ch'; break;
+          if      (this.superscribed || this.prefix) return  t('j');
+          else                                       return  t('ch'); break;
         case 'ཉ':                                    return 'ny'; break;
         case 'ཏ':
           if      (this.rata())                      return 'tr';
@@ -147,37 +155,37 @@ var Syllable = function(syllable) {
           else if (this.rata())                      return 'tr';
           else                                       return 't'; break;
         case 'ཐ':
-          if      (this.rata())                      return "tr'";
-          else                                       return  'th'; break;
+          if      (this.rata())                      return t("tr'");
+          else                                       return t('th'); break;
         case 'ན':                                    return  'n'; break;
         case 'པ':
           if      (this.rata())                      return 'tr';
-          else if (this.yata())                      return 'ch';
+          else if (this.yata())                      return t('ch');
           else                                       return  'p'; break;
         case 'བ':
           if      (this.superscribed || this.prefix) {
             if      (this.rata())                    return 'dr';
-            else if (this.yata())                    return  'j';
+            else if (this.yata())                    return  t('j');
             else                                     return  'b';
           }
           else if (this.rata())                      return 'tr';
-          else if (this.yata())                      return 'ch';
+          else if (this.yata())                      return t('ch');
           else if (this.dreldraAi())                 return  'w';
           else if (!this.suffix &&
                   (!this.vowel || this.vowel == 'ོ'))return  'w';
           else                                       return  'p'; break;
         case 'ཕ':
-          if      (this.rata())                      return "tr'";
-          else if (this.yata())                      return 'ch';
-          else                                       return "p'"; break;
+          if      (this.rata())                      return t("tr'");
+          else if (this.yata())                      return t('ch');
+          else                                       return t('ph'); break;
         case 'མ':
           if     (this.yata())                       return 'ny';
           else                                       return  'm'; break;
-        case 'ཙ':
-        case 'ཚ':                                    return 'ts'; break;
+        case 'ཙ':                                    return 'ts'; break;
+        case 'ཚ':                                    return t('tsh'); break;
         case 'ཛ':                                    return 'dz'; break;
         case 'ཝ':                                    return  'w'; break;
-        case 'ཞ':                                    return 'zh'; break;
+        case 'ཞ':                                    return t('zh'); break;
         case 'ཟ':
           if     (this.superscribed || this.prefix)  return  'z';
           else                                       return  's'; break;
@@ -185,7 +193,7 @@ var Syllable = function(syllable) {
         case 'ཡ':                                    return  'y'; break;
         case 'ར':                                    return  'r'; break;
         case 'ལ':                                    return  'l'; break;
-        case 'ཤ':                                    return 'sh'; break;
+        case 'ཤ':                                    return t('sh'); break;
         case 'ས':                                    return  's'; break;
         case 'ཧ':
           if      (this.superscribed == 'ལ')         return 'lh';
@@ -202,10 +210,10 @@ var Syllable = function(syllable) {
           else if (this.suffix && this.suffix.match(/[གབལང]/)) return 'e';
           else                                                return 'é'; break;
         case 'ུ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ü'
-          else                                    return 'u'; break;
+          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ü')
+          else                                    return t('u'); break;
         case 'ོ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return 'ö'
+          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ö')
           else                                    return 'o'; break;
         default:
           if      (this.dreldraAiOrSuffixIsSaDa())          return 'é';
@@ -242,7 +250,7 @@ var Syllable = function(syllable) {
       return (this.syllable.length > 2 && this.syllable.match(/འོ$/)) ? '-o' : '';
     },
     endingU: function() {
-      return (this.syllable.length > 2 && this.syllable.match(/འུ$/)) ? '-u' : '';
+      return (this.syllable.length > 2 && this.syllable.match(/འུ$/)) ? '-' + t('u') : '';
     },
     rata: function() {
       return this.subscribed == 'ྲ';

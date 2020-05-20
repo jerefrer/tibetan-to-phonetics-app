@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Tibetan Transliterator</title>
+  <title>Tibetan Transliterator: Tests</title>
   <link rel="stylesheet" href="vendor/stylesheets/semantic.min.css">
   <link rel="stylesheet" href="stylesheets/tests.css">
   <link rel="stylesheet" href="stylesheets/scrollbar.css">
@@ -14,6 +14,7 @@
   <script src="vendor/javascripts/underscore.min.js"></script>
   <script src="vendor/javascripts/vue.js"></script>
   <script src="vendor/javascripts/diff.js"></script>
+  <script src="javascripts/settings.js"></script>
   <script src="javascripts/parser.js"></script>
   <script src="javascripts/exceptions.js"></script>
   <script src="javascripts/transliterator.js"></script>
@@ -35,6 +36,8 @@
   <script src="tests/texts/three-kayas.js"></script>
   <script src="tests/texts/lineage-prayers.js"></script>
   <script src="tests/texts/prayer-in-seven-chapters.js"></script>
+  <script src="tests/languages/french/three-kayas.js"></script>
+  <script src="tests/languages/french/trashi-gyepa.js"></script>
   <script>
     $(function() {
       Vue.component('test-diff', {
@@ -144,28 +147,34 @@
         el: '#main',
         data: function() {
           var passedCount = 0;
-          var percentagePassed = 0;
-          var percentageTotal = 0;
+          var textsPassed = 0;
+          var textsTotal = 0;
           var ranTests = testGroups.map(function(testGroup) {
             testGroup.tests.each(function(test) {
               test.runTest = function() {
+                if (testGroup.language) Settings.change(testGroup.language)
+                else                    Settings.default();
                 this.transliterated = new Transliterator(this.tibetan).transliterate();
                 return this.transliterated == this.transliteration;
               }
               test.pass = test.runTest();
               if (test.pass) passedCount++;
               if (testGroup.includeInPercentage) {
-                if (test.pass) percentagePassed++;
-                percentageTotal++;
+                if (test.pass) textsPassed++;
+                textsTotal++;
               }
             })
             return testGroup;
           });
+          var total = _(testGroups).pluck('tests').flatten().length;
           return {
             tests: ranTests,
             passedCount: passedCount,
-            percentage:  Math.round(percentagePassed / percentageTotal * 100),
-            total: _(testGroups).pluck('tests').flatten().length
+            total: total,
+            textsPassed: textsPassed,
+            textsTotal: textsTotal,
+            percentage: passedCount / total * 100,
+            percentageTexts: textsPassed / textsTotal * 100,
           };
         },
         computed: {
@@ -181,11 +190,12 @@
               <thead>
                 <tr>
                   <td class="ui inverted header">
-                    Total: <span v-bind:style="style">{{passedCount}}/{{total}}</span>
-                  </td>
-                  <td class="ui inverted header" colspan="3" style="font-size: 1em">
-                    Percentage of excerpts:
-                    <span v-bind:style="style">{{percentage}}%</span>
+                    Total: <span v-bind:style="style">{{percentage.toPrecision(3)}}% ({{passedCount}}/{{total}})</span>
+                    <span v-if="passedCount != total">
+                       —
+                      Texts only:
+                      <span v-bind:style="style">{{percentageTexts.toPrecision(3)}}% ({{textsPassed}}/{{textsTotal}})</span>
+                    </span>
                   </td>
                 </tr>
               </thead>

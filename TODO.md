@@ -1,6 +1,7 @@
 # TODO
 
 ## Features
+* Add a little documentation on how to define exceptions
 * Add tests for all the latest special cases:
   * aFollowedByN
   * oFollowedByN
@@ -12,6 +13,7 @@
 * Use dictionary?
 
 ## Questions to Tibetan savants
+* བྱ་ == ཅ་ or ཆ་ ?
 * John Rockwell's suffixes a.1 ན
   * Do we replace 'n' with 'm' before པ་ཕ་བ་མ་ ? (rimpoche, gompa)
 * John Rockwell's suffixes a.2 ག
@@ -29,22 +31,27 @@
   * Ba?
 
 ## Questions about style
+* ཆ་ : cha? ch'a?
 * What to do when two syllables share the same letter: དག་གིས་
   * Do we merge it? taki
   * Or join with a dash? tak-ki
+
+## Questions about Padmakara's style
+* Are the rules for eéè okay?
+* What's the rule with ཤ and ཞ? (Sha/zha? Both sha? Then how do we differentiate? And in French?)
+* བསླབ་ == l**h**ap?
+* French: ལྷ་: lha? l'a?
+
+## Special cases
 * jiktral? jigdrel?
 * rapjam? rabjam?
 * ngakwang
 * སྣང་སྲིད་ཟིལ་གནོན་ : silnön? zilnön?
 * བཅུ་གསུམ་ : chuksum? chusum?
-* ཚེ་དཔག་མེད : tsepakme? tsepame?
-
-## Questions about Padmakara's style
-* Are the rules for eéè okay?
-* What's the rule with ཤ and ཞ? (Sha/zha? Both sha? Then how do we differentiate?)
-* བསླབ་ == l**h**ap?
-
-## Special cases
+* ཚེ་དཔག་མེད་ : tsepakme? tsepame?
+* སྐྱེ་འགགས་ : kyengak? kyégak?
+* མཆོད་རྟེན་ : chöten? chorten?
+* མགོན་པོ་ : gönpo? gompo? gonpo?
 * འཕགས་མཆོག་ == pachok? p'achok? p'akchok?
 
 ## Differences between Kham and Lhasa dialects
