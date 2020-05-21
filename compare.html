@@ -1,0 +1,199 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Tibetan Transliterator</title>
+  <link rel="shortcut icon" href="favicon.png">
+  <link rel="stylesheet" href="vendor/stylesheets/semantic.min.css">
+  <link rel="stylesheet" href="stylesheets/layout.css">
+  <link rel="stylesheet" href="stylesheets/compare.css">
+  <link rel="stylesheet" href="stylesheets/scrollbar.css">
+  <script src="vendor/javascripts/howler.min.js"></script>
+  <script src="vendor/javascripts/jquery-3.2.0.min.js"></script>
+  <script src="vendor/javascripts/jquery.autosize.js"></script>
+  <script src="vendor/javascripts/clipboard.min.js"></script>
+  <script src="vendor/javascripts/moment.js"></script>
+  <script src="vendor/javascripts/semantic.min.js"></script>
+  <script src="vendor/javascripts/sugar.js"></script>
+  <script src="vendor/javascripts/underscore.min.js"></script>
+  <script src="vendor/javascripts/vue.js"></script>
+  <script src="vendor/javascripts/diff.js"></script>
+  <script src="javascripts/vue/tibetan-input.js"></script>
+  <script src="javascripts/vue/language-menu.js"></script>
+  <script src="javascripts/vue/clipboard-button.js"></script>
+  <script src="javascripts/vue/tibetan-input.js"></script>
+  <script src="javascripts/settings.js"></script>
+  <script src="javascripts/parser.js"></script>
+  <script src="javascripts/exceptions.js"></script>
+  <script src="javascripts/transliterator.js"></script>
+  <script>
+    var app;
+    $(function() {
+      Vue.component('transliteration-input', {
+        props: ['value'],
+        template: `
+          <div class="ui form" style="position: relative;">
+            <div v-if="!value" id="tibetan-placeholder" v-on:click="selectTextarea">
+              Input the transliteration here...
+            </div>
+            <textarea
+              v-bind:value="value"
+              v-on:input="$emit('input', $event.target.value)"
+              spellcheck="false"
+              id="transliteration"
+            ></textarea>
+          </div>
+        `
+      });
+      Vue.component('transliterated-lines', {
+        props: {
+          expectedTransliteration: String,
+          language: String,
+          lines: Array
+        },
+        methods: {
+          expectedLines: function() {
+            return this.expectedTransliteration.split("\n");
+          },
+          emitClickPart: function(result) {
+            this.$emit('click-part', result);
+          }
+        },
+        computed: {
+          transliteratedLines: function() {
+            var that = this;
+            Settings.change(this.language);
+            return this.lines.map(function(line, index) {
+              return {
+                expected: that.expectedLines()[index],
+                actual: new Transliterator(line).transliterate()
+              }
+            });
+          },
+        },
+        template: `
+          <div id="transliterated">
+            <test-diff
+              class="line"
+              v-for="(line, index) in transliteratedLines"
+              v-bind:key="index"
+              v-bind:lineIndex="index"
+              v-bind:expected="line.expected"
+              v-bind:actual="line.actual"
+              v-on:click-part="emitClickPart($event)"
+            ></test-diff>
+          </div>
+        `
+      })
+      Vue.component('test-diff', {
+        props: {
+          lineIndex: Number,
+          expected: String,
+          actual: String
+        },
+        computed: {
+          parts: function() {
+            return JsDiff.diffChars(this.expected, this.actual);
+          }
+        },
+        methods: {
+          emitClickPart: function(clickedPart, clickedPartIndex) {
+            var parts = this.parts;
+            var updatedLine = '';
+            _(parts).each(function(part, index) {
+              if (clickedPart == parts[index-1] && part.added) updatedLine += part.value;
+              else if (clickedPart == part && part.added) updatedLine += part.value;
+              else {
+                if (part.removed && !(clickedPart == part) && !(clickedPart == parts[index+1] && parts[index+1].added)) updatedLine += part.value;
+                if (!part.removed && !part.added) updatedLine += part.value;
+              }
+            });
+            this.$emit('click-part', {
+              lineIndex: this.lineIndex,
+              updatedLine: updatedLine
+            });
+          }
+        },
+        template: `
+          <div>
+            <span
+              v-for="(part, partIndex) in parts"
+              v-on:click="(part.added || part.removed) && emitClickPart(part, partIndex)"
+              v-bind:style="[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']"
+              >{{part.added || part.removed ? part.value.replace(/ /, '_') : part.value}}</span>
+          </div>
+        `
+      })
+      app = new Vue({
+        el: '#main',
+        data: {
+          selectedLanguage: localStorage['transliterator.language'] || Settings.defaultLanguage,
+          transliteration: `
+            kunzang dorssem garap chiri seng
+            padma kara djembang nyichou nga
+            sossour noupnyak terteun guiatsa sok
+            kater lama namla seulwa dep
+            okmin tch'eukyi yingkyi p'otrang né
+            tussoum sanguié kunkyi ngowo nyi
+            rangsem tch'eukour ngeunssoum teundzé pa
+            tsawé lamé shapla seulwa dep
+          `.replace(/^[ ]*/gm, '').trim(),
+          tibetan: `
+            ཀུན་བཟང་རྡོར་སེམས་དགའ་རབ་ཤྲཱི་སེང་༔
+            པདྨ་ཀ་རཱ་རྗེ་འབངས་ཉི་ཤུ་ལྔ༔
+            སོ་ཟུར་གནུབས་གཉགས་གཏེར་སྟོན་བརྒྱ་རྩ་སོགས༔
+            བཀའ་གཏེར་བླ་མ་རྣམས་ལ་གསོལ་བ་འདེབས༔
+            འོག་མིན་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཕོ་བྲང་ནས།
+            དུས་གསུམ་སངས་རྒྱས་ཀུན་གྱི་ངོ་བོ་ཉིད།
+            རང་སེམས་ཆོས་སྐུར་མངོན་སུམ་སྟོན་མཛད་པ།
+            རྩ་བའི་བླ་མའི་ཞབས་ལ་གསོལ་བ་འདེབས།།
+          `.replace(/ /g, '').trim()
+        },
+        computed: {
+          lines: function() {
+            return this.tibetan ? this.tibetan.split("\n") : [];
+          }
+        },
+        methods: {
+          correctSource: function(result) {
+            var lines = this.transliteration.split("\n");
+            lines[result.lineIndex] = result.updatedLine;
+            this.transliteration = lines.join("\n");
+          }
+        },
+        template: `
+          <div class="ui container compare">
+            <language-menu v-model="selectedLanguage"></language-menu>
+            <div id="scrollable-area-container">
+              <div id="scrollable-area">
+                <tibetan-input v-model="tibetan"></tibetan-input>
+                <transliteration-input v-model="transliteration"></transliteration-input>
+                <transliterated-lines
+                  v-bind:lines="lines"
+                  v-bind:expectedTransliteration="transliteration"
+                  v-bind:language="selectedLanguage"
+                  v-on:click-part="correctSource($event)"
+                ></transliterated-lines>
+              </div>
+            </div>
+          </div>
+        `
+      })
+    })
+  </script>
+  <style>
+  </style>
+  <body>
+    <div id="main" class="ui container"></div>
+    <div class="ui page dimmer" id="please-input-tibetan">
+      <div class="content">
+        <div class="center">
+          <h2 class="ui inverted icon header">
+            <i class="warning sign icon"></i>
+            Woops
+            <div class="sub header">Please input Tibetan characters only</div>
+          </h2>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

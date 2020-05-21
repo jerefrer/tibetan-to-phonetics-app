@@ -1,0 +1,33 @@
+.compare.ui.container {
+  width: 94vw;
+}
+
+.compare .form,
+.compare #transliterated {
+  display: inline-block;
+  width: 32.27%;
+  margin-right: 1%;
+  vertical-align: top;
+}
+
+.compare #transliteration,
+.compare #transliterated {
+  font-family: monospace;
+}
+
+.compare #transliterated {
+  margin-right: 0;
+  padding: 15px 30px;
+  background: #222;
+  border-radius: 4px;
+}
+
+.compare #transliteration,
+.compare #transliterated .line {
+  font-size: 14px !important;
+  line-height: 36px;
+}
+
+.compare #transliterated span[style] {
+  cursor: pointer;
+}

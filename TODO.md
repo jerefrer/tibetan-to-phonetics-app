@@ -41,6 +41,7 @@
 * What's the rule with ཤ and ཞ? (Sha/zha? Both sha? Then how do we differentiate? And in French?)
 * བསླབ་ == l**h**ap?
 * French: ལྷ་: lha? l'a?
+* French: Decide when to use doubleS
 
 ## Special cases
 * jiktral? jigdrel?

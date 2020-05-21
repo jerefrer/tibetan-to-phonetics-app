@@ -65,7 +65,7 @@ var Transliterator = function(tibetan) {
       }
     },
     connectWithDashIfNecessary: function(firstSyllable, secondSyllable) {
-      var twoVowels = this.isVowel(firstSyllable.last()) && this.isVowel(secondSyllable.first());
+      var twoVowels = this.endsWithVowel(firstSyllable) && this.startsWithVowel(secondSyllable);
       var aFollowedByN = firstSyllable.last() == 'a' && secondSyllable.first() == 'n';
       var oFollowedByN = firstSyllable.last() == 'o' && secondSyllable.first() == 'n';
       var gFollowedByN = firstSyllable.last() == 'g' && secondSyllable.first() == 'n';
@@ -81,7 +81,8 @@ var Transliterator = function(tibetan) {
         return firstSyllable;
     },
     addDoubleSIfNecesary: function(firstSyllable, secondSyllable) {
-      if (Settings.get('doubleS') && secondSyllable[0] == 's' && secondSyllable[1] != 'h' && !(firstSyllable.last().match(/[gk]/)))
+      //if (Settings.get('doubleS') && secondSyllable.match(/^s[^h]/) && (this.endsWithVowel(firstSyllable) || firstSyllable.last() == 'n'))
+      if (Settings.get('doubleS') && secondSyllable.match(/^s[^h]/) && !(firstSyllable.last().match(/[gk]/)))
         return firstSyllable + 's';
       else
         return firstSyllable;
@@ -94,8 +95,11 @@ var Transliterator = function(tibetan) {
       this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
       this.tibetan = this.tibetan.replace(/[ཿ ]+/g, '་').replace(/་+/g, '་');
     },
-    isVowel: function(char) {
-      return char.match(/[aeiouéiöü]/);
+    startsWithVowel: function(string) {
+      return string.match(/^[eo]?[aeiouéiöü]/);
+    },
+    endsWithVowel: function(string) {
+      return string.match(/[eo]?[aeiouéiöü]$/);
     }
   }
 }
@@ -127,6 +131,7 @@ var Syllable = function(syllable) {
           if      (this.superscribed || this.prefix) {
             if      (this.rata())                    return 'dr';
             else if (this.yata())                    return t('gy');
+            else if (this.getVowel() == 'a')         return 'g' // For french 'gage' and not 'guage'
             else if (this.getVowel() == 'o')         return 'g' // For french 'gong' and not 'guong'
             else                                     return t('g');
           }

@@ -41,7 +41,7 @@ var Settings = {
     return this.settings[key];
   },
   change: function(language) {
-    this.language = language;
+    this.language = localStorage['transliterator.language'] = language;
     this.settings = settingsPerLanguage[language];
   },
   default: function() {
@@ -49,6 +49,9 @@ var Settings = {
   },
   isDefault: function() {
     return this.language == this.defaultLanguage;
+  },
+  languages: function() {
+    return _(settingsPerLanguage).keys();
   }
 }
 
