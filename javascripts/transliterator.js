@@ -34,10 +34,10 @@ var Transliterator = function(tibetan) {
           this.shiftSyllables(secondException.numberOfShifts);
           secondTransliteration = secondException.transliterated;
         } else {
-          if      (secondSyllable == 'བ')   { secondTransliteration = 'wa'; spaceBefore = true; }
-          else if (secondSyllable == 'བར')  { secondTransliteration = 'war'; spaceBefore = true; }
-          else if (secondSyllable == 'བས')  { secondTransliteration = 'wé'; spaceBefore = true; }
-          else if (secondSyllable == 'བའི') { secondTransliteration = 'wé'; spaceBefore = true; }
+          if      (secondSyllable == 'བ')   { secondTransliteration = t('wa') + t('a'); spaceBefore = true; }
+          else if (secondSyllable == 'བར')  { secondTransliteration = t('wa') + t('a') + t('rSuffix'); spaceBefore = true; }
+          else if (secondSyllable == 'བས')  { secondTransliteration = t('wa') + t('dreldraAi'); spaceBefore = true; }
+          else if (secondSyllable == 'བའི') { secondTransliteration = t('wa') + t('dreldraAi'); spaceBefore = true; }
           else                               secondTransliteration = new Syllable(secondSyllable).transliterate();
         }
         if (firstTransliteration) {
@@ -114,128 +114,131 @@ var Syllable = function(syllable) {
     },
     consonant: function() {
       if (this.lata()) {
-        if (this.main == 'ཟ')                        return  'd';
-        else                                         return  'l';
+        if (this.main == 'ཟ')                        return t('lataDa');
+        else                                         return t('lata');
       }
       if (this.daoWa()) {
-        if      (this.yata())                        return  'y';
-        else if (this.vowel)                         return   '';
-        else                                         return  'w';
+        if      (this.yata())                        return t('daoWaYata');
+        else if (this.vowel)                         return '';
+        else                                         return t('wa');
       }
       switch(this.main) {
         case 'ཀ':
-          if      (this.rata())                      return 'tr';
-          else if (this.yata())                      return 'ky';
-          else                                       return  'k'; break;
+          if      (this.rata())                      return t('rata1');
+          else if (this.yata())                      return t('kaYata');
+          else                                       return t('ka'); break;
         case 'ག':
           if      (this.superscribed || this.prefix) {
-            if      (this.rata())                    return 'dr';
-            else if (this.yata())                    return t('gy');
-            else if (this.getVowel() == 'a')         return 'g' // For french 'gage' and not 'guage'
-            else if (this.getVowel() == 'o')         return 'g' // For french 'gong' and not 'guong'
-            else                                     return t('g');
+            if      (this.rata())                    return t('rata3Mod');
+            else if (this.yata())                    return t('gaModYata');
+            else if (t('gaMod') == 'gu') {                         // Exceptions for french & spanish
+              if      (this.getVowel() == 'a')       return 'g';   // 'gage' and not 'guage'
+              else if (this.getVowel() == 'o')       return 'g';   // 'gong' and not 'guong'
+              else if (this.getVowel() == 'u')       return 'g';   // 'guru' and not 'guuru'
+            }
+            return t('gaMod');
           }
-          else if (this.rata())                      return 'tr';
-          else if (this.yata())                      return 'ky';
-          else                                       return  'k'; break;
+          else if (this.rata())                      return t('rata3');
+          else if (this.yata())                      return t('gaYata');
+          else                                       return t('ga'); break;
         case 'ཁ':
-          if      (this.rata())                      return t("tr'");
-          else if (this.yata())                      return 'khy';
-          else                                       return  'kh'; break;
-        case 'ང':                                    return  'ng'; break;
-        case 'ཅ':                                    return  t('c'); break;
-        case 'ཆ':                                    return  t('ch'); break;
+          if      (this.rata())                      return t("rata2");
+          else if (this.yata())                      return t('khaYata');
+          else                                       return t('kha'); break;
+        case 'ང':                                    return t('nga'); break;
+        case 'ཅ':                                    return t('ca'); break;
+        case 'ཆ':                                    return t('cha'); break;
         case 'ཇ':
-          if      (this.superscribed || this.prefix) return  t('j');
-          else                                       return  t('ch'); break;
-        case 'ཉ':                                    return 'ny'; break;
+          if      (this.superscribed || this.prefix) return t('jaMod');
+          else                                       return t('ja'); break;
+        case 'ཉ':                                    return t('nya'); break;
         case 'ཏ':
-          if      (this.rata())                      return 'tr';
-          else                                       return  't'; break;
+          if      (this.rata())                      return t('rata1');
+          else                                       return t('ta'); break;
         case 'ད':
           if      (this.superscribed || this.prefix) {
-            if      (this.rata())                    return 'dr';
-            else                                     return  'd';
+            if      (this.rata())                    return t('rata3Mod');
+            else                                     return t('daMod');
           }
-          else if (this.rata())                      return 'tr';
-          else                                       return 't'; break;
+          else if (this.rata())                      return t('rata3');
+          else                                       return t('da'); break;
         case 'ཐ':
-          if      (this.rata())                      return t("tr'");
-          else                                       return t('th'); break;
-        case 'ན':                                    return  'n'; break;
+          if      (this.rata())                      return t('rata2');
+          else                                       return t('tha'); break;
+        case 'ན':                                    return t('na'); break;
         case 'པ':
-          if      (this.rata())                      return 'tr';
-          else if (this.yata())                      return t('ch');
-          else                                       return  'p'; break;
+          if      (this.rata())                      return t('rata1');
+          else if (this.yata())                      return t('paYata');
+          else                                       return t('pa'); break;
+        case 'ཕ':
+          if      (this.rata())                      return t('rata2');
+          else if (this.yata())                      return t('phaYata');
+          else                                       return t('pha'); break;
         case 'བ':
           if      (this.superscribed || this.prefix) {
-            if      (this.rata())                    return 'dr';
-            else if (this.yata())                    return  t('j');
-            else                                     return  'b';
+            if      (this.rata())                    return t('rata3Mod');
+            else if (this.yata())                    return t('baModYata');
+            else                                     return t('baMod');
           }
-          else if (this.rata())                      return 'tr';
-          else if (this.yata())                      return t('ch');
-          else if (this.dreldraAi())                 return  'w';
+          else if (this.rata())                      return t('rata3');
+          else if (this.yata())                      return t('baYata');
+          else if (this.dreldraAi())                 return t('wa');
           else if (!this.suffix &&
-                  (!this.vowel || this.vowel == 'ོ'))return  'w';
-          else                                       return  'p'; break;
-        case 'ཕ':
-          if      (this.rata())                      return t("tr'");
-          else if (this.yata())                      return t('ch');
-          else                                       return t('ph'); break;
+                  (!this.vowel || this.vowel == 'ོ'))return t('wa');
+          else                                       return t('ba'); break;
         case 'མ':
-          if     (this.yata())                       return 'ny';
-          else                                       return  'm'; break;
-        case 'ཙ':                                    return 'ts'; break;
-        case 'ཚ':                                    return t('tsh'); break;
-        case 'ཛ':                                    return 'dz'; break;
-        case 'ཝ':                                    return  'w'; break;
-        case 'ཞ':                                    return t('zh'); break;
+          if     (this.yata())                       return t('nya');
+          else                                       return t('ma'); break;
+        case 'ཙ':                                    return t('tsa'); break;
+        case 'ཚ':                                    return t('tsha'); break;
+        case 'ཛ':                                    return t('dza'); break;
+        case 'ཝ':                                    return t('wa'); break;
+        case 'ཞ':                                    return t('zha'); break;
         case 'ཟ':
-          if     (this.superscribed || this.prefix)  return  'z';
-          else                                       return  's'; break;
+          if     (this.superscribed || this.prefix)  return t('zaMod');
+          else                                       return t('za'); break;
         case 'འ':                                    return  ''; break;
-        case 'ཡ':                                    return  'y'; break;
-        case 'ར':                                    return  'r'; break;
-        case 'ལ':                                    return  'l'; break;
-        case 'ཤ':                                    return t('sh'); break;
-        case 'ས':                                    return  's'; break;
+        case 'ཡ':                                    return t('ya'); break;
+        case 'ར':                                    return t('ra'); break;
+        case 'ལ':                                    return t('la'); break;
+        case 'ཤ':                                    return t('sha'); break;
+        case 'ས':                                    return t('sa'); break;
         case 'ཧ':
-          if      (this.superscribed == 'ལ')         return 'lh';
-          if      (this.rata())                      return 'hr';
-          else                                       return  'h'; break;
-        case 'ཨ':                                    return  ''; break;
+          if      (this.superscribed == 'ལ')         return t('lha');
+          if      (this.rata())                      return t('hra');
+          else                                       return t('ha'); break;
+        case 'ཨ':                                    return ''; break;
       }
     },
     getVowel: function() {
       switch(this.vowel) {
-        case 'ི': return 'i'; break;
+        case 'ི': return t('i'); break;
         case 'ེ':
-          if      (this.suffix && this.suffix.match(/[མནཎར]/)) return 'e';
-          else if (this.suffix && this.suffix.match(/[གབལང]/)) return 'e';
-          else                                                return 'é'; break;
+          if      (this.suffix && this.suffix.match(/[མནཎར]/)) return t('drengbuMaNaRa');
+          else if (this.suffix && this.suffix.match(/[གབལང]/)) return t('drengbuGaBaLaNga');
+          else                                                return t('drengbu'); break;
         case 'ུ':
           if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ü')
           else                                    return t('u'); break;
         case 'ོ':
           if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ö')
-          else                                    return 'o'; break;
+          else                                    return t('o'); break;
         default:
-          if      (this.dreldraAiOrSuffixIsSaDa())          return 'é';
-          else if (this.suffix && this.suffix.match(/[ནཎ]/)) return 'e';
-          else                                              return 'a'; break;
+          if      (this.dreldraAiOrSuffixIsSaDa())           return t('dreldraAi');
+          else if (this.suffix && this.suffix.match(/[ནཎ]/)) return t('aNa');
+          else                                              return t('a'); break;
       }
     },
     getSuffix: function() {
       switch(this.suffix) {
-        case 'ག': return 'k'; break;
-        case 'ང': return 'ng'; break;
-        case 'ན': return 'n'; break;
-        case 'ཎ': return 'n'; break;
-        case 'བ': return (this.daoWa()) ? '' : 'p'; break;
-        case 'མ': return 'm'; break;
-        case 'ར': return 'r'; break;
-        case 'ལ': return 'l'; break;
+        case 'ག': return t('kSuffix'); break;
+        case 'ང': return t('ngSuffix'); break;
+        case 'ན': return t('nSuffix'); break;
+        case 'ཎ': return t('nSuffix'); break;
+        case 'བ': return (this.daoWa()) ? '' : t('pSuffix'); break;
+        case 'མ': return t('mSuffix'); break;
+        case 'ར': return t('rSuffix'); break;
+        case 'ལ': return t('lSuffix'); break;
         default: return '';
       }
     },
@@ -252,7 +255,7 @@ var Syllable = function(syllable) {
       return this.syllable.match(/འི$/);
     },
     endingO: function() {
-      return (this.syllable.length > 2 && this.syllable.match(/འོ$/)) ? '-o' : '';
+      return (this.syllable.length > 2 && this.syllable.match(/འོ$/)) ? '-' + t('o') : '';
     },
     endingU: function() {
       return (this.syllable.length > 2 && this.syllable.match(/འུ$/)) ? '-' + t('u') : '';

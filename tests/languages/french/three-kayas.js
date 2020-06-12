@@ -1,6 +1,6 @@
 testGroups.push({
   name: 'French — Prayer of the Three Kayas',
-  language: 'french',
+  language: 'french (strict)',
   includeInPercentage: true,
   sentences: true,
   tests: [
@@ -14,7 +14,7 @@ testGroups.push({
     { tibetan: 'སྐུ་གསུང་ཐུགས་དང་ཡོན་ཏན་ཕྲིན་ལས་ཀྱི༔ ', transliteration: "koussoung t'ouktang yeunten t'rinlé kyi" },
     { tibetan: 'ཡེ་ཤེས་ལྔ་ལྡན་བདེ་བར་གཤེགས་པའི་སྐུ༔ ', transliteration: "yéché ngaden déwar chekpé kou" },
     { tibetan: 'ཐུགས་རྗེའི་བྱེ་བྲག་སྣ་ཚོགས་སོ་སོར་སྟོན༔ ', transliteration: "t'oukdjé tch'étrak nats'ok sossor teun" },
-    { tibetan: 'བླ་མ་ལོངས་སྤྱོད་རྫོགས་སྐུ་ལ་གསོལ་བ་འདེབས༔ ', transliteration: "lama longtch'eu dzokou la seulwa dep" },
+    { tibetan: 'བླ་མ་ལོངས་སྤྱོད་རྫོགས་སྐུ་ལ་གསོལ་བ་འདེབས༔ ', transliteration: "lama longtcheu dzokou la seulwa dep" },
     { tibetan: 'ཨོ་རྒྱན་པདྨ་འབྱུང་གནས་ལ་གསོལ་བ་འདེབས༔ ', transliteration: "orguien padma djoung-né la seulwa dep" },
     { tibetan: 'མི་མཇེད་འཇིག་རྟེན་དག་པའི་ཞིང་ཁམས་སུ༔ ', transliteration: "midjé djikten takpé shingkham sou" },
     { tibetan: 'ཐུགས་རྗེ་ཆེན་པོས་འགྲོ་བའི་དོན་ལ་བྱོན༔ ', transliteration: "t'oukdjé tch'enpeu drowé teunla tch'eun" },

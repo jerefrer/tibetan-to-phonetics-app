@@ -1,6 +1,6 @@
 testGroups.push({
   name: 'French — Trashi Gyepa',
-  language: 'french',
+  language: 'french (strict)',
   includeInPercentage: true,
   sentences: true,
   tests: [
@@ -18,7 +18,7 @@ testGroups.push({
     { tibetan: 'མཚན་ཙམ་ཐོས་པས་བཀྲ་ཤིས་དཔལ་འཕེལ་བ། །', transliteration: "ts'entsam t'eupé trachi palp'el wa" },
     { tibetan: 'བདེ་བར་གཤེགས་པ་བརྒྱད་ལ་ཕྱག་འཚལ་ལོ། །', transliteration: "déwar chekpa guiéla tch'akts'al lo" },
     { tibetan: 'འཇམ་དཔལ་གཞོན་ནུ་དཔལ་ལྡན་རྡོ་རྗེ་འཛིན། །', transliteration: "djampal sheunou palden dordjé dzin" },
-    { tibetan: 'སྤྱན་རས་གཟིགས་དབང་མགོན་པོ་བྱམས་པའི་དཔལ། །', transliteration: "tch'enré zikwang gueunpo tch'ampé pal" },
+    { tibetan: 'སྤྱན་རས་གཟིགས་དབང་མགོན་པོ་བྱམས་པའི་དཔལ། །', transliteration: "tchenré zikwang gueunpo tch'ampé pal" },
     { tibetan: 'ས་ཡི་སྙིང་པོ་སྒྲིབ་པ་རྣམ་པར་སེལ། །', transliteration: "sayi nyingpo dripa nampar sel" },
     { tibetan: 'ནམ་མཁའི་སྙིང་པོ་འཕགས་མཆོག་ཀུན་ཏུ་བཟང་། །', transliteration: "namkhé nyingpo p'aktch'ok kuntou zang" },
     { tibetan: 'ཨུཏྤལ་རྡོ་རྗེ་པད་དཀར་ཀླུ་ཤིང་དང་། །', transliteration: "outpal dordjé pékar louching tang" },

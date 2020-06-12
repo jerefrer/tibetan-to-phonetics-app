@@ -21,10 +21,15 @@
   <script src="javascripts/vue/language-menu.js"></script>
   <script src="javascripts/vue/clipboard-button.js"></script>
   <script src="javascripts/vue/tibetan-input.js"></script>
+  <script src="javascripts/settings-var.js"></script>
+  <script src="settings/english-loose.js"></script>
+  <script src="settings/english-strict.js"></script>
+  <script src="settings/french-strict.js"></script>
   <script src="javascripts/settings.js"></script>
   <script src="javascripts/parser.js"></script>
   <script src="javascripts/exceptions.js"></script>
   <script src="javascripts/transliterator.js"></script>
+  <script src="javascripts/utils.js"></script>
   <script>
     var app;
     $(function() {
@@ -32,7 +37,7 @@
         props: ['value'],
         template: `
           <div class="ui form" style="position: relative;">
-            <div v-if="!value" id="tibetan-placeholder" v-on:click="selectTextarea">
+            <div v-if="!value" id="tibetan-placeholder">
               Input the transliteration here...
             </div>
             <textarea
@@ -42,7 +47,20 @@
               id="transliteration"
             ></textarea>
           </div>
-        `
+        `,
+        mounted: function() {
+          var that = this;
+          $('#transliteration').autosize();
+          $('#transliteration').on('paste', function(event) {
+            event.preventDefault();
+            var pastedData = event.originalEvent.clipboardData.getData('text/plain');
+            that.$emit('paste', extractTransliteration(pastedData));
+            setTimeout(function() {
+              //$('#transliteration').trigger('input');
+              updateHeight();
+            }, 100)
+          });
+        }
       });
       Vue.component('transliterated-lines', {
         props: {
@@ -65,7 +83,7 @@
             return this.lines.map(function(line, index) {
               return {
                 expected: that.expectedLines()[index],
-                actual: new Transliterator(line).transliterate()
+                actual: new Transliterator(line).transliterate().capitalize()
               }
             });
           },
@@ -128,24 +146,46 @@
         data: {
           selectedLanguage: localStorage['transliterator.language'] || Settings.defaultLanguage,
           transliteration: `
-            kunzang dorssem garap chiri seng
-            padma kara djembang nyichou nga
-            sossour noupnyak terteun guiatsa sok
-            kater lama namla seulwa dep
-            okmin tch'eukyi yingkyi p'otrang né
-            tussoum sanguié kunkyi ngowo nyi
-            rangsem tch'eukour ngeunssoum teundzé pa
-            tsawé lamé shapla seulwa dep
+            Lüpa mépar gukpar nüma
+            Chatsal gyachin mélha tsangpa
+            Lung lha natsok wangchuk chöma
+            Jungpo rolang triza namtang
+            Nöjin tsokyi düné töma
+            Chatsal trat’ché chatang phet’kyi
+            Paröl trülkhor raptu jomma
+            Yekum yönkyang shapkyi nenté
+            Mébar trukpa shintu barma
+            Chatsal turé jikpa chénpö
+            Dükyi pawo nampar jomma
+            Chukyé shalni tro nyér dendzé
+            Drawo tamché malü söma
+            Chatsal könchok sumtsön chakgyé
+            Sormö tukar nampar gyenma
+            Malü chokyi khorlö gyenpé
+            Rangki ökyi tsoknam trukma
+            Chatsal raptu gawa jipé
+            U-gyen ökyi tréngwa pélma
           `.replace(/^[ ]*/gm, '').trim(),
           tibetan: `
-            ཀུན་བཟང་རྡོར་སེམས་དགའ་རབ་ཤྲཱི་སེང་༔
-            པདྨ་ཀ་རཱ་རྗེ་འབངས་ཉི་ཤུ་ལྔ༔
-            སོ་ཟུར་གནུབས་གཉགས་གཏེར་སྟོན་བརྒྱ་རྩ་སོགས༔
-            བཀའ་གཏེར་བླ་མ་རྣམས་ལ་གསོལ་བ་འདེབས༔
-            འོག་མིན་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཕོ་བྲང་ནས།
-            དུས་གསུམ་སངས་རྒྱས་ཀུན་གྱི་ངོ་བོ་ཉིད།
-            རང་སེམས་ཆོས་སྐུར་མངོན་སུམ་སྟོན་མཛད་པ།
-            རྩ་བའི་བླ་མའི་ཞབས་ལ་གསོལ་བ་འདེབས།།
+            ལུས་པ་མེད་པར་འགུགས་པར་ནུས་མ། །
+            ཕྱག་འཚལ་བརྒྱ་བྱིན་མེ་ལྷ་ཚངས་པ། །
+            རླུང་ལྷ་སྣ་ཚོགས་དབང་ཕྱུག་མཆོད་མ། །
+            འབྱུང་པོ་རོ་ལངས་དྲི་ཟ་རྣམས་དང་། །
+            གནོད་སྦྱིན་ཚོགས་ཀྱིས་མདུན་ནས་བསྟོད་མ། །
+            ཕྱག་འཚལ་ཏྲཊ་ཅེས་བྱ་དང་ཕཊ་ཀྱིས། །
+            ཕ་རོལ་འཁྲུལ་འཁོར་རབ་ཏུ་འཇོམས་མ། །
+            གཡས་བསྐུམ་གཡོན་བརྐྱང་ཞབས་ཀྱིས་མནན་ཏེ། །
+            མེ་འབར་འཁྲུག་པ་ཤིན་ཏུ་འབར་མ། །
+            ཕྱག་འཚལ་ཏུ་རེ་འཇིགས་པ་ཆེན་པོས། །
+            བདུད་ཀྱི་དཔའ་བོ་རྣམ་པར་འཇོམས་མ། །
+            ཆུ་སྐྱེས་ཞལ་ནི་ཁྲོ་གཉེར་ལྡན་མཛད། །
+            དགྲ་བོ་ཐམས་ཅད་མ་ལུས་གསོད་མ། །
+            ཕྱག་འཚལ་དཀོན་མཆོག་གསུམ་མཚོན་ཕྱག་རྒྱའི། །
+            སོར་མོས་ཐུགས་ཀར་རྣམ་པར་བརྒྱན་མ། །
+            མ་ལུས་ཕྱོགས་ཀྱི་འཁོར་ལོས་བརྒྱན་པའི། །
+            རང་གི་འོད་ཀྱི་ཚོགས་རྣམས་འཁྲུག་མ། །
+            ཕྱག་འཚལ་རབ་ཏུ་དགའ་བ་བརྗིད་པའི། །
+            དབུ་རྒྱན་འོད་ཀྱི་ཕྲེང་བ་སྤེལ་མ། །
           `.replace(/ /g, '').trim()
         },
         computed: {
@@ -166,7 +206,9 @@
             <div id="scrollable-area-container">
               <div id="scrollable-area">
                 <tibetan-input v-model="tibetan"></tibetan-input>
-                <transliteration-input v-model="transliteration"></transliteration-input>
+                <transliteration-input
+                  v-model="transliteration"
+                  v-on:paste="transliteration = $event"></transliteration-input>
                 <transliterated-lines
                   v-bind:lines="lines"
                   v-bind:expectedTransliteration="transliteration"

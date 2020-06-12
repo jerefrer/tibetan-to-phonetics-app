@@ -1,0 +1,3 @@
+settingsPerLanguage['english (strict)'] = {
+
+}

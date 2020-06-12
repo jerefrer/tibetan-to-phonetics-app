@@ -36,11 +36,3 @@ Vue.component('tibetan-input', {
   mounted: function() { updateHeight() },
   updated: function() { updateHeight() }
 });
-var updateHeight = function() {
-  $('#tibetan').autosize();
-  setTimeout(function() {
-    var height = $('textarea.tibetan').css('height');
-    $('#transliteration').css('height', height);
-    $('#transliterated').css('height', height);
-  }, 0)
-}

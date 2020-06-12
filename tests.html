@@ -2,6 +2,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Tibetan Transliterator: Tests</title>
+  <link rel="shortcut icon" href="favicon.png">
   <link rel="stylesheet" href="vendor/stylesheets/semantic.min.css">
   <link rel="stylesheet" href="stylesheets/tests.css">
   <link rel="stylesheet" href="stylesheets/scrollbar.css">
@@ -14,6 +15,12 @@
   <script src="vendor/javascripts/underscore.min.js"></script>
   <script src="vendor/javascripts/vue.js"></script>
   <script src="vendor/javascripts/diff.js"></script>
+  <script src="javascripts/settings-var.js"></script>
+  <script src="settings/original.js"></script>
+  <script src="settings/english-strict.js"></script>
+  <script src="settings/english-loose.js"></script>
+  <script src="settings/french-strict.js"></script>
+  <script src="settings/spanish.js"></script>
   <script src="javascripts/settings.js"></script>
   <script src="javascripts/parser.js"></script>
   <script src="javascripts/exceptions.js"></script>
@@ -38,6 +45,8 @@
   <script src="tests/texts/prayer-in-seven-chapters.js"></script>
   <script src="tests/languages/french/three-kayas.js"></script>
   <script src="tests/languages/french/trashi-gyepa.js"></script>
+  <script src="tests/languages/spanish/shower-of-blessings-lineage-prayer.js"></script>
+  <script src="tests/languages/spanish/shower-of-blessings-visualization.js"></script>
   <script>
     $(function() {
       Vue.component('test-diff', {

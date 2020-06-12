@@ -1,0 +1,2 @@
+var settingsPerLanguage = {};
+var exceptionsPerLanguage = {};
