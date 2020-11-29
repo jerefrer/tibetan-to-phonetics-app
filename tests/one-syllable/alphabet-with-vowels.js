@@ -20,7 +20,7 @@ testGroups.push({
     { tibetan: 'གོ', transliteration: 'ko'},
 
     { tibetan: 'ང',  transliteration: 'nga'},
-    { tibetan: 'ངི་', transliteration: 'ngi'},
+    { tibetan: 'ངི', transliteration: 'ngi'},
     { tibetan: 'ངུ', transliteration: 'ngu'},
     { tibetan: 'ངེ', transliteration: 'ngé'},
     { tibetan: 'ངོ', transliteration: 'ngo'},
