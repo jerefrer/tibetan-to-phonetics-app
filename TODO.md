@@ -12,6 +12,10 @@
 * Try to handle all suffixes for exceptions (པདྨའི, པདྨས, ...)
 * Use dictionary?
 
+## Leads for a "proper" implementation
+* There definitely is existing tools and ways to parse, define and transliterate languages
+* See the "morphology" files in GoldenDict that define prefixes, suffixes and so on.
+
 ## Questions to Tibetan savants
 * བྱ་ == ཅ་ or ཆ་ ?
 * John Rockwell's suffixes a.1 ན
