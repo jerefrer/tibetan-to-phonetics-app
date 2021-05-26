@@ -3,25 +3,31 @@ var Transliterator = function(tibetan) {
     tibetan: tibetan,
     line: '',
     transliterate: function() {
+      var syllable;
       var syllablesCount = 0;
       this.removeUntranscribedPunctuation();
-      this.syllables = this.tibetan.split('་');
-      while (syllable = this.syllables.shift()) {
-        var exception = this.findLongestException(syllable, this.syllables);
-        if (exception) {
-          this.line += exception.transliterated;
-          if (exception.numberOfSyllables == 1) {
-            if (exception.spaceAfter) this.line += ' ';
-            this.handleSecondSyllable();
-          } else
-            this.line = this.line + ' ';
-          this.shiftSyllables(exception.numberOfShifts);
-        } else {
-          firstTransliteration = new Syllable(syllable).transliterate();
-          if (this.handleSecondSyllable(firstTransliteration));
-          else this.line += firstTransliteration;
+      var groups = this.tibetan.split(' ');
+      groups.each((group, index) => {
+        this.syllables = group.trim().split('་');
+        while (syllable = this.syllables.shift()) {
+          var exception = this.findLongestException(syllable, this.syllables);
+          if (exception) {
+            this.line += exception.transliterated;
+            if (exception.numberOfSyllables == 1) {
+              if (exception.spaceAfter) this.line += ' ';
+              this.handleSecondSyllable();
+            } else
+              this.line += ' ';
+            this.shiftSyllables(exception.numberOfShifts);
+          } else {
+            var firstTransliteration = new Syllable(syllable).transliterate();
+            if (this.handleSecondSyllable(firstTransliteration));
+            else this.line += firstTransliteration;
+          }
         }
-      }
+        if (this.line.last() != ' ' && index < groups.length - 1)
+          this.line += ' ';
+      });
       return this.line.trim();
     },
     handleSecondSyllable: function(firstTransliteration) {
@@ -35,9 +41,11 @@ var Transliterator = function(tibetan) {
           secondTransliteration = secondException.transliterated;
         } else {
           if      (secondSyllable == 'བ')   { secondTransliteration = t('wa') + t('a'); spaceBefore = true; }
-          else if (secondSyllable == 'བར')  { secondTransliteration = t('wa') + t('a') + t('rSuffix'); spaceBefore = true; }
+          else if (secondSyllable == 'བར')  { secondTransliteration = t('wa') + t('a') + t('raSuffix'); spaceBefore = true; }
           else if (secondSyllable == 'བས')  { secondTransliteration = t('wa') + t('dreldraAi'); spaceBefore = true; }
           else if (secondSyllable == 'བའི') { secondTransliteration = t('wa') + t('dreldraAi'); spaceBefore = true; }
+          else if (secondSyllable == 'བོས')  { secondTransliteration = t('wa') + t('ö'); spaceBefore = true; }
+          else if (secondSyllable == 'བུས')  { secondTransliteration = t('wa') + t('ü'); spaceBefore = true; }
           else                               secondTransliteration = new Syllable(secondSyllable).transliterate();
         }
         if (firstTransliteration) {
@@ -58,7 +66,7 @@ var Transliterator = function(tibetan) {
       else {
         var exception;
         (restOfSyllables.length).downto(0, function(index) {
-          subset = [syllable].add(restOfSyllables.slice(0, index));
+          var subset = [syllable].add(restOfSyllables.slice(0, index));
           if (!exception) exception = findException(subset.join('་'));
         })
         return exception;
@@ -93,7 +101,7 @@ var Transliterator = function(tibetan) {
     },
     removeUntranscribedPunctuation: function() {
       this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
-      this.tibetan = this.tibetan.replace(/[ཿ ]+/g, '་').replace(/་+/g, '་');
+      this.tibetan = this.tibetan.replace(/ཿ/g, '་').replace(/་+/g, '་');
     },
     startsWithVowel: function(string) {
       return string.match(/^[eo]?[aeiouéiöü]/);
@@ -153,6 +161,7 @@ var Syllable = function(syllable) {
           else                                       return t('ja'); break;
         case 'ཉ':                                    return t('nya'); break;
         case 'ཏ':
+        case 'ཊ':
           if      (this.rata())                      return t('rata1');
           else                                       return t('ta'); break;
         case 'ད':
@@ -162,6 +171,13 @@ var Syllable = function(syllable) {
           }
           else if (this.rata())                      return t('rata3');
           else                                       return t('da'); break;
+        case 'ཌ': // Experimental, default case based on པཎ་ཌི་ for pandita, check if other cases are correct and/or useful
+          if      (this.superscribed || this.prefix) {
+            if      (this.rata())                    return t('rata3Mod');
+            else                                     return t('daMod');
+          }
+          else if (this.rata())                      return t('rata3');
+          else                                       return t('daMod'); break;
         case 'ཐ':
           if      (this.rata())                      return t('rata2');
           else                                       return t('tha'); break;
@@ -224,25 +240,27 @@ var Syllable = function(syllable) {
           if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ö')
           else                                    return t('o'); break;
         default:
-          if      (this.dreldraAiOrSuffixIsSaDa())           return t('dreldraAi');
+          if      (this.dreldraAi())                         return t('dreldraAi');
+          else if (this.suffix && this.suffix.match(/[སད]/)) return t('drengbu');
           else if (this.suffix && this.suffix.match(/[ནཎ]/)) return t('aNa');
-          else                                              return t('a'); break;
+          else if (this.suffix && this.suffix == 'ལ')        return t('aLa');
+          else                                               return t('a'); break;
       }
     },
     getSuffix: function() {
       switch(this.suffix) {
-        case 'ག': return t('kSuffix'); break;
-        case 'ང': return t('ngSuffix'); break;
-        case 'ན': return t('nSuffix'); break;
-        case 'ཎ': return t('nSuffix'); break;
-        case 'བ': return (this.daoWa()) ? '' : t('pSuffix'); break;
-        case 'མ': return t('mSuffix'); break;
-        case 'ར': return t('rSuffix'); break;
-        case 'ལ': return t('lSuffix'); break;
+        case 'ག': return t('kaSuffix'); break;
+        case 'ང': return t('ngaSuffix'); break;
+        case 'ན': return t('naSuffix'); break;
+        case 'ཎ': return t('naSuffix'); break;
+        case 'བ': return (this.daoWa()) ? '' : t('baSuffix'); break;
+        case 'མ': return t('maSuffix'); break;
+        case 'ར': return t('raSuffix'); break;
+        case 'ལ': return t('laSuffix'); break;
         default: return '';
       }
     },
-    dreldraAiOrSuffixIsSaDa: function() {
+    suffixIsSaDa: function() {
       return this.dreldraAi() || (this.suffix && this.suffix.match(/[སད]/));
     },
     dreldraAiOrSuffixIsLaSaDaNa: function() {
@@ -255,10 +273,13 @@ var Syllable = function(syllable) {
       return this.syllable.match(/འི$/);
     },
     endingO: function() {
-      return (this.syllable.length > 2 && this.syllable.match(/འོ$/)) ? '-' + t('o') : '';
+      return this.endingCharIfMatches(t('o'), /འོ$/);
     },
     endingU: function() {
-      return (this.syllable.length > 2 && this.syllable.match(/འུ$/)) ? '-' + t('u') : '';
+      return this.endingCharIfMatches(t('u'), /འུ$/);
+    },
+    endingCharIfMatches: function(char, regex) {
+      return (this.syllable.length > 2 && this.syllable.match(regex)) ? t('endLinkChar') + char : '';
     },
     rata: function() {
       return this.subscribed == 'ྲ';

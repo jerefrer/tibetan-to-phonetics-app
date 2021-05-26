@@ -1,0 +1,25 @@
+testGroups.push({
+  name: 'Bois-Bas Preferences',
+  language: 'english (bois-bas)',
+  includeInPercentage: true,
+  tests: [
+    { tibetan: 'རྒྱལ', transliteration: "gyel" },
+    { tibetan: 'ཤ', transliteration: "sha" },
+    { tibetan: 'ཞ', transliteration: "sha" },
+    { tibetan: 'གྲོལ', transliteration: "dröl" },
+    { tibetan: 'བྲོལ', transliteration: "dröl" },
+    { tibetan: 'དྲོལ', transliteration: "dröl" },
+    { tibetan: 'དུས', transliteration: "dü" },
+    { tibetan: 'ག', transliteration: "ga" },
+    { tibetan: 'ཇ', transliteration: "ja" },
+    { tibetan: 'ད', transliteration: "da" },
+    { tibetan: 'ཁ', transliteration: "kha" },
+    { tibetan: 'ཕ', transliteration: "pa" },
+    { tibetan: 'ཐ', transliteration: "tha" },
+    { tibetan: 'ཚ', transliteration: "tsa" },
+    { tibetan: 'རྒྱས', transliteration: "gyé" },
+    { tibetan: 'པའི', transliteration: "pa'i" },
+    { tibetan: 'པའོ', transliteration: "pa'o" },
+    { tibetan: 'བེའུ', transliteration: "bé'u" },
+  ]
+});

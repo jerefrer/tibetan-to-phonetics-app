@@ -4,9 +4,9 @@ testGroups.push({
   includeInPercentage: true,
   sentences: true,
   tests: [
-    { tibetan: 'ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', transliteration: "émaho treutral tch'eukyi yingkyi shingkham sou" },
+    { tibetan: 'ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', transliteration: "émaho treutrel tch'eukyi yingkyi shingkham sou" },
     { tibetan: 'ཆོས་ཉིད་དུས་གསུམ་སྐྱེ་འགགས་མེད་པའི་ངང་༔ ', transliteration: "tch'eunyi tussoum kyégak mépé ngang" },
-    { tibetan: 'བྱ་བྲལ་ལྷུན་རྫོགས་བདེ་བ་ཆེན་པོའི་སྐུ༔ ', transliteration: "tch'atral lhundzok déwa tch'enpeu kou" },
+    { tibetan: 'བྱ་བྲལ་ལྷུན་རྫོགས་བདེ་བ་ཆེན་པོའི་སྐུ༔ ', transliteration: "tch'atrel lhundzok déwa tch'enpeu kou" },
     { tibetan: 'ནམ་མཁའ་བཞིན་དུ་ཐུགས་རྗེ་ཕྱོགས་རིས་མེད༔ ', transliteration: "namkha shintou t'oukdjé tch'okri mé" },
     { tibetan: 'བླ་མ་ཆོས་ཀྱི་སྐུ་ལ་གསོལ་བ་འདེབས༔ ', transliteration: "lama tch'eukyi koula seulwa dep" },
     { tibetan: 'ཨོ་རྒྱན་པདྨ་འབྱུང་གནས་ལ་གསོལ་བ་འདེབས༔ ', transliteration: "orguien padma djoung-né la seulwa dep" },

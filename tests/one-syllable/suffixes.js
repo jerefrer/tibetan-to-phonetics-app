@@ -5,18 +5,19 @@ testGroups.push({
     { tibetan: 'པད', transliteration: 'pé' },
     { tibetan: 'རྒྱད', transliteration: 'gyé' },
     { tibetan: 'པས', transliteration: 'pé' },
+    { tibetan: 'པོས', transliteration: 'pö' },
     { tibetan: 'རྒྱས', transliteration: 'gyé' },
 
-    // na: ümlaut & pronounced & nazalasies
+    // na: ümlaut & pronounced & nasalazies
     { tibetan: 'པན', transliteration: 'pen' },
     { tibetan: 'རྒྱན', transliteration: 'gyen' },
 
-    // la: ümlauts all vowels but a & pronounced & softens
-    { tibetan: 'པལ', transliteration: 'pal' },
-    { tibetan: 'རྒྱལ', transliteration: 'gyal' },
+    // la: ümlauts & pronounced & softens
+    { tibetan: 'པལ', transliteration: 'pel' },
+    { tibetan: 'རྒྱལ', transliteration: 'gyel' },
     { tibetan: 'རྒྱེལ', transliteration: 'gyel' },
 
-    // ka/pa : ümlauts & pronounced & softens
+    // ka/pa : pronounced & softens
     { tibetan: 'ལག', transliteration: 'lak' },
     { tibetan: 'ལེག', transliteration: 'lek' },
     { tibetan: 'འཕགས', transliteration: "p'ak" },
@@ -24,18 +25,18 @@ testGroups.push({
     { tibetan: 'ལེབ', transliteration: "lep" },
     { tibetan: 'གྲུབ', transliteration: "trup" },
 
-    // nga/ma: ümlauts & pronounced & softens
+    // nga/ma: pronounced & softens
     { tibetan: 'ཁང', transliteration: 'khang' },
     { tibetan: 'ཆུང', transliteration: 'chung' },
     { tibetan: 'མཉམ', transliteration: 'nyam' },
     { tibetan: 'ལམ', transliteration: 'lam' },
     { tibetan: 'སྟེང', transliteration: 'teng' },
 
-    // ra: ümlauts & pronounced
+    // ra: pronounced
     { tibetan: 'མར', transliteration: 'mar' },
     { tibetan: 'ཐར', transliteration: 'thar' },
 
-    // ': ümlauts & not pronounced
+    // ': not pronounced
     { tibetan: 'བཀའ', transliteration: 'ka' },
     { tibetan: 'བགའ', transliteration: 'ga' },
 
@@ -53,7 +54,7 @@ testGroups.push({
     { tibetan: 'བགེའོ', transliteration: 'gé-o' },
     { tibetan: 'བགོའོ', transliteration: 'go-o' },
 
-    // 'u for certain words?
+    // 'u for specific words
     { tibetan: 'བེའུ', transliteration: 'pé-u' },
     { tibetan: 'མིའུ', transliteration: 'mi-u' },
     { tibetan: 'ཀུའུ', transliteration: 'ku-u' },

@@ -1,6 +1,12 @@
 # TODO
 
 ## Features
+* Find a way to handle variants of exceptions, for instance:
+    མཁའ་འགྲོ => མཁའn_འགྲོ doesn't handle མཁའ་འགྲོའི
+* Handle long a + syllable, for instance in ཝཱ་རཱ་ཧཱི༔
+* Add dash before nga more often (for instance yum-ngé)
+  * Maybe always before vowels, for instance ལུས་ངག་ lü-ngak
+
 * Add a little documentation on how to define exceptions
 * Add tests for all the latest special cases:
   * aFollowedByN
@@ -13,10 +19,13 @@
 * Use dictionary?
 
 ## Leads for a "proper" implementation
-* There definitely is existing tools and ways to parse, define and transliterate languages
+* There are definitely existing tools and ways to parse, define and transliterate languages
 * See the "morphology" files in GoldenDict that define prefixes, suffixes and so on.
 
 ## Questions to Tibetan savants
+* In 'Translating Buddhism':
+  གི and གྱི because they are merely particles—are naturally unstressed syllables.
+  They are, therefore. pronounced gi and gyi. respectively.
 * བྱ་ == ཅ་ or ཆ་ ?
 * John Rockwell's suffixes a.1 ན
   * Do we replace 'n' with 'm' before པ་ཕ་བ་མ་ ? (rimpoche, gompa)
@@ -39,6 +48,8 @@
 * What to do when two syllables share the same letter: དག་གིས་
   * Do we merge it? taki
   * Or join with a dash? tak-ki
+  * What about completion particles, like ཅན་ནོ : cheno or chen-no?
+  => Seems to be safer and better to join with a dash every time, then one can simplify when reviewing, instead of the other way around
 
 ## Questions about Padmakara's style
 * Are the rules for eéè okay?
@@ -48,6 +59,16 @@
 * French: Decide when to use doubleS
 
 ## Special cases
+* རྱ
+* དྷ
+* བྷ
+* བ་སྤུ = papu? bapu? wapu?
+* འབྲས་བུ = drePu not dreWu (remember to handle འབྲས་བུའི as well)
+* mangs == mang || gné ? (clue: mang' is pronounced nga (Translating Buddhism p.283))
+* སེང་གེ : sengé
+* Add hypen between k and ng for better readability? (ex: Suk-ngu)
+* Add hypen before vowel alone? (ex: rang-ö)
+* མན་ངག་ comes as mengak, not men-ngak, why?
 * jiktral? jigdrel?
 * rapjam? rabjam?
 * ngakwang

@@ -19,7 +19,7 @@ testGroups.push({
     { tibetan: 'དསྦྱ',  transliteration:  'ja'},
     { tibetan: 'དསྨྱ',  transliteration: 'nya'},
     // === A few of them mixed with vowels
-    { tibetan: 'དསཀྱོ',  transliteration: 'kyo'},
+    { tibetan: 'དསྐྱོ',  transliteration: 'kyo'},
     { tibetan: 'དསྒྱོ',  transliteration: 'gyo'},
     { tibetan: 'དསྦྱེ',  transliteration:  'jé'},
 
@@ -47,7 +47,7 @@ testGroups.push({
     // === A few of them mixed with vowels
     { tibetan: 'དརྟྲི',  transliteration: 'tri'},
     { tibetan: 'དརྡྲི',  transliteration: 'dri'},
-    { tibetan: 'སྦྲེ',  transliteration: 'dré'},
+    { tibetan: 'དསྦྲེ',  transliteration: 'dré'},
     { tibetan: 'དསྒྲོ',  transliteration: 'dro'}
   ]
 })

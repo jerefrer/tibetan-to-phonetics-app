@@ -19,7 +19,7 @@ testGroups.push({
     { tibetan: 'སྦྱ',  transliteration:  'ja'},
     { tibetan: 'སྨྱ',  transliteration: 'nya'},
     // === A few of them mixed with vowels
-    { tibetan: 'སཀྱོ',  transliteration: 'kyo'},
+    { tibetan: 'སྐྱོ',  transliteration: 'kyo'},
     { tibetan: 'སྒྱོ',  transliteration: 'gyo'},
     { tibetan: 'སྦྱེ',  transliteration:  'jé'},
 

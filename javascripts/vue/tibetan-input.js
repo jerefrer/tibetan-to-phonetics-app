@@ -1,4 +1,3 @@
-
 Vue.component('tibetan-input', {
   props: ['value'],
   methods: {

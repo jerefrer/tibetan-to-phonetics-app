@@ -3,9 +3,9 @@ testGroups.push({
   includeInPercentage: true,
   sentences: true,
   tests: [
-    { tibetan: 'ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', transliteration: "émaho trötral chökyi yingkyi zhingkham su" },
+    { tibetan: 'ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', transliteration: "émaho trötrel chökyi yingkyi zhingkham su" },
     { tibetan: 'ཆོས་ཉིད་དུས་གསུམ་སྐྱེ་འགགས་མེད་པའི་ངང་༔ ', transliteration: "chönyi tüsum kyégak mépé ngang" },
-    { tibetan: 'བྱ་བྲལ་ལྷུན་རྫོགས་བདེ་བ་ཆེན་པོའི་སྐུ༔ ', transliteration: "chatral lhündzok déwa chenpö ku" },
+    { tibetan: 'བྱ་བྲལ་ལྷུན་རྫོགས་བདེ་བ་ཆེན་པོའི་སྐུ༔ ', transliteration: "chatrel lhündzok déwa chenpö ku" },
     { tibetan: 'ནམ་མཁའ་བཞིན་དུ་ཐུགས་རྗེ་ཕྱོགས་རིས་མེད༔ ', transliteration: "namkha zhintu thukjé chokri mé" },
     { tibetan: 'བླ་མ་ཆོས་ཀྱི་སྐུ་ལ་གསོལ་བ་འདེབས༔ ', transliteration: "lama chökyi kula sölwa dep" },
     { tibetan: 'ཨོ་རྒྱན་པདྨ་འབྱུང་གནས་ལ་གསོལ་བ་འདེབས༔ ', transliteration: "orgyen padma jung-né la sölwa dep" },

@@ -13,6 +13,7 @@
   <script src="vendor/javascripts/clipboard.min.js"></script>
   <script src="vendor/javascripts/moment.js"></script>
   <script src="vendor/javascripts/semantic.min.js"></script>
+  <script src="vendor/javascripts/storage.js"></script>
   <script src="vendor/javascripts/sugar.js"></script>
   <script src="vendor/javascripts/underscore.min.js"></script>
   <script src="vendor/javascripts/vue.js"></script>
@@ -22,15 +23,43 @@
   <script src="javascripts/vue/clipboard-button.js"></script>
   <script src="javascripts/vue/tibetan-input.js"></script>
   <script src="javascripts/settings-var.js"></script>
-  <script src="settings/english-loose.js"></script>
+  <script src="settings/original.js"></script>
   <script src="settings/english-strict.js"></script>
+  <script src="settings/english-loose.js"></script>
+  <script src="settings/english-bois-bas.js"></script>
   <script src="settings/french-strict.js"></script>
-  <script src="javascripts/settings.js"></script>
-  <script src="javascripts/parser.js"></script>
-  <script src="javascripts/exceptions.js"></script>
-  <script src="javascripts/transliterator.js"></script>
-  <script src="javascripts/utils.js"></script>
+  <script src="settings/spanish.js"></script>
+  <script src="settings/exceptions.js"></script>
+  <script src="javascripts/settings-dist.js"></script>
+  <script src="javascripts/exceptions-dist.js"></script>
+  <script src="javascripts/parser-dist.js"></script>
+  <script src="javascripts/transliterator-dist.js"></script>
   <script>
+    var updateHeight = function() {
+      var all = ['#tibetan', '#transliteration', '#transliterated'];
+      $(all.join(',')).css('height', 'auto').autosize();
+      var highest = all.max(function(element) { return $(element).height() });
+      var others = all.exclude(highest);
+      $(highest).autosize();
+      setTimeout(function() {
+        var height = $(highest).css('height');
+        _(others).each(function(element) {
+          $(element).css('height', height)
+        })
+      }, 0)
+    }
+
+    var extractTransliteration = function(text) {
+      var lines = text.split("\n");
+      var transliterationLines = [];
+      _(lines).each(function(line) {
+        if (line.match(/^[A-Z][ ]*\d*$/)) return; // Page number
+        if (line.match(/[ÂĀÊĒÎĪÔŌṐÛŪâāêēîīôōûūf1-9\,\;\.\:\!\?\*\_\(\)]/)) return; // Translation line
+        transliterationLines.push(line);
+      })
+      return transliterationLines.join("\n");
+    }
+
     var app;
     $(function() {
       Vue.component('transliteration-input', {
@@ -144,8 +173,8 @@
       app = new Vue({
         el: '#main',
         data: {
-          selectedLanguage: localStorage['transliterator.language'] || Settings.defaultLanguage,
-          transliteration: `
+          selectedLanguage: Storage.get('language') || Settings.defaultLanguage,
+          transliteration: Storage.get('compareTransliteration') || `
             Lüpa mépar gukpar nüma
             Chatsal gyachin mélha tsangpa
             Lung lha natsok wangchuk chöma
@@ -166,7 +195,7 @@
             Chatsal raptu gawa jipé
             U-gyen ökyi tréngwa pélma
           `.replace(/^[ ]*/gm, '').trim(),
-          tibetan: `
+          tibetan: Storage.get('compareTibetan') || `
             ལུས་པ་མེད་པར་འགུགས་པར་ནུས་མ། །
             ཕྱག་འཚལ་བརྒྱ་བྱིན་མེ་ལྷ་ཚངས་པ། །
             རླུང་ལྷ་སྣ་ཚོགས་དབང་ཕྱུག་མཆོད་མ། །
@@ -187,6 +216,14 @@
             ཕྱག་འཚལ་རབ་ཏུ་དགའ་བ་བརྗིད་པའི། །
             དབུ་རྒྱན་འོད་ཀྱི་ཕྲེང་བ་སྤེལ་མ། །
           `.replace(/ /g, '').trim()
+        },
+        watch: {
+          transliteration (value) {
+            Storage.set('compareTransliteration', value);
+          },
+          tibetan (value) {
+            Storage.set('compareTibetan', value);
+          }
         },
         computed: {
           lines: function() {

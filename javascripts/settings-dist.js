@@ -1,32 +1,34 @@
+"use strict";
+
 var defaultLanguage = 'english (strict)';
 
-var defaultToOriginal = function(settings) {
+var defaultToOriginal = function defaultToOriginal(settings) {
   return _(settings).defaults(originalSettings);
-}
+};
 
 var Settings = {
   defaultLanguage: defaultLanguage,
   language: defaultLanguage,
   settings: defaultToOriginal(settingsPerLanguage[defaultLanguage]),
-  get: function(key) {
+  get: function get(key) {
     return this.settings[key];
   },
-  change: function(language) {
+  change: function change(language) {
     Storage.set('language', language);
     this.language = language;
     this.settings = defaultToOriginal(settingsPerLanguage[language]);
   },
-  default: function() {
+  "default": function _default() {
     this.change(this.defaultLanguage);
   },
-  isDefault: function() {
+  isDefault: function isDefault() {
     return this.language == this.defaultLanguage;
   },
-  languages: function() {
+  languages: function languages() {
     return _(settingsPerLanguage).keys();
   }
-}
+};
 
-var t = function(key) {
+var t = function t(key) {
   return Settings.get(key);
-}
+};
