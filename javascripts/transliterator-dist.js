@@ -1,41 +1,57 @@
 "use strict";
 
 var Transliterator = function Transliterator(tibetan) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   return {
     tibetan: tibetan,
-    line: '',
+    capitalize: options.capitalize,
     transliterate: function transliterate() {
       var _this = this;
 
-      var syllable;
-      var syllablesCount = 0;
       this.removeUntranscribedPunctuation();
       var groups = this.tibetan.split(' ');
-      groups.each(function (group, index) {
-        _this.syllables = group.trim().split('་');
+      return groups.map(function (tibetanGroup, index) {
+        var group = new Group(tibetanGroup).transliterate();
+        if (_this.capitalize) group = group.capitalize();
+        return group;
+      }).join(' ');
+    },
+    removeUntranscribedPunctuation: function removeUntranscribedPunctuation() {
+      this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
+      this.tibetan = this.tibetan.replace(/ཿ/g, '་').replace(/་+/g, '་');
+    }
+  };
+};
 
-        while (syllable = _this.syllables.shift()) {
-          var exception = _this.findLongestException(syllable, _this.syllables);
+var Group = function Group(tibetan) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return {
+    tibetan: tibetan,
+    group: '',
+    capitalize: options.capitalize,
+    transliterate: function transliterate() {
+      var syllable;
+      this.syllables = tibetan.trim().split('་');
 
-          if (exception) {
-            _this.line += exception.transliterated;
+      while (syllable = this.syllables.shift()) {
+        var exception = this.findLongestException(syllable, this.syllables);
 
-            if (exception.numberOfSyllables == 1) {
-              if (exception.spaceAfter) _this.line += ' ';
+        if (exception) {
+          this.group += exception.transliterated;
 
-              _this.handleSecondSyllable();
-            } else _this.line += ' ';
+          if (exception.numberOfSyllables == 1) {
+            if (exception.spaceAfter) this.group += ' ';
+            this.handleSecondSyllable();
+          } else this.group += ' ';
 
-            _this.shiftSyllables(exception.numberOfShifts);
-          } else {
-            var firstTransliteration = new Syllable(syllable).transliterate();
-            if (_this.handleSecondSyllable(firstTransliteration)) ;else _this.line += firstTransliteration;
-          }
+          this.shiftSyllables(exception.numberOfShifts);
+        } else {
+          var firstTransliteration = new Syllable(syllable).transliterate();
+          if (this.handleSecondSyllable(firstTransliteration)) ;else this.group += firstTransliteration;
         }
+      }
 
-        if (_this.line.last() != ' ' && index < groups.length - 1) _this.line += ' ';
-      });
-      return this.line.trim();
+      return this.group.trim();
     },
     handleSecondSyllable: function handleSecondSyllable(firstTransliteration) {
       var secondSyllable = this.syllables.shift();
@@ -74,11 +90,11 @@ var Transliterator = function Transliterator(tibetan) {
           firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
           firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
           firstTransliteration = this.addDoubleSIfNecesary(firstTransliteration, secondTransliteration);
-          if (spaceBefore) this.line = this.line.trim() + ' ';
-          this.line += firstTransliteration;
+          if (spaceBefore) this.group = this.group.trim() + ' ';
+          this.group += firstTransliteration;
         }
 
-        this.line += secondTransliteration + ' ';
+        this.group += secondTransliteration + ' ';
         return true;
       }
     },
@@ -113,10 +129,6 @@ var Transliterator = function Transliterator(tibetan) {
       _(numberOfShifts).times(function () {
         that.syllables.shift();
       });
-    },
-    removeUntranscribedPunctuation: function removeUntranscribedPunctuation() {
-      this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
-      this.tibetan = this.tibetan.replace(/ཿ/g, '་').replace(/་+/g, '་');
     },
     startsWithVowel: function startsWithVowel(string) {
       return string.match(/^[eo]?[aeiouéiöü]/);

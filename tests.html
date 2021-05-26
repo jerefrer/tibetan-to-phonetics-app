@@ -177,7 +177,9 @@
               test.runTest = function() {
                 if (testGroup.language) Settings.change(testGroup.language)
                 else                    Settings.default();
-                this.transliterated = new Transliterator(this.tibetan).transliterate();
+                this.transliterated = new Transliterator(this.tibetan, {
+                  capitalize: testGroup.capitalize
+                }).transliterate();
                 return this.transliterated == this.transliteration;
               }
               test.pass = test.runTest();

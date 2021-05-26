@@ -44,13 +44,14 @@ $(function() {
   Vue.component('transliterated-lines', {
     props: {
       language: String,
+      options: Object,
       lines: Array
     },
     computed: {
       transliteratedLines: function() {
         Settings.change(this.language);
-        return this.lines.map(function(line) {
-          return new Transliterator(line).transliterate().capitalize();
+        return this.lines.map((line) => {
+          return new Transliterator(line, this.options).transliterate();
         }).join("\n");
       },
     },
@@ -67,6 +68,7 @@ $(function() {
     el: '#main',
     data: {
       selectedLanguage: Storage.get('language') || Settings.defaultLanguage,
+      options: Storage.get('options') || { capitalize: true },
       tibetan: Storage.get('tibetan') || `
         ཧཱུྃ༔
         ཨོ་རྒྱན་ཡུལ་གྱི་ནུབ་བྱང་མཚམས༔
@@ -92,13 +94,15 @@ $(function() {
     template: `
       <div class="ui container">
         <language-menu v-model="selectedLanguage"></language-menu>
+        <options-menu v-model="options" />
         <div id="scrollable-area-container">
           <clipboard-button v-if="tibetan"></clipboard-button>
           <div id="scrollable-area">
             <tibetan-input v-model="tibetan"></tibetan-input>
             <transliterated-lines
-              v-bind:lines="lines"
-              v-bind:language="selectedLanguage"
+              :lines="lines"
+              :language="selectedLanguage"
+              :options="options"
             ></transliterated-lines>
           </div>
         </div>

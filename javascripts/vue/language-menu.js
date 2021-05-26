@@ -18,7 +18,6 @@ Vue.component('language-menu', {
     <div id="languages">
       <div
         v-for="(language, index) in languages"
-        class="inline field"
       >
         <div class="ui radio checkbox">
           <input type="radio"

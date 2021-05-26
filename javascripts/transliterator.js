@@ -1,34 +1,48 @@
-var Transliterator = function(tibetan) {
+var Transliterator = function(tibetan, options = {}) {
   return {
     tibetan: tibetan,
-    line: '',
+    capitalize: options.capitalize,
     transliterate: function() {
-      var syllable;
-      var syllablesCount = 0;
       this.removeUntranscribedPunctuation();
       var groups = this.tibetan.split(' ');
-      groups.each((group, index) => {
-        this.syllables = group.trim().split('་');
-        while (syllable = this.syllables.shift()) {
-          var exception = this.findLongestException(syllable, this.syllables);
-          if (exception) {
-            this.line += exception.transliterated;
-            if (exception.numberOfSyllables == 1) {
-              if (exception.spaceAfter) this.line += ' ';
-              this.handleSecondSyllable();
-            } else
-              this.line += ' ';
-            this.shiftSyllables(exception.numberOfShifts);
-          } else {
-            var firstTransliteration = new Syllable(syllable).transliterate();
-            if (this.handleSecondSyllable(firstTransliteration));
-            else this.line += firstTransliteration;
-          }
+      return groups.map((tibetanGroup, index) => {
+        var group = new Group(tibetanGroup).transliterate();
+        if (this.capitalize) group = group.capitalize();
+        return group;
+      }).join(' ');
+    },
+    removeUntranscribedPunctuation: function() {
+      this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
+      this.tibetan = this.tibetan.replace(/ཿ/g, '་').replace(/་+/g, '་');
+    }
+  }
+}
+
+var Group = function(tibetan, options = {}) {
+  return {
+    tibetan: tibetan,
+    group: '',
+    capitalize: options.capitalize,
+    transliterate: function() {
+      var syllable;
+      this.syllables = tibetan.trim().split('་');
+      while (syllable = this.syllables.shift()) {
+        var exception = this.findLongestException(syllable, this.syllables);
+        if (exception) {
+          this.group += exception.transliterated;
+          if (exception.numberOfSyllables == 1) {
+            if (exception.spaceAfter) this.group += ' ';
+            this.handleSecondSyllable();
+          } else
+            this.group += ' ';
+          this.shiftSyllables(exception.numberOfShifts);
+        } else {
+          var firstTransliteration = new Syllable(syllable).transliterate();
+          if (this.handleSecondSyllable(firstTransliteration));
+          else this.group += firstTransliteration;
         }
-        if (this.line.last() != ' ' && index < groups.length - 1)
-          this.line += ' ';
-      });
-      return this.line.trim();
+      }
+      return this.group.trim();
     },
     handleSecondSyllable: function(firstTransliteration) {
       var secondSyllable = this.syllables.shift();
@@ -52,10 +66,10 @@ var Transliterator = function(tibetan) {
           firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
           firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
           firstTransliteration = this.addDoubleSIfNecesary(firstTransliteration, secondTransliteration);
-          if (spaceBefore) this.line = this.line.trim() + ' ';
-          this.line += firstTransliteration;
+          if (spaceBefore) this.group = this.group.trim() + ' ';
+          this.group += firstTransliteration;
         }
-        this.line += secondTransliteration + ' ';
+        this.group += secondTransliteration + ' ';
         return true;
       }
     },
@@ -98,10 +112,6 @@ var Transliterator = function(tibetan) {
     shiftSyllables: function(numberOfShifts) {
       var that = this;
       _(numberOfShifts).times(function() { that.syllables.shift(); });
-    },
-    removeUntranscribedPunctuation: function() {
-      this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
-      this.tibetan = this.tibetan.replace(/ཿ/g, '་').replace(/་+/g, '་');
     },
     startsWithVowel: function(string) {
       return string.match(/^[eo]?[aeiouéiöü]/);
