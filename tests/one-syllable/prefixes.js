@@ -85,7 +85,7 @@ testGroups.push({
     { tibetan: 'མཚའ', transliteration:  'tsa' },
     { tibetan: 'མཛའ', transliteration:  'dza' },
     { tibetan: 'མཁྱ', transliteration: 'khya' },
-    { tibetan: 'མགྲ', transliteration:  'dra' },
+    { tibetan: 'མཀྲ', transliteration:  'tra' },
     { tibetan: 'མཁྲ', transliteration: "tr'a" },
     { tibetan: 'མགྲ', transliteration:  'dra' },
 
