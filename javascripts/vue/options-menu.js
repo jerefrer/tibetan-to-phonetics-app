@@ -8,7 +8,12 @@ Vue.component('options-menu', {
   },
   template: `
     <div id="options">
-      <div><slider-checkbox v-model="options.capitalize" text="Capitalize" /></div>
+      <div>
+        <slider-checkbox
+          v-model="options.capitalize"
+          text="Capital at the beginning of each group"
+        />
+      </div>
     </div>
   `
 })

@@ -8,5 +8,5 @@ Vue.component('options-menu', {
   props: {
     options: Object
   },
-  template: "\n    <div id=\"options\">\n      <div><slider-checkbox v-model=\"options.capitalize\" text=\"Capitalize\" /></div>\n    </div>\n  "
+  template: "\n    <div id=\"options\">\n      <div>\n        <slider-checkbox\n          v-model=\"options.capitalize\"\n          text=\"Capital at the beginning of each group\"\n        />\n      </div>\n    </div>\n  "
 });
