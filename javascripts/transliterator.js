@@ -244,10 +244,10 @@ var Syllable = function(syllable) {
           else if (this.suffix && this.suffix.match(/[གབལང]/)) return t('drengbuGaBaLaNga');
           else                                                return t('drengbu'); break;
         case 'ུ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ü')
+          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ü');
           else                                    return t('u'); break;
         case 'ོ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ö')
+          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ö');
           else                                    return t('o'); break;
         default:
           if      (this.dreldraAi())                         return t('dreldraAi');
