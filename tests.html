@@ -67,6 +67,8 @@
 
   <script>
     $(function() {
+      var storedLanguage = Settings.language;
+
       Vue.component('test-diff', {
         props: {
           expected: String,
@@ -212,6 +214,12 @@
               color: (this.passedCount == this.total) ? '#21ba45' : '#db2828'
             }
           }
+        },
+        mounted () {
+          Settings.change(storedLanguage);
+        },
+        updated () {
+          Settings.change(storedLanguage);
         },
         template: `
           <div>

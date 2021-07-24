@@ -173,7 +173,7 @@
       app = new Vue({
         el: '#main',
         data: {
-          selectedLanguage: Storage.get('language') || Settings.defaultLanguage,
+          selectedLanguage: Settings.language,
           transliteration: Storage.get('compareTransliteration') || `
             Lüpa mépar gukpar nüma
             Chatsal gyachin mélha tsangpa

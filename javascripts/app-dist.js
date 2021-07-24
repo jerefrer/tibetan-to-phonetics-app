@@ -55,7 +55,7 @@ $(function () {
   app = new Vue({
     el: '#main',
     data: {
-      selectedLanguage: Storage.get('language') || Settings.defaultLanguage,
+      selectedLanguage: Settings.language,
       options: Storage.get('options') || {
         capitalize: true
       },

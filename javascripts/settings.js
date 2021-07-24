@@ -6,7 +6,7 @@ var defaultToOriginal = function(settings) {
 
 var Settings = {
   defaultLanguage: defaultLanguage,
-  language: defaultLanguage,
+  language: Storage.get('language') || defaultLanguage,
   settings: defaultToOriginal(settingsPerLanguage[defaultLanguage]),
   get: function(key) {
     return this.settings[key];
