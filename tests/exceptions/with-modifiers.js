@@ -1,6 +1,5 @@
 testGroups.push({
   name: 'Exceptions - With modifiers',
-  sentences: true,
   tests: [
     { tibetan: 'པདྨའི་', transliteration: 'padmé' },
     { tibetan: 'པདྨས་', transliteration: 'padmé' },

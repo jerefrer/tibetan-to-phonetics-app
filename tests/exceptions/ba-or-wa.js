@@ -1,6 +1,5 @@
 testGroups.push({
   name: 'Exceptions - Ba or Wa',
-  sentences: true,
   tests: [
     // First syllable
     { tibetan: 'བ་', transliteration: 'pa' },
