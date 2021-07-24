@@ -209,8 +209,10 @@ var Syllable = function(syllable) {
           else if (this.rata())                      return t('rata3');
           else if (this.yata())                      return t('baYata');
           else if (this.dreldraAi())                 return t('wa');
-          else if (!this.suffix &&
-                  (!this.vowel || this.vowel == 'ོ'))return t('wa');
+          else if (
+                    (!this.suffix || this.suffix == 'ས') &&
+                    (!this.vowel || this.vowel == 'ོ')
+                  )                                  return t('wa');
           else                                       return t('ba'); break;
         case 'མ':
           if     (this.yata())                       return t('nya');

@@ -239,7 +239,7 @@ var Syllable = function Syllable(syllable) {
         case 'བ':
           if (this.superscribed || this.prefix) {
             if (this.rata()) return t('rata3Mod');else if (this.yata()) return t('baModYata');else return t('baMod');
-          } else if (this.rata()) return t('rata3');else if (this.yata()) return t('baYata');else if (this.dreldraAi()) return t('wa');else if (!this.suffix && (!this.vowel || this.vowel == 'ོ')) return t('wa');else return t('ba');
+          } else if (this.rata()) return t('rata3');else if (this.yata()) return t('baYata');else if (this.dreldraAi()) return t('wa');else if ((!this.suffix || this.suffix == 'ས') && (!this.vowel || this.vowel == 'ོ')) return t('wa');else return t('ba');
 
           break;
 
