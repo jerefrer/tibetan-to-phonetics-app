@@ -66,7 +66,6 @@
 * དྷ
 * བྷ
 * བ་སྤུ = papu? bapu? wapu?
-* འབྲས་བུ = drePu not dreWu (remember to handle འབྲས་བུའི as well)
 * mangs == mang || gné ? (clue: mang' is pronounced nga (Translating Buddhism p.283))
 * སེང་གེ : sengé
 * Add hypen between k and ng for better readability? (ex: Suk-ngu)

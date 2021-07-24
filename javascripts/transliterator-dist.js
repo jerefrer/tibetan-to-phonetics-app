@@ -32,6 +32,7 @@ var Group = function Group(tibetan) {
     transliterate: function transliterate() {
       var syllable;
       this.syllables = _.compact(tibetan.trim().split('་'));
+      this.groupNumberOfSyllables = this.syllables.length;
 
       while (syllable = this.syllables.shift()) {
         var exception = this.findLongestException(syllable, this.syllables);
@@ -46,8 +47,10 @@ var Group = function Group(tibetan) {
 
           this.shiftSyllables(exception.numberOfShifts);
         } else {
-          var firstTransliteration = new Syllable(syllable).transliterate();
-          if (this.handleSecondSyllable(firstTransliteration)) ;else this.group += firstTransliteration;
+          if (this.isLastSyllableAndStartsWithBa(syllable)) this.group += this.BaAsWaWhenSecondSyllable(syllable);else {
+            var firstTransliteration = new Syllable(syllable).transliterate();
+            if (this.handleSecondSyllable(firstTransliteration)) ;else this.group += firstTransliteration;
+          }
         }
       }
 
@@ -65,23 +68,10 @@ var Group = function Group(tibetan) {
           this.shiftSyllables(secondException.numberOfShifts);
           secondTransliteration = secondException.transliterated;
         } else {
-          if (secondSyllable == 'བ') {
-            secondTransliteration = t('wa') + t('a');
-            spaceBefore = true;
-          } else if (secondSyllable == 'བར') {
-            secondTransliteration = t('wa') + t('a') + t('raSuffix');
-            spaceBefore = true;
-          } else if (secondSyllable == 'བས') {
-            secondTransliteration = t('wa') + t('drengbu');
-            spaceBefore = true;
-          } else if (secondSyllable == 'བའི') {
-            secondTransliteration = t('wa') + t('dreldraAi');
-            spaceBefore = true;
-          } else if (secondSyllable == 'བོས') {
-            secondTransliteration = t('wa') + t('ö');
-            spaceBefore = true;
-          } else if (secondSyllable == 'བུས') {
-            secondTransliteration = t('wa') + t('ü');
+          var BaAsWaTransliteration;
+
+          if (BaAsWaTransliteration = this.BaAsWaWhenSecondSyllable(secondSyllable)) {
+            secondTransliteration = BaAsWaTransliteration;
             spaceBefore = true;
           } else secondTransliteration = new Syllable(secondSyllable).transliterate();
         }
@@ -108,6 +98,12 @@ var Group = function Group(tibetan) {
         });
         return exception;
       }
+    },
+    isLastSyllableAndStartsWithBa: function isLastSyllableAndStartsWithBa(syllable) {
+      if (this.groupNumberOfSyllables > 1 && this.syllables.length == 0) return this.BaAsWaWhenSecondSyllable(syllable);
+    },
+    BaAsWaWhenSecondSyllable: function BaAsWaWhenSecondSyllable(syllable) {
+      if (syllable == 'བ') return t('wa') + t('a');else if (syllable == 'བར') return t('wa') + t('a') + t('raSuffix');else if (syllable == 'བས') return t('wa') + t('drengbu');else if (syllable == 'བའི') return t('wa') + t('dreldraAi');else if (syllable == 'བོ') return t('wa') + t('o');else if (syllable == 'བོས') return t('wa') + t('ö');else if (syllable == 'བོའི') return t('wa') + t('ö');else if (syllable == 'བུས') return t('wa') + t('ü');
     },
     connectWithDashIfNecessary: function connectWithDashIfNecessary(firstSyllable, secondSyllable) {
       var twoVowels = this.endsWithVowel(firstSyllable) && this.startsWithVowel(secondSyllable);
@@ -239,7 +235,7 @@ var Syllable = function Syllable(syllable) {
         case 'བ':
           if (this.superscribed || this.prefix) {
             if (this.rata()) return t('rata3Mod');else if (this.yata()) return t('baModYata');else return t('baMod');
-          } else if (this.rata()) return t('rata3');else if (this.yata()) return t('baYata');else if (this.dreldraAi()) return t('wa');else if ((!this.suffix || this.suffix == 'ས') && (!this.vowel || this.vowel == 'ོ')) return t('wa');else return t('ba');
+          } else if (this.rata()) return t('rata3');else if (this.yata()) return t('baYata');else return t('ba');
 
           break;
 

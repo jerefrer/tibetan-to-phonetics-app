@@ -85,11 +85,11 @@ testGroups.push({
     { tibetan: 'ཕེ', transliteration: "p'é"},
     { tibetan: 'ཕོ', transliteration: "p'o"},
 
-    { tibetan: 'བ',  transliteration: 'wa'},
+    { tibetan: 'བ',  transliteration: 'pa'},
     { tibetan: 'བི', transliteration: 'pi'},
     { tibetan: 'བུ', transliteration: 'pu'},
     { tibetan: 'བེ', transliteration: 'pé'},
-    { tibetan: 'བོ', transliteration: 'wo'},
+    { tibetan: 'བོ', transliteration: 'po'},
 
     { tibetan: 'མ',  transliteration: 'ma'},
     { tibetan: 'མི', transliteration: 'mi'},
