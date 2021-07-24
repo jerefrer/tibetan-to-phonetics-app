@@ -71,6 +71,6 @@ $(function () {
         return this.tibetan ? this.tibetan.split("\n") : [];
       }
     },
-    template: "\n      <div class=\"ui container\">\n        <language-menu v-model=\"selectedLanguage\"></language-menu>\n        <options-menu v-model=\"options\" />\n        <div id=\"scrollable-area-container\">\n          <clipboard-button v-if=\"tibetan\"></clipboard-button>\n          <div id=\"scrollable-area\">\n            <tibetan-input v-model=\"tibetan\"></tibetan-input>\n            <transliterated-lines\n              :lines=\"lines\"\n              :language=\"selectedLanguage\"\n              :options=\"options\"\n            ></transliterated-lines>\n          </div>\n        </div>\n      </div>\n    "
+    template: "\n      <div class=\"ui fluid container\">\n        <language-menu v-model=\"selectedLanguage\"></language-menu>\n        <options-menu v-model=\"options\" />\n        <div id=\"scrollable-area-container\">\n          <clipboard-button v-if=\"tibetan\"></clipboard-button>\n          <div id=\"scrollable-area\">\n            <tibetan-input v-model=\"tibetan\"></tibetan-input>\n            <transliterated-lines\n              :lines=\"lines\"\n              :language=\"selectedLanguage\"\n              :options=\"options\"\n            ></transliterated-lines>\n          </div>\n        </div>\n      </div>\n    "
   });
 });

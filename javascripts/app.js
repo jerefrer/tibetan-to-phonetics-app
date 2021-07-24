@@ -92,7 +92,7 @@ $(function() {
       }
     },
     template: `
-      <div class="ui container">
+      <div class="ui fluid container">
         <language-menu v-model="selectedLanguage"></language-menu>
         <options-menu v-model="options" />
         <div id="scrollable-area-container">
