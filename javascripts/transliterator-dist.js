@@ -325,6 +325,8 @@ var Syllable = function Syllable(syllable) {
       }
     },
     getSuffix: function getSuffix() {
+      if (this.hasCircleOnTop()) if (this.main.match(/[ཧམ]/)) return t('ngaSuffix');else return t('maSuffix');
+
       switch (this.suffix) {
         case 'ག':
           return t('kaSuffix');
@@ -361,6 +363,9 @@ var Syllable = function Syllable(syllable) {
         default:
           return '';
       }
+    },
+    hasCircleOnTop: function hasCircleOnTop() {
+      return this.syllable.match(/[ཾྃྂ]/);
     },
     suffixIsSaDa: function suffixIsSaDa() {
       return this.dreldraAi() || this.suffix && this.suffix.match(/[སད]/);
