@@ -72,7 +72,7 @@ var Group = function Group(tibetan) {
             secondTransliteration = t('wa') + t('a') + t('raSuffix');
             spaceBefore = true;
           } else if (secondSyllable == 'བས') {
-            secondTransliteration = t('wa') + t('dreldraAi');
+            secondTransliteration = t('wa') + t('drengbu');
             spaceBefore = true;
           } else if (secondSyllable == 'བའི') {
             secondTransliteration = t('wa') + t('dreldraAi');

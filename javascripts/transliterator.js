@@ -56,7 +56,7 @@ var Group = function(tibetan, options = {}) {
         } else {
           if      (secondSyllable == 'བ')   { secondTransliteration = t('wa') + t('a'); spaceBefore = true; }
           else if (secondSyllable == 'བར')  { secondTransliteration = t('wa') + t('a') + t('raSuffix'); spaceBefore = true; }
-          else if (secondSyllable == 'བས')  { secondTransliteration = t('wa') + t('dreldraAi'); spaceBefore = true; }
+          else if (secondSyllable == 'བས')  { secondTransliteration = t('wa') + t('drengbu'); spaceBefore = true; }
           else if (secondSyllable == 'བའི') { secondTransliteration = t('wa') + t('dreldraAi'); spaceBefore = true; }
           else if (secondSyllable == 'བོས')  { secondTransliteration = t('wa') + t('ö'); spaceBefore = true; }
           else if (secondSyllable == 'བུས')  { secondTransliteration = t('wa') + t('ü'); spaceBefore = true; }
