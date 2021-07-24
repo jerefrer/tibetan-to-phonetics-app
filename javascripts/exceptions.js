@@ -9,7 +9,7 @@ var transcribeTibetanParts = function(text) {
   var nonTibetanPart = text.match(nonTibetanChars);
   if (nonTibetanPart) {
     var result = tr(text.slice(0, nonTibetanPart.index)) + nonTibetanPart[0];
-    var rest = text.slice(nonTibetanPart.index+nonTibetanPart[0].length);
+    var rest = text.slice(nonTibetanPart.index + nonTibetanPart[0].length);
     if (rest) return result + transcribeTibetanParts(rest);
     else      return result;
   } else {
