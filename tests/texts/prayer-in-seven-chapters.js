@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Prayer in seven chapters (MP, not the Seven Chapters)',
+  name: 'Prayer in seven chapters (Morning Prayers, not the actual Seven Chapters)',
   includeInPercentage: true,
   sentences: true,
   tests: [

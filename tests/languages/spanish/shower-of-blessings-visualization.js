@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Spanish — Shower of Blessings - Visuelization',
+  name: 'Spanish — Shower of Blessings - Visualization',
   language: 'spanish',
   includeInPercentage: true,
   sentences: true,

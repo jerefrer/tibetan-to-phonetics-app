@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Lineage prayers (MP)',
+  name: 'Lineage prayers (Morning Prayers)',
   language: 'french (strict)',
   includeInPercentage: true,
   sentences: true,

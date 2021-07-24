@@ -1,6 +1,7 @@
 testGroups.push({
   name: 'Wa as second syllable',
   tests: [
+    { tibetan: 'བར་བ་',  transliteration: 'parwa' },
     { tibetan: 'བར་བོས་', transliteration: 'parwö' },
     { tibetan: 'བར་བུས་', transliteration: 'parwü' },
     { tibetan: 'བར་བས་',  transliteration: 'parwé' },

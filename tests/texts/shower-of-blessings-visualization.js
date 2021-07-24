@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Shower of Blessings - Visuelization',
+  name: 'Shower of Blessings - Visualization',
   includeInPercentage: true,
   sentences: true,
   tests: [
