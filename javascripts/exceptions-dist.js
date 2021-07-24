@@ -24,11 +24,29 @@ var exceptionsAdjustedToLanguage = function exceptionsAdjustedToLanguage() {
 };
 
 var findException = function findException(tibetan) {
+  var exception;
   var transliteration;
   var spaceAfter = false;
-  var exception = exceptionsAdjustedToLanguage()[tibetan];
+  var modifiers = ['འི', 'ས', 'ར'];
+  var modifier = undefined;
+  var i = 0;
+
+  while (!exception && i < modifiers.length) {
+    var tibetanWithModifier = tibetan.match(new RegExp("(.*)".concat(modifiers[i], "$")));
+
+    if (tibetanWithModifier) {
+      var tibetanWithoutModifier = tibetanWithModifier[1];
+      exception = exceptionsAdjustedToLanguage()[tibetanWithoutModifier];
+      if (exception) modifier = modifiers[i];
+    }
+
+    i++;
+  }
+
+  if (!exception) exception = exceptionsAdjustedToLanguage()[tibetan];
 
   if (exception) {
+    if (modifier) exception += modifier;
     transliteration = transcribeTibetanParts(exception);
     spaceAfter = transliteration.last() == ' ';
     var numberOfSyllables = 1;
