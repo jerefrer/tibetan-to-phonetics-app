@@ -25,7 +25,7 @@ var Group = function(tibetan, options = {}) {
     capitalize: options.capitalize,
     transliterate: function() {
       var syllable;
-      this.syllables = tibetan.trim().split('་');
+      this.syllables = _.compact(tibetan.trim().split('་'));
       while (syllable = this.syllables.shift()) {
         var exception = this.findLongestException(syllable, this.syllables);
         if (exception) {
