@@ -54,8 +54,8 @@ var exceptions = {
   // Sanskrit stuff
   'ༀ': 'om ',
   'ཨཱ': 'ah ',
-  'ཧཱུྃ': 'hūṃ ',
-  'ཧཱུྃ': 'hūṃ ',
+  'ཧཱུྃ': 'hung ',
+  'ཧཱུྃ': 'hung ',
   'རྃ': 'ram ',
   'ཡྃ': 'yam ',
   'ཁྃ': 'kham ',
@@ -86,6 +86,6 @@ var exceptions = {
   'བཾ་རོའི': 'བམ་རོའི',
   'སམྦྷ་ཝར': 'sam_bha_war',
   'ཀཱི་ལ་ཡ': 'ki_la_ya',
-  'གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ': 'gu_ru pad_ma sid_dhi hūṃ',
-  'ༀ་ཨཱཿཧཱུྃ་བཛྲ་གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ': 'om ah hūṃ va_jra gu_ru pad_ma sid_dhi hūṃ'
+  'གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ': 'gu_ru pad_ma sid_dhi hung',
+  'ༀ་ཨཱཿཧཱུྃ་བཛྲ་གུ་རུ་པདྨ་སིདྡྷི་ཧཱུྃ': 'om ah hung va_jra gu_ru pad_ma sid_dhi hung'
 }
