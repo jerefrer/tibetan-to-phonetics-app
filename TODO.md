@@ -1,8 +1,12 @@
 # TODO
 
+## Exceptions
+* དིཔྟ་ཙཀྲ་
+* ཀྲོསྡ་
+
 ## Features
-* Find a way to handle variants of exceptions, for instance:
-    མཁའ་འགྲོ => མཁའn_འགྲོ doesn't handle མཁའ་འགྲོའི
+* For exception modifiers check thoroughly what could be every possible modifiers.
+  * For now we handle འི་, ས་ and ར་ but there might be more.
 * Handle long a + syllable, for instance in ཝཱ་རཱ་ཧཱི༔
 * Add dash before nga more often (for instance yum-ngé)
   * Maybe always before vowels, for instance ལུས་ངག་ lü-ngak
@@ -15,8 +19,7 @@
   * removeUntranscribedPunctuation
   * spaces before/after, exception or not
   * wa for duo-syllables
-* Try to handle all suffixes for exceptions (པདྨའི, པདྨས, ...)
-* Use dictionary?
+* Optionally use dictionary to group words together? Is that even possible?
 
 ## Leads for a "proper" implementation
 * There are definitely existing tools and ways to parse, define and transliterate languages
