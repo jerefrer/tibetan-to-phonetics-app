@@ -67,6 +67,9 @@
   <script src="tests/languages/spanish/shower-of-blessings-visualization.js"></script>
 
   <script>
+    var processTime;
+    var startedAt = new Date().getTime();
+
     $(function() {
       var storedLanguage = Settings.language;
 
@@ -198,6 +201,7 @@
             })
             return testGroup;
           });
+          processTime = new Date().getTime() - startedAt;
           var total = _(testGroups).pluck('tests').flatten().length;
           return {
             tests: ranTests,
@@ -217,6 +221,7 @@
           }
         },
         mounted () {
+          $(this.$refs.time).text(processTime);
           Settings.change(storedLanguage);
         },
         updated () {
@@ -234,6 +239,8 @@
                       Texts only:
                       <span v-bind:style="style">{{percentageTexts.toPrecision(3)}}% ({{textsPassed}}/{{textsTotal}})</span>
                     </span>
+                     —
+                    Ran in: <span ref="time"></span>ms
                   </td>
                 </tr>
               </thead>
