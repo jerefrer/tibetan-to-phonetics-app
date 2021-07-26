@@ -11,7 +11,7 @@ Vue.component('options-menu', {
       <div>
         <slider-checkbox
           v-model="options.capitalize"
-          text="Capital at the beginning of each group"
+          text="Capital letter at the beginning of each group"
         />
       </div>
     </div>
