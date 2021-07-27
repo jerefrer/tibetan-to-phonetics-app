@@ -3,17 +3,13 @@ var Transliterator = function(tibetan, options = {}) {
     tibetan: tibetan,
     capitalize: options.capitalize,
     transliterate: function() {
-      this.removeUntranscribedPunctuation();
+      this.tibetan = removeUntranscribedPunctuation(this.tibetan);
       var groups = this.tibetan.split(' ');
       return groups.map((tibetanGroup, index) => {
         var group = new Group(tibetanGroup).transliterate();
         if (this.capitalize) group = group.capitalize();
         return group;
       }).join(' ');
-    },
-    removeUntranscribedPunctuation: function() {
-      this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
-      this.tibetan = this.tibetan.replace(/ཿ/g, '་').replace(/་+/g, '་');
     }
   }
 }

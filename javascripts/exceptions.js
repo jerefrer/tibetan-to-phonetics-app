@@ -1,3 +1,21 @@
+var removeUntranscribedPunctuation = function(tibetan) {
+  return tibetan
+    .replace(/[༎།༑༈༔༵]/g, '').trim()
+    .replace(/ཿ/g, '་')
+    .replace(/་+/g, '་')
+    .replace(/་$/g, '')
+    .replace(/ཱུ/g, 'ཱུ')
+    .replace(/ཱི/g, 'ཱི')
+    .replace(/ཱྀ/g, 'ཱྀ');
+}
+
+// We normalize exceptions keys here so that we can also normalize the tibetan
+// on the other side and simply check for existence in the object.
+exceptions = _(exceptions).inject((hash, value, key) => {
+  hash[removeUntranscribedPunctuation(key)] = value;
+  return hash;
+}, {});
+
 var tr = function(word) {
   if (!word) return '';
   var tsheks = word.match(/་/);
@@ -32,14 +50,14 @@ var findException = function(tibetan) {
     var tibetanWithModifier = tibetan.match(new RegExp(`(.*)${modifiers[i]}$`));
     if (tibetanWithModifier) {
       var tibetanWithoutModifier = tibetanWithModifier[1];
-      exception = exceptionsAdjustedToLanguage()[tibetanWithoutModifier];
+      exception = exceptionFor(tibetanWithoutModifier);
       if (exception)
         modifier = modifiers[i];
     }
     i++;
   }
   if (!exception)
-    exception = exceptionsAdjustedToLanguage()[tibetan];
+    exception = exceptionFor(tibetan);
   if (exception) {
     if (modifier) exception += modifier;
     transliteration = transcribeTibetanParts(exception);
@@ -55,4 +73,8 @@ var findException = function(tibetan) {
       transliterated: transliteration.trim().replace(/_/g, '')
     }
   }
+}
+
+var exceptionFor = function(tibetan) {
+  return exceptionsAdjustedToLanguage()[tibetan];
 }

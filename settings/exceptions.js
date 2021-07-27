@@ -7,8 +7,6 @@
 | Tibetan characters will be transliterated as they would be normally.
 | Latin characters will be inserted as-is within the transliteration.
 |
-| It is important to be noted that the left value must NOT have a tsek (་) as the end.
-|
 | If using Latin characters, then between each syllable you need to add an underscore to help
 | the system determine how many syllables the word is made of, even if it does not exactly match
 | how the word is composed.
