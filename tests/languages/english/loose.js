@@ -1,6 +1,6 @@
 testGroups.push({
-  name: 'Bois-Bas Preferences',
-  language: 'english (bois-bas)',
+  name: 'Loose style',
+  language: 'english (loose)',
   includeInPercentage: true,
   tests: [
     { tibetan: 'རྒྱལ', transliteration: "gyel" },
