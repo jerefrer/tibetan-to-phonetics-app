@@ -1,29 +1,23 @@
 # TODO
 
-## Exceptions
-* དིཔྟ་ཙཀྲ་
-* ཀྲོསྡ་
+* Wrap the code nicely like modern apps do, so that nothing leaks outside
+  of the library scope and that it can be imported easily in other projects
+  through npm and other package managers.
 
 ## Features
 * For exception modifiers check thoroughly what could be every possible modifiers.
   * For now we handle འི་, ས་ and ར་ but there might be more.
-* Handle long a + syllable, for instance in ཝཱ་རཱ་ཧཱི༔
 * Add dash before nga more often (for instance yum-ngé)
   * Maybe always before vowels, for instance ལུས་ངག་ lü-ngak
+* Optionally use dictionary to group words together? Is that even possible?
 
-* Add a little documentation on how to define exceptions
+## Tests
 * Add tests for all the latest special cases:
   * aFollowedByN
   * oFollowedByN
   * gFollowedByN
   * removeUntranscribedPunctuation
   * spaces before/after, exception or not
-  * wa for duo-syllables
-* Optionally use dictionary to group words together? Is that even possible?
-
-## Leads for a "proper" implementation
-* There are definitely existing tools and ways to parse, define and transliterate languages
-* See the "morphology" files in GoldenDict that define prefixes, suffixes and so on.
 
 ## Questions to Tibetan savants
 * In 'Translating Buddhism':
@@ -52,7 +46,8 @@
   * Do we merge it? taki
   * Or join with a dash? tak-ki
   * What about completion particles, like ཅན་ནོ : cheno or chen-no?
-  => Seems to be safer and better to join with a dash every time, then one can simplify when reviewing, instead of the other way around
+  => Seems to be safer and better to join with a dash every time,
+     then one can simplify when proof-reading, instead of the other way around
 
 ## Questions about Padmakara's style
 * Are the rules for eéè okay?
@@ -90,3 +85,7 @@
   * Lhasa
     * is not pronounced
     * does umlaut the vowel 'a' into 'e'
+
+## Leads for a "proper" implementation
+* There are definitely existing tools and ways to parse, define and transliterate languages
+* See the "morphology" files in GoldenDict that define prefixes, suffixes and so on.

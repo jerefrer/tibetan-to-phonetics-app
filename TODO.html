@@ -5,44 +5,33 @@
 </head>
 <body>
 <h1 id="todo">TODO</h1>
-<h2 id="exceptions">Exceptions</h2>
 <ul>
-<li>དིཔྟ་ཙཀྲ་</li>
-<li>ཀྲོསྡ་</li>
+<li>Wrap the code nicely like modern apps do, so that nothing leaks outside
+of the library scope and that it can be imported easily in other projects
+through npm and other package managers.</li>
 </ul>
 <h2 id="features">Features</h2>
 <ul>
-<li><p>For exception modifiers check thoroughly what could be every possible modifiers.</p>
-<ul>
+<li>For exception modifiers check thoroughly what could be every possible modifiers.<ul>
 <li>For now we handle འི་, ས་ and ར་ but there might be more.</li>
 </ul>
 </li>
-<li><p>Handle long a + syllable, for instance in ཝཱ་རཱ་ཧཱི༔</p>
-</li>
-<li><p>Add dash before nga more often (for instance yum-ngé)</p>
-<ul>
+<li>Add dash before nga more often (for instance yum-ngé)<ul>
 <li>Maybe always before vowels, for instance ལུས་ངག་ lü-ngak</li>
 </ul>
 </li>
-<li><p>Add a little documentation on how to define exceptions</p>
-</li>
-<li><p>Add tests for all the latest special cases:</p>
+<li>Optionally use dictionary to group words together? Is that even possible?</li>
+</ul>
+<h2 id="tests">Tests</h2>
 <ul>
+<li>Add tests for all the latest special cases:<ul>
 <li>aFollowedByN</li>
 <li>oFollowedByN</li>
 <li>gFollowedByN</li>
 <li>removeUntranscribedPunctuation</li>
 <li>spaces before/after, exception or not</li>
-<li>wa for duo-syllables</li>
 </ul>
 </li>
-<li><p>Optionally use dictionary to group words together? Is that even possible?</p>
-</li>
-</ul>
-<h2 id="leads-for-a-proper-implementation">Leads for a &quot;proper&quot; implementation</h2>
-<ul>
-<li>There are definitely existing tools and ways to parse, define and transliterate languages</li>
-<li>See the &quot;morphology&quot; files in GoldenDict that define prefixes, suffixes and so on.</li>
 </ul>
 <h2 id="questions-to-tibetan-savants">Questions to Tibetan savants</h2>
 <ul>
@@ -83,7 +72,8 @@ They are, therefore. pronounced gi and gyi. respectively.</li>
 <li>Do we merge it? taki</li>
 <li>Or join with a dash? tak-ki</li>
 <li>What about completion particles, like ཅན་ནོ : cheno or chen-no?
-=&gt; Seems to be safer and better to join with a dash every time, then one can simplify when reviewing, instead of the other way around</li>
+=&gt; Seems to be safer and better to join with a dash every time,
+ then one can simplify when proof-reading, instead of the other way around</li>
 </ul>
 </li>
 </ul>
@@ -132,6 +122,11 @@ They are, therefore. pronounced gi and gyi. respectively.</li>
 </li>
 </ul>
 </li>
+</ul>
+<h2 id="leads-for-a-proper-implementation">Leads for a &quot;proper&quot; implementation</h2>
+<ul>
+<li>There are definitely existing tools and ways to parse, define and transliterate languages</li>
+<li>See the &quot;morphology&quot; files in GoldenDict that define prefixes, suffixes and so on.</li>
 </ul>
 
 </body>
