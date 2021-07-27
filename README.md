@@ -1,6 +1,6 @@
 # tibetan-transliterator
 
-A naive attempt at automatically generating reliable tibetan transliterations
+A naive attempt at automatically generating reliable Tibetan transliterations
 based on customizable sets of rules.
 
 Getting started
@@ -44,7 +44,7 @@ new TibetanTransliterator('གང་གི་བློ་གྲོས་').trans
 ![Demo](./docs/index-small.jpg)
 
 * Choose your prefered transliteration style at the top
-* Paste your tibetan in the left box
+* Paste your Tibetan in the left box
 * Click *Copy to clipboard* at the top of the right box to copy the
   transliteration
 
@@ -53,7 +53,7 @@ new TibetanTransliterator('གང་གི་བློ་གྲོས་').trans
 ![Demo](./docs/compare-small.jpg)
 
 * Choose your prefered transliteration style at the top
-* Paste your tibetan in the left box
+* Paste your Tibetan in the left box
 * Paste your existing transliteration in the middle box
 * See the differences in the right box
 * Clicking on a difference will make the necessary change in the existing
@@ -110,7 +110,7 @@ Just open `tests.html`.
 
 Categories can be clicked to reveal their test cases.
 
-To ease debugging, clicking a tibetan case on the right side will re-run the
+To ease debugging, clicking a Tibetan case on the right side will re-run the
 test for just that particular case.
 
 TODO
