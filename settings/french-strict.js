@@ -23,3 +23,7 @@ settingsPerLanguage['french (strict)'] = {
   'baYata': "tch'",
   'baModYata': 'dj',
 }
+
+exceptionsPerLanguage['french (strict)'] = {
+
+}
