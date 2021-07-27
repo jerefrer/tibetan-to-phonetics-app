@@ -1,4 +1,6 @@
 var TibetanTransliterator = function(tibetan, options = {}) {
+  if (options.language)
+    TibetanTransliteratorSettings.change(options.language);
   return {
     tibetan: tibetan,
     capitalize: options.capitalize,

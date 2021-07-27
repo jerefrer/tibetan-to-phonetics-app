@@ -1,11 +1,11 @@
 # TODO
 
+## Code
 * Wrap the code nicely like modern apps do, so that nothing leaks outside
   of the library scope and that it can be imported easily in other projects
   through npm and other package managers.
 
 ## Features
-* Pass the language to TibetanTransliterator instead of setting it globally
 * For exception modifiers check thoroughly what could be every possible modifiers.
   * For now we handle འི་, ས་ and ར་ but there might be more.
 * Add dash before nga more often (for instance yum-ngé)

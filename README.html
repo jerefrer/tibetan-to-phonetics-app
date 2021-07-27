@@ -11,13 +11,27 @@ based on customizable sets of rules.</p>
 <p>Just copy the repository locally.</p>
 <h2 id="usage">Usage</h2>
 <h3 id="as-a-library">As a library</h3>
-<pre><code class="language-js">TibetanTransliteratorSettings.change(&#39;english (loose)&#39;);
-new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;).transliterate();
+<pre><code class="language-js">new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;).transliterate();
+=&gt; &#39;kangki lotrö&#39; // using default language: &#39;english (strict)&#39;
+=&gt; &#39;kangki lotreu&#39;
+
+# Use the &#39;capitalize&#39; option to capitalize the first letter of every group
+
+new TibetanTransliterator( &#39;ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ &#39;, { capitalize: true }).transliterate();
+=&gt; &#39;Émaho Trötrel chökyi yingkyi zhingkham su&#39;
+
+# Use the &#39;language&#39; option to choose which set of rules you wish to follow:
+
+new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;, { language: &#39;english (loose)&#39; }).transliterate();
 =&gt; &#39;gangi lodrö&#39;
 
+new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;, { language: &#39;french (strict)&#39; }).transliterate();
+=&gt; &#39;kangki lotreu&#39;
+
+# Or set the language once and for all instead of every transliteration:
+
 TibetanTransliteratorSettings.change(&#39;french (strict)&#39;);
-new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;).transliterate();
-=&gt; &#39;kangki lotreu&#39;</code></pre>
+new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;).transliterate();</code></pre>
 <h3 id="as-a-tool">As a tool</h3>
 <h4 id="indexhtml"><code>index.html</code></h4>
 <p><img src="./docs/index-small.jpg" alt="Demo"></p>
@@ -38,6 +52,31 @@ transliteration</li>
 transliteration so that it will disappear from the right box, allowing you
 to quickly prune those that are irrelevant to you.</li>
 </ul>
+<h2 id="rule-sets">Rule sets</h2>
+<p>All rule sets are defined in <code>settings/</code>.</p>
+<p>The <code>original.js</code> set is not meant to be edited and serves as the default upon
+which all other sets are applied to override the default rules.</p>
+<p>For instance the rule for &#39;kha&#39; in <code>original.js</code> is:</p>
+<pre><code class="language-js">&#39;kha&#39;: &#39;kh&#39;,</code></pre>
+<p>If you wish to display &#39;kha&#39; as &#39;ka&#39;, you would have this line in your own
+rule set file:</p>
+<pre><code class="language-js">&#39;kha&#39;: &#39;k&#39;,</code></pre>
+<p>Every single line in <code>original.js</code> can thus be copy-pasted in another set file
+to be overridden. You can edit existing rule sets or create new ones.</p>
+<p>To add a new one just copy an existing one and replace twice the name of the
+set:</p>
+<pre><code class="language-html"># settings/my-new-set.js
+
+settingsPerLanguage[&#39;my new set&#39;] = {
+...
+}
+
+exceptionsPerLanguage[&#39;my new set&#39;] = {
+...
+}</code></pre>
+<p>Also don&#39;t forget to add the <code>&lt;script&gt;</code> include tag in <code>index.html</code>,
+<code>compare.html</code> and <code>tests.html</code> next to the other ones:</p>
+<pre><code class="language-html">&lt;script src=&quot;settings/my-new-set.js&quot;&gt;&lt;/script&gt;</code></pre>
 <h2 id="testing">Testing</h2>
 <p><img src="./docs/tests-small.jpg" alt="Demo"></p>
 <p>Just open <code>tests.html</code>.</p>

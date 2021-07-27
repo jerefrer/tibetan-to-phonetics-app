@@ -14,13 +14,27 @@ Usage
 ### As a library
 
 ```js
-TibetanTransliteratorSettings.change('english (loose)');
 new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
+=> 'kangki lotrö' // using default language: 'english (strict)'
+=> 'kangki lotreu'
+
+# Use the 'capitalize' option to capitalize the first letter of every group
+
+new TibetanTransliterator( 'ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', { capitalize: true }).transliterate();
+=> 'Émaho Trötrel chökyi yingkyi zhingkham su'
+
+# Use the 'language' option to choose which set of rules you wish to follow:
+
+new TibetanTransliterator('གང་གི་བློ་གྲོས་', { language: 'english (loose)' }).transliterate();
 => 'gangi lodrö'
+
+new TibetanTransliterator('གང་གི་བློ་གྲོས་', { language: 'french (strict)' }).transliterate();
+=> 'kangki lotreu'
+
+# Or set the language once and for all instead of every transliteration:
 
 TibetanTransliteratorSettings.change('french (strict)');
 new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
-=> 'kangki lotreu'
 ```
 
 ### As a tool
@@ -45,6 +59,47 @@ new TibetanTransliterator('གང་གི་བློ་གྲོས་').trans
 * Clicking on a difference will make the necessary change in the existing
   transliteration so that it will disappear from the right box, allowing you
   to quickly prune those that are irrelevant to you.
+
+Rule sets
+-----------
+
+All rule sets are defined in `settings/`.
+
+The `original.js` set is not meant to be edited and serves as the default upon
+which all other sets are applied to override the default rules.
+
+For instance the rule for 'kha' in `original.js` is:
+```js
+'kha': 'kh',
+```
+
+If you wish to display 'kha' as 'ka', you would have this line in your own
+rule set file:
+```js
+'kha': 'k',
+```
+
+Every single line in `original.js` can thus be copy-pasted in another set file
+to be overridden. You can edit existing rule sets or create new ones.
+
+To add a new one just copy an existing one and replace twice the name of the
+set:
+```html
+# settings/my-new-set.js
+
+settingsPerLanguage['my new set'] = {
+...
+}
+
+exceptionsPerLanguage['my new set'] = {
+...
+}
+```
+Also don't forget to add the `<script>` include tag in `index.html`,
+`compare.html` and `tests.html` next to the other ones:
+```html
+<script src="settings/my-new-set.js"></script>
+```
 
 Testing
 -----------
