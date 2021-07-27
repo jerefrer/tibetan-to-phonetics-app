@@ -107,18 +107,17 @@ var Group = function(tibetan, options = {}) {
       var oFollowedByN = firstSyllable.last() == 'o' && secondSyllable.first() == 'n';
       var gFollowedByN = firstSyllable.last() == 'g' && secondSyllable.first() == 'n';
       if (twoVowels || aFollowedByN || oFollowedByN || gFollowedByN)
-        return firstSyllable = firstSyllable + '-';
+        return firstSyllable + '-';
       else
         return firstSyllable;
     },
     mergeDuplicateConnectingLettersWithPreviousSyllable: function(firstSyllable, secondSyllable) {
       if (firstSyllable.last() == secondSyllable.first())
-        return firstSyllable = firstSyllable.slice(0, firstSyllable.length-1);
+        return firstSyllable.slice(0, firstSyllable.length-1);
       else
         return firstSyllable;
     },
     addDoubleSIfNecesary: function(firstSyllable, secondSyllable) {
-      //if (Settings.get('doubleS') && secondSyllable.match(/^s[^h]/) && (this.endsWithVowel(firstSyllable) || firstSyllable.last() == 'n'))
       if (Settings.get('doubleS') && secondSyllable.match(/^s[^h]/) && !(firstSyllable.last().match(/[gk]/)))
         return firstSyllable + 's';
       else

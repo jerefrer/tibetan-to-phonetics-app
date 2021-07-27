@@ -106,13 +106,12 @@ var Group = function Group(tibetan) {
       var aFollowedByN = firstSyllable.last() == 'a' && secondSyllable.first() == 'n';
       var oFollowedByN = firstSyllable.last() == 'o' && secondSyllable.first() == 'n';
       var gFollowedByN = firstSyllable.last() == 'g' && secondSyllable.first() == 'n';
-      if (twoVowels || aFollowedByN || oFollowedByN || gFollowedByN) return firstSyllable = firstSyllable + '-';else return firstSyllable;
+      if (twoVowels || aFollowedByN || oFollowedByN || gFollowedByN) return firstSyllable + '-';else return firstSyllable;
     },
     mergeDuplicateConnectingLettersWithPreviousSyllable: function mergeDuplicateConnectingLettersWithPreviousSyllable(firstSyllable, secondSyllable) {
-      if (firstSyllable.last() == secondSyllable.first()) return firstSyllable = firstSyllable.slice(0, firstSyllable.length - 1);else return firstSyllable;
+      if (firstSyllable.last() == secondSyllable.first()) return firstSyllable.slice(0, firstSyllable.length - 1);else return firstSyllable;
     },
     addDoubleSIfNecesary: function addDoubleSIfNecesary(firstSyllable, secondSyllable) {
-      //if (Settings.get('doubleS') && secondSyllable.match(/^s[^h]/) && (this.endsWithVowel(firstSyllable) || firstSyllable.last() == 'n'))
       if (Settings.get('doubleS') && secondSyllable.match(/^s[^h]/) && !firstSyllable.last().match(/[gk]/)) return firstSyllable + 's';else return firstSyllable;
     },
     shiftSyllables: function shiftSyllables(numberOfShifts) {
