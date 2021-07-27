@@ -1,4 +1,4 @@
-var Parser = function(syllable, options) {
+var TibetanParser = function(syllable, options) {
   var normalizedSyllable = syllable
     .replace(/ཱུ/g, 'ཱུ')
     .replace(/ཱི/g, 'ཱི')

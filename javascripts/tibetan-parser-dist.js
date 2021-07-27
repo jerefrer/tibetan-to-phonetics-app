@@ -1,6 +1,6 @@
 "use strict";
 
-var Parser = function Parser(syllable, options) {
+var TibetanParser = function TibetanParser(syllable, options) {
   var normalizedSyllable = syllable.replace(/ཱུ/g, 'ཱུ').replace(/ཱི/g, 'ཱི').replace(/ཱྀ/g, 'ཱྀ');
   return {
     options: _(options).defaults({

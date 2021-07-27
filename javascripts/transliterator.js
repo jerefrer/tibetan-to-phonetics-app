@@ -138,7 +138,7 @@ var Group = function(tibetan, options = {}) {
 }
 
 var Syllable = function(syllable) {
-  var parsed = new Parser(syllable).parse();
+  var parsed = new TibetanParser(syllable).parse();
   var object = _.omit(parsed, (_.functions(parsed)));
   return _(object).extend({
     syllable: syllable,

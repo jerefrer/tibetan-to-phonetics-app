@@ -8,17 +8,13 @@ var Transliterator = function Transliterator(tibetan) {
     transliterate: function transliterate() {
       var _this = this;
 
-      this.removeUntranscribedPunctuation();
+      this.tibetan = removeUntranscribedPunctuation(this.tibetan);
       var groups = this.tibetan.split(' ');
       return groups.map(function (tibetanGroup, index) {
         var group = new Group(tibetanGroup).transliterate();
         if (_this.capitalize) group = group.capitalize();
         return group;
       }).join(' ');
-    },
-    removeUntranscribedPunctuation: function removeUntranscribedPunctuation() {
-      this.tibetan = this.tibetan.replace(/[༎།༑༈༔༵]/g, '').trim();
-      this.tibetan = this.tibetan.replace(/ཿ/g, '་').replace(/་+/g, '་');
     }
   };
 };
@@ -136,14 +132,16 @@ var Group = function Group(tibetan) {
 };
 
 var Syllable = function Syllable(syllable) {
-  var parsed = new Parser(syllable).parse();
+  var parsed = new TibetanParser(syllable).parse();
 
   var object = _.omit(parsed, _.functions(parsed));
 
   return _(object).extend({
     syllable: syllable,
     transliterate: function transliterate() {
-      return this.consonant() + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU();
+      var consonant = this.consonant();
+      if (consonant == undefined) return '???';
+      return consonant + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU();
     },
     consonant: function consonant() {
       if (this.lata()) {
@@ -325,7 +323,7 @@ var Syllable = function Syllable(syllable) {
       }
     },
     getSuffix: function getSuffix() {
-      if (this.hasCircleOnTop()) if (this.main.match(/[ཧམ]/)) return t('ngaSuffix');else return t('maSuffix');
+      if (this.anusvara) if (this.main.match(/[ཧམ]/)) return t('ngaSuffix');else return t('maSuffix');
 
       switch (this.suffix) {
         case 'ག':
@@ -363,9 +361,6 @@ var Syllable = function Syllable(syllable) {
         default:
           return '';
       }
-    },
-    hasCircleOnTop: function hasCircleOnTop() {
-      return this.syllable.match(/[ཾྃྂ]/);
     },
     suffixIsSaDa: function suffixIsSaDa() {
       return this.dreldraAi() || this.suffix && this.suffix.match(/[སད]/);
