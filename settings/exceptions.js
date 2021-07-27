@@ -1,27 +1,34 @@
-/*-------------------------------------------------------------------------------------------------
+/*----------------------------------------------------------------------------
 | Each line defines one exception.
 |
-| If any of the values on the left of the colon is found in the line to be transliterated, then
-| it will be treated as if it was the value on the right of the colon.
+| If any of the values on the left of the colon is found in the line to be
+| transliterated, then it will be treated as if it was the value on the right
+| of the colon.
 |
 | Tibetan characters will be transliterated as they would be normally.
 | Latin characters will be inserted as-is within the transliteration.
 |
-| If using Latin characters, then between each syllable you need to add an underscore to help
-| the system determine how many syllables the word is made of, even if it does not exactly match
-| how the word is composed.
-| For instance if you want to have སངས་རྒྱས་ always transliterated as SANGYE in capital, you would do:
+| If using Latin characters, then between each syllable you need to add an
+| underscore to help the system determine how many syllables the word is made
+| of, even if it does not exactly match how the word is composed.
+|
+| For instance if you want to have སངས་རྒྱས་ always transliterated as SANGYE in
+| capital, you would do:
+|
 | 'སངས་རྒྱས': 'SAN_GYE'
 | but not
 | 'སངས་རྒྱས': 'SANG_GYE'
 |
-| If a line is defined with a left value that is included in another line with a longer left
-| value, then the longer one will be used.
+| If a line is defined with a left value that is included in another line with
+| a longer left value, then the longer one will be used.
+|
 | For instance if these two rules are defined:
+|
 | 'སངས་': 'SAN'
 | 'སངས་རྒྱས': 'san_GYE'
-| Then སངས་རྒྱས་ would be transliterated as sanGYE, completely ignoring the first rule
--------------------------------------------------------------------------------------------------*/
+|
+| Then སངས་རྒྱས་ would be transliterated as sanGYE,  ignoring the first rule.
+----------------------------------------------------------------------------*/
 
 var exceptions = {
   // Complicated spaces
