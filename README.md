@@ -11,17 +11,27 @@ Just copy the repository locally.
 Usage
 -----------
 
-![Demo](./docs/index-small.jpg)
+### As a library
 
-### `index.html`
+```js
+new TibetanTransliterator('མཁྱེན').transliterate()
+=> 'khyen'
+```
+
+### As a tool
+
+#### `index.html`
+
+![Demo](./docs/index-small.jpg)
 
 * Choose your prefered transliteration style at the top
 * Paste your tibetan in the left box
-* Click *Copy to clipboard* on the right box to copy the transliteration
+* Click *Copy to clipboard* at the top of the right box to copy the
+  transliteration
+
+#### `compare.html`
 
 ![Demo](./docs/compare-small.jpg)
-
-### `compare.html`
 
 * Choose your prefered transliteration style at the top
 * Paste your tibetan in the left box
@@ -34,9 +44,19 @@ Usage
 Testing
 -----------
 
-* Just open `tests.html`
-* To ease debugging, clicking a tibetan case on the right side will re-run
-  the test for just that particular case.
+![Demo](./docs/tests-small.jpg)
+
+Just open `tests.html`.
+
+Categories can be clicked to reveal their test cases.
+
+To ease debugging, clicking a tibetan case on the right side will re-run the
+test for just that particular case.
+
+TODO
+-----------
+
+See `TODO.md`
 
 Credits
 -----------

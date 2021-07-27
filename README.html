@@ -10,15 +10,20 @@ based on customizable sets of rules.</p>
 <h2 id="getting-started">Getting started</h2>
 <p>Just copy the repository locally.</p>
 <h2 id="usage">Usage</h2>
+<h3 id="as-a-library">As a library</h3>
+<pre><code class="language-js">new TibetanTransliterator(&#39;མཁྱེན&#39;).transliterate()
+=&gt; &#39;khyen&#39;</code></pre>
+<h3 id="as-a-tool">As a tool</h3>
+<h4 id="indexhtml"><code>index.html</code></h4>
 <p><img src="./docs/index-small.jpg" alt="Demo"></p>
-<h3 id="indexhtml"><code>index.html</code></h3>
 <ul>
 <li>Choose your prefered transliteration style at the top</li>
 <li>Paste your tibetan in the left box</li>
-<li>Click <em>Copy to clipboard</em> on the right box to copy the transliteration</li>
+<li>Click <em>Copy to clipboard</em> at the top of the right box to copy the
+transliteration</li>
 </ul>
+<h4 id="comparehtml"><code>compare.html</code></h4>
 <p><img src="./docs/compare-small.jpg" alt="Demo"></p>
-<h3 id="comparehtml"><code>compare.html</code></h3>
 <ul>
 <li>Choose your prefered transliteration style at the top</li>
 <li>Paste your tibetan in the left box</li>
@@ -29,11 +34,13 @@ transliteration so that it will disappear from the right box, allowing you
 to quickly prune those that are irrelevant to you.</li>
 </ul>
 <h2 id="testing">Testing</h2>
-<ul>
-<li>Just open <code>tests.html</code></li>
-<li>To ease debugging, clicking a tibetan case on the right side will re-run
-the test for just that particular case.</li>
-</ul>
+<p><img src="./docs/tests-small.jpg" alt="Demo"></p>
+<p>Just open <code>tests.html</code>.</p>
+<p>Categories can be clicked to reveal their test cases.</p>
+<p>To ease debugging, clicking a tibetan case on the right side will re-run the
+test for just that particular case.</p>
+<h2 id="todo">TODO</h2>
+<p>See <code>TODO.md</code></p>
 <h2 id="credits">Credits</h2>
 <p>The rules used to deconstruct the syllables into parts (root, prefix, ...)
 are almost entirely based on John Rockwell&#39;s ZALKEJZAMLEKJZA</p>
