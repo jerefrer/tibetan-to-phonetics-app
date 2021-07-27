@@ -143,7 +143,9 @@ var Syllable = function(syllable) {
   return _(object).extend({
     syllable: syllable,
     transliterate: function() {
-      return this.consonant() + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU()
+      var consonant = this.consonant();
+      if (consonant == undefined) return '???';
+      return consonant + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU()
     },
     consonant: function() {
       if (this.lata()) {
