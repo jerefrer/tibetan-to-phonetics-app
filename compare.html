@@ -115,7 +115,7 @@
             return this.lines.map(function(line, index) {
               return {
                 expected: that.expectedLines()[index],
-                actual: new Transliterator(line).transliterate().capitalize()
+                actual: new TibetanTransliterator(line).transliterate().capitalize()
               }
             });
           },

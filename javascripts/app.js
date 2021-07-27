@@ -51,7 +51,7 @@ $(function() {
       transliteratedLines: function() {
         Settings.change(this.language);
         return this.lines.map((line) => {
-          return new Transliterator(line, this.options).transliterate();
+          return new TibetanTransliterator(line, this.options).transliterate();
         }).join("\n");
       },
     },

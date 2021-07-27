@@ -1,4 +1,4 @@
-var Transliterator = function(tibetan, options = {}) {
+var TibetanTransliterator = function(tibetan, options = {}) {
   return {
     tibetan: tibetan,
     capitalize: options.capitalize,

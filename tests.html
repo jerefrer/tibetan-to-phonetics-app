@@ -192,7 +192,7 @@
               test.runTest = function() {
                 if (testGroup.language) Settings.change(testGroup.language)
                 else                    Settings.default();
-                this.transliterated = new Transliterator(this.tibetan, {
+                this.transliterated = new TibetanTransliterator(this.tibetan, {
                   capitalize: testGroup.capitalize
                 }).transliterate();
                 return this.transliterated == this.transliteration;

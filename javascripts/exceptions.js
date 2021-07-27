@@ -19,7 +19,7 @@ exceptions = _(exceptions).inject((hash, value, key) => {
 var tr = function(word) {
   if (!word) return '';
   var tsheks = word.match(/་/);
-  return new Transliterator(word).transliterate().replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
+  return new TibetanTransliterator(word).transliterate().replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
 }
 
 var transcribeTibetanParts = function(text) {
