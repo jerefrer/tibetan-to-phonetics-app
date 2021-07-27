@@ -11,8 +11,13 @@ based on customizable sets of rules.</p>
 <p>Just copy the repository locally.</p>
 <h2 id="usage">Usage</h2>
 <h3 id="as-a-library">As a library</h3>
-<pre><code class="language-js">new TibetanTransliterator(&#39;མཁྱེན&#39;).transliterate()
-=&gt; &#39;khyen&#39;</code></pre>
+<pre><code class="language-js">TibetanTransliteratorSettings.change(&#39;english (loose)&#39;);
+new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;).transliterate();
+=&gt; &#39;gangi lodrö&#39;
+
+TibetanTransliteratorSettings.change(&#39;french (strict)&#39;);
+new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;).transliterate();
+=&gt; &#39;kangki lotreu&#39;</code></pre>
 <h3 id="as-a-tool">As a tool</h3>
 <h4 id="indexhtml"><code>index.html</code></h4>
 <p><img src="./docs/index-small.jpg" alt="Demo"></p>

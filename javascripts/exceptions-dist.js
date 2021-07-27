@@ -1,9 +1,20 @@
 "use strict";
 
+var removeUntranscribedPunctuation = function removeUntranscribedPunctuation(tibetan) {
+  return tibetan.replace(/[༎།༑༈༔༵]/g, '').trim().replace(/ཿ/g, '་').replace(/་+/g, '་').replace(/་$/g, '').replace(/ཱུ/g, 'ཱུ').replace(/ཱི/g, 'ཱི').replace(/ཱྀ/g, 'ཱྀ');
+}; // We normalize exceptions keys here so that we can also normalize the tibetan
+// on the other side and simply check for existence in the object.
+
+
+exceptions = _(exceptions).inject(function (hash, value, key) {
+  hash[removeUntranscribedPunctuation(key)] = value;
+  return hash;
+}, {});
+
 var tr = function tr(word) {
   if (!word) return '';
   var tsheks = word.match(/་/);
-  return new Transliterator(word).transliterate().replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
+  return new TibetanTransliterator(word).transliterate().replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
 };
 
 var transcribeTibetanParts = function transcribeTibetanParts(text) {
@@ -20,7 +31,7 @@ var transcribeTibetanParts = function transcribeTibetanParts(text) {
 };
 
 var exceptionsAdjustedToLanguage = function exceptionsAdjustedToLanguage() {
-  return _(_.clone(exceptions)).extend(exceptionsPerLanguage[Settings.language]);
+  return _(_.clone(exceptions)).extend(exceptionsPerLanguage[TibetanTransliteratorSettings.language]);
 };
 
 var findException = function findException(tibetan) {
@@ -36,14 +47,14 @@ var findException = function findException(tibetan) {
 
     if (tibetanWithModifier) {
       var tibetanWithoutModifier = tibetanWithModifier[1];
-      exception = exceptionsAdjustedToLanguage()[tibetanWithoutModifier];
+      exception = exceptionFor(tibetanWithoutModifier);
       if (exception) modifier = modifiers[i];
     }
 
     i++;
   }
 
-  if (!exception) exception = exceptionsAdjustedToLanguage()[tibetan];
+  if (!exception) exception = exceptionFor(tibetan);
 
   if (exception) {
     if (modifier) exception += modifier;
@@ -60,4 +71,8 @@ var findException = function findException(tibetan) {
       transliterated: transliteration.trim().replace(/_/g, '')
     };
   }
+};
+
+var exceptionFor = function exceptionFor(tibetan) {
+  return exceptionsAdjustedToLanguage()[tibetan];
 };

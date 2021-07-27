@@ -6,7 +6,7 @@ var defaultToOriginal = function defaultToOriginal(settings) {
   return _(settings).defaults(originalSettings);
 };
 
-var Settings = {
+var TibetanTransliteratorSettings = {
   defaultLanguage: defaultLanguage,
   language: Storage.get('language') || defaultLanguage,
   settings: defaultToOriginal(settingsPerLanguage[defaultLanguage]),
@@ -30,5 +30,5 @@ var Settings = {
 };
 
 var t = function t(key) {
-  return Settings.get(key);
+  return TibetanTransliteratorSettings.get(key);
 };

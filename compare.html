@@ -111,7 +111,7 @@
         computed: {
           transliteratedLines: function() {
             var that = this;
-            Settings.change(this.language);
+            TibetanTransliteratorSettings.change(this.language);
             return this.lines.map(function(line, index) {
               return {
                 expected: that.expectedLines()[index],
@@ -176,7 +176,7 @@
       app = new Vue({
         el: '#main',
         data: {
-          selectedLanguage: Settings.language,
+          selectedLanguage: TibetanTransliteratorSettings.language,
           transliteration: Storage.get('compareTransliteration') || `
             Lüpa mépar gukpar nüma
             Chatsal gyachin mélha tsangpa

@@ -8,7 +8,7 @@ Vue.component('language-menu', {
   },
   data: function() {
     return {
-      languages: Settings.languages()
+      languages: TibetanTransliteratorSettings.languages()
     }
   },
   mounted: function() {

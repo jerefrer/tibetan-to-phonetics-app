@@ -49,7 +49,7 @@ $(function() {
     },
     computed: {
       transliteratedLines: function() {
-        Settings.change(this.language);
+        TibetanTransliteratorSettings.change(this.language);
         return this.lines.map((line) => {
           return new TibetanTransliterator(line, this.options).transliterate();
         }).join("\n");
@@ -67,7 +67,7 @@ $(function() {
   app = new Vue({
     el: '#main',
     data: {
-      selectedLanguage: Settings.language,
+      selectedLanguage: TibetanTransliteratorSettings.language,
       options: Storage.get('options') || { capitalize: true },
       tibetan: Storage.get('tibetan') || `
         ཧཱུྃ༔

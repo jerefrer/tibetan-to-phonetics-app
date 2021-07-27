@@ -14,8 +14,13 @@ Usage
 ### As a library
 
 ```js
-new TibetanTransliterator('མཁྱེན').transliterate()
-=> 'khyen'
+TibetanTransliteratorSettings.change('english (loose)');
+new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
+=> 'gangi lodrö'
+
+TibetanTransliteratorSettings.change('french (strict)');
+new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
+=> 'kangki lotreu'
 ```
 
 ### As a tool

@@ -118,7 +118,11 @@ var Group = function(tibetan, options = {}) {
         return firstSyllable;
     },
     addDoubleSIfNecesary: function(firstSyllable, secondSyllable) {
-      if (Settings.get('doubleS') && secondSyllable.match(/^s[^h]/) && !(firstSyllable.last().match(/[gk]/)))
+      if (
+        TibetanTransliteratorSettings.get('doubleS') &&
+        secondSyllable.match(/^s[^h]/) &&
+        !(firstSyllable.last().match(/[gk]/))
+      )
         return firstSyllable + 's';
       else
         return firstSyllable;

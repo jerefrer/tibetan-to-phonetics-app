@@ -36,7 +36,9 @@ var transcribeTibetanParts = function(text) {
 }
 
 var exceptionsAdjustedToLanguage = function() {
-  return _(_.clone(exceptions)).extend(exceptionsPerLanguage[Settings.language]);
+  return _(_.clone(exceptions)).extend(
+    exceptionsPerLanguage[TibetanTransliteratorSettings.language]
+  );
 }
 
 var findException = function(tibetan) {

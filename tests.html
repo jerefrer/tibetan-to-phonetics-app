@@ -76,7 +76,7 @@
     var startedAt = new Date().getTime();
 
     $(function() {
-      var storedLanguage = Settings.language;
+      var storedLanguage = TibetanTransliteratorSettings.language;
 
       Vue.component('test-diff', {
         props: {
@@ -190,8 +190,8 @@
           var ranTests = testGroups.map(function(testGroup) {
             testGroup.tests.each(function(test) {
               test.runTest = function() {
-                if (testGroup.language) Settings.change(testGroup.language)
-                else                    Settings.default();
+                if (testGroup.language) TibetanTransliteratorSettings.change(testGroup.language)
+                else                    TibetanTransliteratorSettings.default();
                 this.transliterated = new TibetanTransliterator(this.tibetan, {
                   capitalize: testGroup.capitalize
                 }).transliterate();
@@ -227,10 +227,10 @@
         },
         mounted () {
           $(this.$refs.time).text(processTime);
-          Settings.change(storedLanguage);
+          TibetanTransliteratorSettings.change(storedLanguage);
         },
         updated () {
-          Settings.change(storedLanguage);
+          TibetanTransliteratorSettings.change(storedLanguage);
         },
         template: `
           <div>

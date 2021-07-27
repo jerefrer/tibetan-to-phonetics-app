@@ -1,6 +1,6 @@
 "use strict";
 
-var Transliterator = function Transliterator(tibetan) {
+var TibetanTransliterator = function TibetanTransliterator(tibetan) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   return {
     tibetan: tibetan,
@@ -112,7 +112,7 @@ var Group = function Group(tibetan) {
       if (firstSyllable.last() == secondSyllable.first()) return firstSyllable.slice(0, firstSyllable.length - 1);else return firstSyllable;
     },
     addDoubleSIfNecesary: function addDoubleSIfNecesary(firstSyllable, secondSyllable) {
-      if (Settings.get('doubleS') && secondSyllable.match(/^s[^h]/) && !firstSyllable.last().match(/[gk]/)) return firstSyllable + 's';else return firstSyllable;
+      if (TibetanTransliteratorSettings.get('doubleS') && secondSyllable.match(/^s[^h]/) && !firstSyllable.last().match(/[gk]/)) return firstSyllable + 's';else return firstSyllable;
     },
     shiftSyllables: function shiftSyllables(numberOfShifts) {
       var that = this;
