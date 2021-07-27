@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Exceptions - Mantras',
+  name: 'Exceptions - Mantras and Sanskrit',
   tests: [
     { tibetan: 'ཧཱུཾ', transliteration: 'hung' },
     { tibetan: 'ཧཱུྃ', transliteration: 'hung' },
@@ -11,6 +11,11 @@ testGroups.push({
 
     { tibetan: 'ༀ་ཨཱཿཧཱུྃ', transliteration: 'om ah hung' },
     { tibetan: 'ཧ་ཧོ་ཧྲཱི' , transliteration: 'ha ho hri' },
+
+    { tibetan: 'དིཔྟ་ཙཀྲ་', transliteration: 'dipta tsaktra' },
+    { tibetan: 'ཀྲོསྡ་', transliteration: 'krodha' },
+
+    { tibetan: 'ཝཱ་རཱ་ཧཱི', transliteration: 'warahi' },
 
     { tibetan: 'སྭ་སྟི།' , transliteration: 'svasti' },
     { tibetan: 'ༀ་སྭ་སྟི།' , transliteration: 'om svasti' },

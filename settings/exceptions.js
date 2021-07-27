@@ -94,6 +94,8 @@ var exceptions = {
   'བཾ་རོའི': 'བམ་རོའི',
   'སམྦྷ་ཝར': 'sam_bha_war',
   'ཀཱི་ལ་ཡ': 'ki_la_ya',
+  'དིཔྟ་ཙཀྲ་': 'di_pta tsak_tra',
+  'ཀྲོསྡ་': 'kro_dha',
   'ༀ་ཨ་ར་པ་ཙ་ན་སྡིཿསྡིཿསྡིཿ': 'om a ra pa tsa na di di di',
   'ༀ་སརྦ་བྷུ་ཏ་ཨ་ཀར་ཁ་ཡ་ཛ': 'om sarva bhuta akar shaya dja',
 }
