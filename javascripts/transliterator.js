@@ -274,7 +274,7 @@ var Syllable = function(syllable) {
       }
     },
     getSuffix: function() {
-      if (this.hasCircleOnTop())
+      if (this.anusvara)
         if (this.main.match(/[ཧམ]/))
           return t('ngaSuffix');
         else
@@ -290,9 +290,6 @@ var Syllable = function(syllable) {
         case 'ལ': return t('laSuffix'); break;
         default: return '';
       }
-    },
-    hasCircleOnTop () {
-      return this.syllable.match(/[ཾྃྂ]/);
     },
     suffixIsSaDa: function() {
       return this.dreldraAi() || (this.suffix && this.suffix.match(/[སད]/));

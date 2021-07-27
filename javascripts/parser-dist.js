@@ -1,6 +1,7 @@
 "use strict";
 
 var Parser = function Parser(syllable, options) {
+  var normalizedSyllable = syllable.replace(/ཱུ/g, 'ཱུ').replace(/ཱི/g, 'ཱི').replace(/ཱྀ/g, 'ཱྀ');
   return {
     options: _(options).defaults({
       keepMainAsSuperscribed: false
@@ -8,19 +9,20 @@ var Parser = function Parser(syllable, options) {
     prefix: null,
     suffix: null,
     secondSuffix: null,
-    syllable: syllable,
+    syllable: normalizedSyllable,
     dreldraAi: false,
     completionU: false,
-    length: function length() {
-      return this.syllableWithoutWasur().length;
+    // Returns the syllable without either wasur, achung, anusvara or honorific
+    simplifiedSyllable: function simplifiedSyllable() {
+      return this.syllable.replace(/[ྭཱཾ༵ྃྂ]/g, '');
     },
-    syllableWithoutWasur: function syllableWithoutWasur() {
-      return this.syllable.replace('ྭ', '');
+    length: function length() {
+      return this.simplifiedSyllable().length;
     },
     at: function at(element, delta) {
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       var index;
-      var syllable = this.syllableWithoutWasur();
+      var syllable = this.simplifiedSyllable();
       if (options.fromEnd) index = _(syllable).lastIndexOf(element);else index = _(syllable).indexOf(element);
       return index >= 0 ? syllable[index + delta] : null;
     },
@@ -167,7 +169,11 @@ var Parser = function Parser(syllable, options) {
         subscribed: this.subscribed(),
         vowel: this.vowel(),
         suffix: this.suffix,
-        secondSuffix: this.secondSuffix
+        secondSuffix: this.secondSuffix,
+        wasur: this.wasur(),
+        achung: this.achung(),
+        anusvara: this.anusvara(),
+        honorificMarker: this.honorificMarker()
       };
     },
     secondLetterIsGaNgaBaMa: function secondLetterIsGaNgaBaMa() {
@@ -192,7 +198,16 @@ var Parser = function Parser(syllable, options) {
       }
     },
     wasur: function wasur() {
-      if (this.syllable.match('ྭ')) return 'ྭ';
+      return !!this.syllable.match('ྭ');
+    },
+    achung: function achung() {
+      return !!this.syllable.match('ཱ');
+    },
+    anusvara: function anusvara() {
+      return !!this.syllable.match(/[ཾྃྂ]/);
+    },
+    honorificMarker: function honorificMarker() {
+      return !!this.syllable.match('༵');
     },
     parse: function parse() {
       var dreldraAi = false;
