@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Formatting - spaces',
+  name: 'Formatting - Spaces',
   tests: [
     { tibetan: 'སངས་རྒྱས་དང་། །ཆོས།',  transliteration: 'sangyé tang chö' },
     { tibetan: 'ཧཱུྃ༔ ཨོ་རྒྱན་ཡུལ་གྱི་ནུབ་བྱང་མཚམས༔', transliteration: "hung orgyen yülkyi nupchang tsam" },
@@ -9,7 +9,7 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Formatting - spaces with capitalization',
+  name: 'Formatting - Spaces with capitalization',
   capitalize: true,
   tests: [
     { tibetan: 'སངས་རྒྱས་དང་། །ཆོས།',  transliteration: 'Sangyé tang Chö' },
