@@ -16,7 +16,6 @@ Usage
 ```js
 new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
 => 'kangki lotrö' // using default language: 'english (strict)'
-=> 'kangki lotreu'
 
 # Use the 'capitalize' option to capitalize the first letter of every group
 
