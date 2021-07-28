@@ -42,15 +42,49 @@ new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39
 transliteration</li>
 </ul>
 <h4 id="comparehtml"><code>compare.html</code></h4>
-<p><img src="./docs/compare-small.jpg" alt="Demo"></p>
+<p><img src="./docs/compare-small.jpg" alt="Compare"></p>
 <ul>
 <li>Choose your prefered transliteration style at the top</li>
 <li>Paste your Tibetan in the left box</li>
 <li>Paste your existing transliteration in the middle box</li>
-<li>See the differences in the right box</li>
+<li>See the differences in the right box<ul>
+<li>In red are the things that are present in the existing but missing from the auto-generated.</li>
+<li>In blue are the things that are present in the auto-generated but missing from the existing.</li>
+</ul>
+</li>
 <li>Clicking on a difference will make the necessary change in the existing
 transliteration so that it will disappear from the right box, allowing you
 to quickly prune those that are irrelevant to you.</li>
+</ul>
+<h2 id="exceptions">Exceptions</h2>
+<p><img src="./docs/exceptions.jpg" alt="Exceptions"></p>
+<ul>
+<li><p>Each line defines one exception.</p>
+</li>
+<li><p>If any of the values on the left of the colon is found in the line to be
+transliterated, then it will be treated as if it was the value on the right
+of the colon.</p>
+</li>
+<li><p>Tibetan characters will be transliterated as they would be normally.</p>
+</li>
+<li><p>Latin characters will be inserted as-is within the transliteration.</p>
+</li>
+<li><p>If using Latin characters, then between each syllable you need to add an
+underscore to help the system determine how many syllables the word is made
+of, even if it does not exactly match how the word is composed.
+For instance if you want to have སངས་རྒྱས་ always transliterated as &#39;sangye&#39;,
+you would do:</p>
+<pre><code>&#39;སངས་རྒྱས&#39;: &#39;san_gye&#39;</code></pre>
+<p>but not</p>
+<pre><code>&#39;སངས་རྒྱས&#39;: &#39;sang_gye&#39;</code></pre>
+</li>
+<li><p>If a line is defined with a left value that is included in another line with
+a longer left value, then the longer one will be used.
+For instance if these two rules are defined:</p>
+<pre><code>&#39;སངས་&#39;: &#39;SAN&#39;
+&#39;སངས་རྒྱས&#39;: &#39;san_GYE&#39;</code></pre>
+<p>Then སངས་རྒྱས་ would be transliterated as &#39;sanGYE&#39;, ignoring the first rule.</p>
+</li>
 </ul>
 <h2 id="rule-sets">Rule sets</h2>
 <p>All rule sets are defined in <code>settings/</code>.</p>
@@ -61,10 +95,13 @@ which all other sets are applied to override the default rules.</p>
 <p>If you wish to display &#39;kha&#39; as &#39;ka&#39;, you would have this line in your own
 rule set file:</p>
 <pre><code class="language-js">&#39;kha&#39;: &#39;k&#39;,</code></pre>
+<p><img src="./docs/ruleset.jpg" alt="Exceptions"></p>
 <p>Every single line in <code>original.js</code> can thus be copy-pasted in another set file
 to be overridden. You can edit existing rule sets or create new ones.</p>
-<p>To add a new one just copy an existing one and replace twice the name of the
-set:</p>
+<p>Style-specific exceptions can be defined and default ones can be overriden.
+Just add your exceptions in <code>exceptionsPerLanguage[&#39;my set&#39;]</code>.</p>
+<p>To add a new rule set just copy an existing one and replace twice the name of
+the set:</p>
 <pre><code class="language-html"># settings/my-new-set.js
 
 settingsPerLanguage[&#39;my new set&#39;] = {
@@ -78,7 +115,7 @@ exceptionsPerLanguage[&#39;my new set&#39;] = {
 <code>compare.html</code> and <code>tests.html</code> next to the other ones:</p>
 <pre><code class="language-html">&lt;script src=&quot;settings/my-new-set.js&quot;&gt;&lt;/script&gt;</code></pre>
 <h2 id="testing">Testing</h2>
-<p><img src="./docs/tests-small.jpg" alt="Demo"></p>
+<p><img src="./docs/tests-small.jpg" alt="Tests"></p>
 <p>Just open <code>tests.html</code>.</p>
 <p>Categories can be clicked to reveal their test cases.</p>
 <p>To ease debugging, clicking a Tibetan case on the right side will re-run the

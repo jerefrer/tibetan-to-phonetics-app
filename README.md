@@ -50,15 +50,53 @@ new TibetanTransliterator('གང་གི་བློ་གྲོས་').trans
 
 #### `compare.html`
 
-![Demo](./docs/compare-small.jpg)
+![Compare](./docs/compare-small.jpg)
 
 * Choose your prefered transliteration style at the top
 * Paste your Tibetan in the left box
 * Paste your existing transliteration in the middle box
 * See the differences in the right box
+  * In red are the things that are present in the existing but missing from the auto-generated.
+  * In blue are the things that are present in the auto-generated but missing from the existing.
 * Clicking on a difference will make the necessary change in the existing
   transliteration so that it will disappear from the right box, allowing you
   to quickly prune those that are irrelevant to you.
+
+Exceptions
+-----------
+
+![Exceptions](./docs/exceptions.jpg)
+
+* Each line defines one exception.
+
+* If any of the values on the left of the colon is found in the line to be
+  transliterated, then it will be treated as if it was the value on the right
+  of the colon.
+
+* Tibetan characters will be transliterated as they would be normally.
+* Latin characters will be inserted as-is within the transliteration.
+
+* If using Latin characters, then between each syllable you need to add an
+  underscore to help the system determine how many syllables the word is made
+  of, even if it does not exactly match how the word is composed.
+  For instance if you want to have སངས་རྒྱས་ always transliterated as 'sangye',
+  you would do:
+  ```
+  'སངས་རྒྱས': 'san_gye'
+  ```
+  but not
+  ```
+  'སངས་རྒྱས': 'sang_gye'
+  ```
+
+* If a line is defined with a left value that is included in another line with
+  a longer left value, then the longer one will be used.
+  For instance if these two rules are defined:
+  ```
+  'སངས་': 'SAN'
+  'སངས་རྒྱས': 'san_GYE'
+  ```
+  Then སངས་རྒྱས་ would be transliterated as 'sanGYE', ignoring the first rule.
 
 Rule sets
 -----------
@@ -79,11 +117,16 @@ rule set file:
 'kha': 'k',
 ```
 
+![Exceptions](./docs/ruleset.jpg)
+
 Every single line in `original.js` can thus be copy-pasted in another set file
 to be overridden. You can edit existing rule sets or create new ones.
 
-To add a new one just copy an existing one and replace twice the name of the
-set:
+Style-specific exceptions can be defined and default ones can be overriden.
+Just add your exceptions in `exceptionsPerLanguage['my set']`.
+
+To add a new rule set just copy an existing one and replace twice the name of
+the set:
 ```html
 # settings/my-new-set.js
 
@@ -104,7 +147,7 @@ Also don't forget to add the `<script>` include tag in `index.html`,
 Testing
 -----------
 
-![Demo](./docs/tests-small.jpg)
+![Tests](./docs/tests-small.jpg)
 
 Just open `tests.html`.
 
