@@ -12,12 +12,12 @@
 | underscore to help the system determine how many syllables the word is made
 | of, even if it does not exactly match how the word is composed.
 |
-| For instance if you want to have སངས་རྒྱས་ always transliterated as SANGYE in
-| capital, you would do:
+| For instance if you want to have སངས་རྒྱས་ always transliterated as 'sangye',
+| you would do:
 |
-| 'སངས་རྒྱས': 'SAN_GYE'
+| 'སངས་རྒྱས': 'san_gye'
 | but not
-| 'སངས་རྒྱས': 'SANG_GYE'
+| 'སངས་རྒྱས': 'sang_gye'
 |
 | If a line is defined with a left value that is included in another line with
 | a longer left value, then the longer one will be used.
