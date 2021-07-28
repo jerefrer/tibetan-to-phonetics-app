@@ -13,6 +13,7 @@
 * Optionally use dictionary to group words together? Is that even possible?
 
 ## Tests
+* Add tests for the programmatic usages with all different options.
 * Add tests for all the latest special cases:
   * aFollowedByN
   * oFollowedByN
