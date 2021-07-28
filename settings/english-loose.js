@@ -43,13 +43,6 @@ settingsPerLanguage['english (loose)'] = {
 
   // Yatas
   'gaYata': 'gy',             // གྱ
-
-  // Maybe
-  // 'kha': 'k',              // ཁ
-  // 'tha': 't',              // ཐ
-  // 'khaYata': 'ky',         // ཁྱ
-  // 'baYata': 'j',           // བྱ
-  // 'za': 'z',               // ཟ
 }
 
 exceptionsPerLanguage['english (loose)'] = {
