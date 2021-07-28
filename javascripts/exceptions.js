@@ -4,6 +4,7 @@ var removeUntranscribedPunctuationAndNormalize = function(tibetan) {
     .replace(/ཿ/g, '་')
     .replace(/་+/g, '་')
     .replace(/་$/g, '')
+    .replace(/ༀ/g, 'ཨོཾ')
     .replace(/ཱུ/g, 'ཱུ')
     .replace(/ཱི/g, 'ཱི')
     .replace(/ཱྀ/g, 'ཱྀ');

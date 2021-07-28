@@ -10,6 +10,8 @@ testGroups.push({
     { tibetan: 'རྂ་ཡྂ་ཁྂ་', transliteration: 'ram yam kham' },
 
     { tibetan: 'ༀ་ཨཱཿཧཱུྃ', transliteration: 'om ah hung' },
+    { tibetan: 'ཨོཾ་ཨཱཿཧཱུཾ།', transliteration: 'om ah hung' },
+
     { tibetan: 'ཧ་ཧོ་ཧྲཱི' , transliteration: 'ha ho hri' },
 
     { tibetan: 'དིཔྟ་ཙཀྲ་', transliteration: 'dipta tsaktra' },
