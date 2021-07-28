@@ -1,4 +1,4 @@
-var removeUntranscribedPunctuation = function(tibetan) {
+var removeUntranscribedPunctuationAndNormalize = function(tibetan) {
   return tibetan
     .replace(/[༎།༑༈༔༵]/g, '').trim()
     .replace(/ཿ/g, '་')
@@ -12,7 +12,7 @@ var removeUntranscribedPunctuation = function(tibetan) {
 // We normalize exceptions keys here so that we can also normalize the tibetan
 // on the other side and simply check for existence in the object.
 exceptions = _(exceptions).inject((hash, value, key) => {
-  hash[removeUntranscribedPunctuation(key)] = value;
+  hash[removeUntranscribedPunctuationAndNormalize(key)] = value;
   return hash;
 }, {});
 

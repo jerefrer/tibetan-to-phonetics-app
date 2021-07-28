@@ -5,7 +5,7 @@ var TibetanTransliterator = function(tibetan, options = {}) {
     tibetan: tibetan,
     capitalize: options.capitalize,
     transliterate: function() {
-      this.tibetan = removeUntranscribedPunctuation(this.tibetan);
+      this.tibetan = removeUntranscribedPunctuationAndNormalize(this.tibetan);
       var groups = this.tibetan.split(' ');
       return groups.map((tibetanGroup, index) => {
         var group = new Group(tibetanGroup).transliterate();
