@@ -9,13 +9,37 @@ var TibetanTransliterator = function TibetanTransliterator(tibetan) {
     transliterate: function transliterate() {
       var _this = this;
 
-      this.tibetan = removeUntranscribedPunctuation(this.tibetan);
-      var groups = this.tibetan.split(' ');
+      this.tibetan = removeUntranscribedPunctuationAndNormalize(this.tibetan);
+      this.tibetan = this.substituteNumbers(this.tibetan);
+      var groups = this.splitBySpacesOrNumbers(this.tibetan);
       return groups.map(function (tibetanGroup, index) {
-        var group = new Group(tibetanGroup).transliterate();
-        if (_this.capitalize) group = group.capitalize();
-        return group;
+        if (tibetanGroup.match(/^\d+$/)) return tibetanGroup;else {
+          var group = new Group(tibetanGroup).transliterate();
+          if (_this.capitalize) group = group.capitalize();
+          return group;
+        }
       }).join(' ');
+    },
+    splitBySpacesOrNumbers: function splitBySpacesOrNumbers(text) {
+      return _(text.split(/(\d+)| /)).compact();
+    },
+    substituteNumbers: function substituteNumbers(text) {
+      _({
+        '༠': '0',
+        '༡': '1',
+        '༢': '2',
+        '༣': '3',
+        '༤': '4',
+        '༥': '5',
+        '༦': '6',
+        '༧': '7',
+        '༨': '8',
+        '༩': '9'
+      }).each(function (arabic, tibetan) {
+        text = text.replace(tibetan, arabic);
+      });
+
+      return text;
     }
   };
 };
