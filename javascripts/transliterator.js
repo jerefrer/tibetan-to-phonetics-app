@@ -6,12 +6,29 @@ var TibetanTransliterator = function(tibetan, options = {}) {
     capitalize: options.capitalize,
     transliterate: function() {
       this.tibetan = removeUntranscribedPunctuationAndNormalize(this.tibetan);
-      var groups = this.tibetan.split(' ');
+      this.tibetan = this.substituteNumbers(this.tibetan);
+      var groups = this.splitBySpacesOrNumbers(this.tibetan);
       return groups.map((tibetanGroup, index) => {
-        var group = new Group(tibetanGroup).transliterate();
-        if (this.capitalize) group = group.capitalize();
-        return group;
+        if (tibetanGroup.match(/^\d+$/))
+          return tibetanGroup;
+        else {
+          var group = new Group(tibetanGroup).transliterate();
+          if (this.capitalize) group = group.capitalize();
+          return group;
+        }
       }).join(' ');
+    },
+    splitBySpacesOrNumbers (text) {
+      return _(text.split(/(\d+)| /)).compact();
+    },
+    substituteNumbers (text) {
+      _({
+        '༠': '0', '༡': '1', '༢': '2', '༣': '3', '༤': '4',
+        '༥': '5', '༦': '6', '༧': '7', '༨': '8', '༩': '9'
+      }).each((arabic, tibetan) => {
+        text = text.replace(tibetan, arabic);
+      })
+      return text;
     }
   }
 }
