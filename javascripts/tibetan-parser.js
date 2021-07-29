@@ -28,7 +28,7 @@ var TibetanParser = function(syllable, options) {
       return (index >= 0) ? syllable[index+delta] : null;
     },
     vowel: function() {
-      var match = this.syllable.match(/[ིེོུ]/);
+      var match = this.syllable.match(/[ིྀེཻོཽུ]/);
       return match && match[0];
     },
     superscribed: function() {
@@ -45,41 +45,41 @@ var TibetanParser = function(syllable, options) {
     },
     figureOutPrefix: function() {
       if (this.superscribed()) this.prefix = this.at(this.superscribed(), -1);
-      else                     this.prefix = this.at(this.main,           -1);
+      else                     this.prefix = this.at(this.root,           -1);
     },
     figureOutSuffixes: function() {
       if      (this.vowel()     ) this.suffix = this.at(this.vowel(),      1);
       else if (this.subscribed()) this.suffix = this.at(this.subscribed(), 1);
-      else                        this.suffix = this.at(this.main,         1);
+      else                        this.suffix = this.at(this.root,         1);
       this.secondSuffix = this.at(this.suffix, 1, { fromEnd: true });
     },
     convertMainAsRegularChar: function() {
-      switch(this.main) {
-        case 'ྐ': this.main = 'ཀ'; break;
-        case 'ྒ': this.main = 'ག'; break;
-        case 'ྔ': this.main = 'ང'; break;
-        case 'ྗ': this.main = 'ཇ'; break;
-        case 'ྙ': this.main = 'ཉ'; break;
-        case 'ྟ': this.main = 'ཏ'; break;
-        case 'ྡ': this.main = 'ད'; break;
-        case 'ྣ': this.main = 'ན'; break;
-        case 'ྦ': this.main = 'བ'; break;
-        case 'ྨ': this.main = 'མ'; break;
-        case 'ྩ': this.main = 'ཙ'; break;
-        case 'ྫ': this.main = 'ཛ'; break;
-        case 'ྕ': this.main = 'ཅ'; break;
-        case 'ྤ': this.main = 'པ'; break;
-        case 'ྷ': this.main = 'ཧ'; break;
+      switch(this.root) {
+        case 'ྐ': this.root = 'ཀ'; break;
+        case 'ྒ': this.root = 'ག'; break;
+        case 'ྔ': this.root = 'ང'; break;
+        case 'ྗ': this.root = 'ཇ'; break;
+        case 'ྙ': this.root = 'ཉ'; break;
+        case 'ྟ': this.root = 'ཏ'; break;
+        case 'ྡ': this.root = 'ད'; break;
+        case 'ྣ': this.root = 'ན'; break;
+        case 'ྦ': this.root = 'བ'; break;
+        case 'ྨ': this.root = 'མ'; break;
+        case 'ྩ': this.root = 'ཙ'; break;
+        case 'ྫ': this.root = 'ཛ'; break;
+        case 'ྕ': this.root = 'ཅ'; break;
+        case 'ྤ': this.root = 'པ'; break;
+        case 'ྷ': this.root = 'ཧ'; break;
       }
     },
     isAnExceptionNowHandled: function() {
       switch(this.syllable) {
-        case 'དབ':   this.prefix = 'ད'; this.main = 'བ';                                            return true; break;
-        case 'དགས':  this.prefix = 'ད'; this.main = 'ག'; this.suffix = 'ས';                          return true; break;
-        case 'དྭགས':                    this.main = 'ད'; this.suffix = 'ག'; this.secondSuffix = 'ས'; return true; break;
-        case 'དམས':  this.prefix = 'ད'; this.main = 'མ'; this.suffix = 'ས';                          return true; break;
-        case 'འགས':  this.prefix = 'འ'; this.main = 'ག'; this.suffix = 'ས';                          return true; break;
-        case 'མངས':  this.prefix = 'མ'; this.main = 'ང'; this.suffix = 'ས';                          return true; break;
+        case 'དབ':   this.prefix = 'ད'; this.root = 'བ';                                            return true; break;
+        case 'དགས':  this.prefix = 'ད'; this.root = 'ག'; this.suffix = 'ས';                          return true; break;
+        case 'དྭགས':                    this.root = 'ད'; this.suffix = 'ག'; this.secondSuffix = 'ས'; return true; break;
+        case 'དམས':  this.prefix = 'ད'; this.root = 'མ'; this.suffix = 'ས';                          return true; break;
+        case 'འགས':  this.prefix = 'འ'; this.root = 'ག'; this.suffix = 'ས';                          return true; break;
+        case 'མངས':  this.prefix = 'མ'; this.root = 'ང'; this.suffix = 'ས';                          return true; break;
         default: return false;
       }
     },
@@ -87,7 +87,7 @@ var TibetanParser = function(syllable, options) {
       return {
         prefix: this.prefix,
         superscribed: this.superscribed(),
-        main: this.main,
+        root: this.root,
         subscribed: this.subscribed(),
         vowel: this.vowel(),
         suffix: this.suffix,
@@ -121,16 +121,20 @@ var TibetanParser = function(syllable, options) {
       }
     },
     wasur: function() {
-      return !!this.syllable.match('ྭ');
+      var match = this.syllable.match('ྭ');
+      if (match) return match[0];
     },
     achung: function() {
-      return !!this.syllable.match('ཱ');
+      var match = this.syllable.match('ཱ');
+      if (match) return match[0];
     },
     anusvara: function() {
-      return !!this.syllable.match(/[ཾྃྂ]/);
+      var match = this.syllable.match(/[ཾྃྂ]/);
+      if (match) return match[0];
     },
     honorificMarker: function() {
-      return !!this.syllable.match('༵');
+      var match = this.syllable.match('༵');
+      if (match) return match[0];
     },
     parse: function() {
       var dreldraAi = false;
@@ -138,23 +142,23 @@ var TibetanParser = function(syllable, options) {
       this.handleDreldraAi();
       this.handleEndingU();
       this.handleEndingO();
-      if (this.length() == 1) this.main = this.syllable[0];
-      if (this.vowel()) this.main = this.at(this.vowel(), -1);
-      if (this.subscribed()) this.main = this.at(this.subscribed(), -1);
-      if (this.superscribed()) this.main = this.at(this.superscribed(), 1);
-      if (!this.main) {
+      if (this.length() == 1) this.root = this.syllable[0];
+      if (this.vowel()) this.root = this.at(this.vowel(), -1);
+      if (this.subscribed()) this.root = this.at(this.subscribed(), -1);
+      if (this.superscribed()) this.root = this.at(this.superscribed(), 1);
+      if (!this.root) {
         if (this.length() == 2) {
-          this.main = this.syllable[0];
+          this.root = this.syllable[0];
           this.suffix = this.syllable[1];
         } else if (this.length() == 4) {
           this.prefix = this.syllable[0];
-          this.main = this.syllable[1];
+          this.root = this.syllable[1];
           this.suffix = this.syllable[2];
           this.secondSuffix = this.syllable[3];
         } else if (this.length() == 3) {
-          if (!(this.syllable.last() == 'ས')) this.main = this.syllable[1];
-          else if (!this.secondLetterIsGaNgaBaMa()) this.main = this.syllable[1];
-          else if ( this.secondLetterIsGaNgaBaMa()) this.main = this.syllable[0];
+          if (!(this.syllable.last() == 'ས')) this.root = this.syllable[1];
+          else if (!this.secondLetterIsGaNgaBaMa()) this.root = this.syllable[1];
+          else if ( this.secondLetterIsGaNgaBaMa()) this.root = this.syllable[0];
           else alert("There has been an error:\n\nThe syllable "+this.syllable+" could not be parsed.\n\nAre you sure it's correct?")
         }
       }
