@@ -171,7 +171,7 @@ var Syllable = function(syllable) {
     },
     consonant: function() {
       if (this.lata()) {
-        if (this.main == 'ཟ')                        return t('lataDa');
+        if (this.root == 'ཟ')                        return t('lataDa');
         else                                         return t('lata');
       }
       if (this.daoWa()) {
@@ -179,7 +179,7 @@ var Syllable = function(syllable) {
         else if (this.vowel)                         return '';
         else                                         return t('wa');
       }
-      switch(this.main) {
+      switch(this.root) {
         case 'ཀ':
           if      (this.rata())                      return t('rata1');
           else if (this.yata())                      return t('kaYata');
@@ -295,7 +295,7 @@ var Syllable = function(syllable) {
     },
     getSuffix: function() {
       if (this.anusvara)
-        if (this.main.match(/[ཧམ]/))
+        if (this.root.match(/[ཧམ]/))
           return t('ngaSuffix');
         else
           return t('maSuffix');
