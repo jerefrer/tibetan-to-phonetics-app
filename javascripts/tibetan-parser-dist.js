@@ -10,7 +10,7 @@ var TibetanParser = function TibetanParser(syllable, options) {
     suffix: null,
     secondSuffix: null,
     syllable: normalizedSyllable,
-    dreldraAi: false,
+    aKikuI: false,
     completionU: false,
     // Returns the syllable without either wasur, achung, anusvara or honorific
     simplifiedSyllable: function simplifiedSyllable() {
@@ -182,7 +182,7 @@ var TibetanParser = function TibetanParser(syllable, options) {
     handleDreldraAi: function handleDreldraAi() {
       if (this.length() > 2 && this.syllable.match(/འི$/)) {
         if (this.length() <= 3) this.syllable = this.syllable.replace(/འི$/, '');else this.syllable = this.syllable.replace(/འི$/, 'འ');
-        this.dreldraAi = true;
+        this.aKikuI = true;
       }
     },
     handleEndingO: function handleEndingO() {
@@ -214,7 +214,7 @@ var TibetanParser = function TibetanParser(syllable, options) {
       if (match) return match[0];
     },
     parse: function parse() {
-      var dreldraAi = false;
+      var aKikuI = false;
       if (this.isAnExceptionNowHandled()) return this.returnObject();
       this.handleDreldraAi();
       this.handleEndingU();
@@ -239,7 +239,7 @@ var TibetanParser = function TibetanParser(syllable, options) {
       }
 
       this.figureOutPrefixAndSuffixes();
-      if (this.dreldraAi) this.suffix = 'འི';
+      if (this.aKikuI) this.suffix = 'འི';
       if (this.completionU) this.suffix = 'འུ';
       if (this.completionO) this.suffix = 'འོ';
       if (this.superscribed() && !this.options.keepMainAsSuperscribed) this.convertMainAsRegularChar();

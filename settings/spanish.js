@@ -26,7 +26,7 @@ settingsPerLanguage['spanish'] = {
   'ü': 'u',
   'ö': 'o',
 
-  'dreldraAi': 'e',
+  'aKikuI': 'e',
   'drengbu': 'e',
 
   'kha': 'k',

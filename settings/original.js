@@ -38,7 +38,7 @@ var originalSettings = {
   'drengbuGaBaLaNga': 'e', // འཕྲེང་ / drengbu and suffix ga, ba, la, nga
   'aNa': 'e',              // རྒྱན་  / no vowel and suffix na
   'aLa': 'e',              // རྒྱལ་  / no vowel and suffix la
-  'dreldraAi': 'é',        // པའི
+  'aKikuI': 'é',           // པའི
 
   // Regular consonants
   'ka': 'k',               // ཀ

@@ -124,7 +124,7 @@ var Group = function Group(tibetan) {
       if (this.groupNumberOfSyllables > 1 && this.syllables.length == 0) return this.BaAsWaWhenSecondSyllable(syllable);
     },
     BaAsWaWhenSecondSyllable: function BaAsWaWhenSecondSyllable(syllable) {
-      if (syllable == 'བ') return t('wa') + t('a');else if (syllable == 'བར') return t('wa') + t('a') + t('raSuffix');else if (syllable == 'བས') return t('wa') + t('drengbu');else if (syllable == 'བའི') return t('wa') + t('dreldraAi');else if (syllable == 'བོ') return t('wa') + t('o');else if (syllable == 'བོས') return t('wa') + t('ö');else if (syllable == 'བོའི') return t('wa') + t('ö');else if (syllable == 'བུས') return t('wa') + t('ü');
+      if (syllable == 'བ') return t('wa') + t('a');else if (syllable == 'བར') return t('wa') + t('a') + t('raSuffix');else if (syllable == 'བས') return t('wa') + t('drengbu');else if (syllable == 'བའི') return t('wa') + t('aKikuI');else if (syllable == 'བོ') return t('wa') + t('o');else if (syllable == 'བོས') return t('wa') + t('ö');else if (syllable == 'བོའི') return t('wa') + t('ö');else if (syllable == 'བུས') return t('wa') + t('ü');
     },
     connectWithDashIfNecessary: function connectWithDashIfNecessary(firstSyllable, secondSyllable) {
       var twoVowels = this.endsWithVowel(firstSyllable) && this.startsWithVowel(secondSyllable);
@@ -169,14 +169,14 @@ var Syllable = function Syllable(syllable) {
     },
     consonant: function consonant() {
       if (this.lata()) {
-        if (this.main == 'ཟ') return t('lataDa');else return t('lata');
+        if (this.root == 'ཟ') return t('lataDa');else return t('lata');
       }
 
       if (this.daoWa()) {
         if (this.yata()) return t('daoWaYata');else if (this.vowel) return '';else return t('wa');
       }
 
-      switch (this.main) {
+      switch (this.root) {
         case 'ཀ':
           if (this.rata()) return t('rata1');else if (this.yata()) return t('kaYata');else return t('ka');
           break;
@@ -334,20 +334,20 @@ var Syllable = function Syllable(syllable) {
           break;
 
         case 'ུ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ü');else return t('u');
+          if (this.aKikuIOrSuffixIsLaSaDaNa()) return t('ü');else return t('u');
           break;
 
         case 'ོ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ö');else return t('o');
+          if (this.aKikuIOrSuffixIsLaSaDaNa()) return t('ö');else return t('o');
           break;
 
         default:
-          if (this.dreldraAi()) return t('dreldraAi');else if (this.suffix && this.suffix.match(/[སད]/)) return t('drengbu');else if (this.suffix && this.suffix.match(/[ནཎ]/)) return t('aNa');else if (this.suffix && this.suffix == 'ལ') return t('aLa');else return t('a');
+          if (this.aKikuI()) return t('aKikuI');else if (this.suffix && this.suffix.match(/[སད]/)) return t('drengbu');else if (this.suffix && this.suffix.match(/[ནཎ]/)) return t('aNa');else if (this.suffix && this.suffix == 'ལ') return t('aLa');else return t('a');
           break;
       }
     },
     getSuffix: function getSuffix() {
-      if (this.anusvara) if (this.main.match(/[ཧམ]/)) return t('ngaSuffix');else return t('maSuffix');
+      if (this.anusvara) if (this.root.match(/[ཧམ]/)) return t('ngaSuffix');else return t('maSuffix');
 
       switch (this.suffix) {
         case 'ག':
@@ -387,15 +387,15 @@ var Syllable = function Syllable(syllable) {
       }
     },
     suffixIsSaDa: function suffixIsSaDa() {
-      return this.dreldraAi() || this.suffix && this.suffix.match(/[སད]/);
+      return this.aKikuI() || this.suffix && this.suffix.match(/[སད]/);
     },
-    dreldraAiOrSuffixIsLaSaDaNa: function dreldraAiOrSuffixIsLaSaDaNa() {
-      return this.dreldraAi() || this.suffix && this.suffix.match(/[ལསདནཎ]/);
+    aKikuIOrSuffixIsLaSaDaNa: function aKikuIOrSuffixIsLaSaDaNa() {
+      return this.aKikuI() || this.suffix && this.suffix.match(/[ལསདནཎ]/);
     },
     daoWa: function daoWa() {
       return this.syllable.match(/^དབ[ྱ]?[ིེོུ]?[ངསགརལདའབ]?[ིས]?$/);
     },
-    dreldraAi: function dreldraAi() {
+    aKikuI: function aKikuI() {
       return this.syllable.match(/འི$/);
     },
     endingO: function endingO() {

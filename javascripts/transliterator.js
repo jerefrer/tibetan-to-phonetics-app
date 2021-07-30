@@ -114,7 +114,7 @@ var Group = function(tibetan, options = {}) {
       if      (syllable == 'བ')   return t('wa') + t('a');
       else if (syllable == 'བར')  return t('wa') + t('a') + t('raSuffix');
       else if (syllable == 'བས')  return t('wa') + t('drengbu');
-      else if (syllable == 'བའི') return t('wa') + t('dreldraAi');
+      else if (syllable == 'བའི') return t('wa') + t('aKikuI');
       else if (syllable == 'བོ')  return t('wa') + t('o');
       else if (syllable == 'བོས') return t('wa') + t('ö');
       else if (syllable == 'བོའི') return t('wa') + t('ö');
@@ -280,13 +280,13 @@ var Syllable = function(syllable) {
           else if (this.suffix && this.suffix.match(/[གབལང]/)) return t('drengbuGaBaLaNga');
           else                                                return t('drengbu'); break;
         case 'ུ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ü');
+          if (this.aKikuIOrSuffixIsLaSaDaNa()) return t('ü');
           else                                    return t('u'); break;
         case 'ོ':
-          if (this.dreldraAiOrSuffixIsLaSaDaNa()) return t('ö');
+          if (this.aKikuIOrSuffixIsLaSaDaNa()) return t('ö');
           else                                    return t('o'); break;
         default:
-          if      (this.dreldraAi())                         return t('dreldraAi');
+          if      (this.aKikuI())                         return t('aKikuI');
           else if (this.suffix && this.suffix.match(/[སད]/)) return t('drengbu');
           else if (this.suffix && this.suffix.match(/[ནཎ]/)) return t('aNa');
           else if (this.suffix && this.suffix == 'ལ')        return t('aLa');
@@ -312,15 +312,15 @@ var Syllable = function(syllable) {
       }
     },
     suffixIsSaDa: function() {
-      return this.dreldraAi() || (this.suffix && this.suffix.match(/[སད]/));
+      return this.aKikuI() || (this.suffix && this.suffix.match(/[སད]/));
     },
-    dreldraAiOrSuffixIsLaSaDaNa: function() {
-      return this.dreldraAi() || (this.suffix && this.suffix.match(/[ལསདནཎ]/));
+    aKikuIOrSuffixIsLaSaDaNa: function() {
+      return this.aKikuI() || (this.suffix && this.suffix.match(/[ལསདནཎ]/));
     },
     daoWa: function() {
       return this.syllable.match(/^དབ[ྱ]?[ིེོུ]?[ངསགརལདའབ]?[ིས]?$/);
     },
-    dreldraAi: function() {
+    aKikuI: function() {
       return this.syllable.match(/འི$/);
     },
     endingO: function() {

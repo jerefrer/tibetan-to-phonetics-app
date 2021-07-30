@@ -27,7 +27,7 @@ settingsPerLanguage['english (loose)'] = {
   'endLinkChar': "'",
 
   // Vowels
-  'dreldraAi': "a'i",         // པའི
+  'aKikuI': "a'i",         // པའི
 
   // Regular consonants
   'ga': 'g',                  // ག
