@@ -164,7 +164,20 @@ Credits
 -----------
 
 The rules used to deconstruct the syllables into parts (root, prefix, ...)
-are almost entirely based on John Rockwell's ZALKEJZAMLEKJZA
+are almost entirely based on John Rockwell's "A Primer for Classical Literary
+Tibetan, Volume 1", so kudos to everyone involved in the production of this
+great book.
+
+A zillion thanks also to:
+
+* Joe B. Wilson and everybody involved in publishing "Translating Tibetan from
+  Buddhism" which is equally great.
+* Everybody involved in building an maintaining Vue.js, jQuery, SemanticUI,
+  Sugar.js, Underscore.js, DevDocs, Zeal and Google Chrome for making web
+  development so easy and enjoyable.
+
+Through the little virtue coming from this work, may all beings human and
+otherwise reach absolute freedom.
 
 License
 -----------
