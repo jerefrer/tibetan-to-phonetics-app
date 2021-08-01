@@ -172,11 +172,12 @@ A zillion thanks also to:
 
 * Joe B. Wilson and everybody involved in publishing *Translating Tibetan from
   Buddhism* which is equally great.
+* Tony Duff and friends for producing all these beautiful Tibetan fonts.
 * Everybody involved in building an maintaining Vue.js, jQuery, SemanticUI,
   Sugar.js, Underscore.js, DevDocs, Zeal and Google Chrome for making web
   development so easy and enjoyable.
 
-Through the little virtue coming from this work, may all beings human and
+Through the virtue coming from this work, may all beings human and
 otherwise reach absolute freedom.
 
 License
