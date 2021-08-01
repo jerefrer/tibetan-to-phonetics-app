@@ -1,6 +1,6 @@
 @font-face {
   font-family: "TibetanMachineUnicode";
-  src: url("../vendor/fonts/TibetanMachineUnicode1.0_0.ttf.ttf") format('truetype');
+  src: url("../vendor/fonts/TibetanMachineUnicode1.0_0.ttf") format('truetype');
 }
 
 body {
