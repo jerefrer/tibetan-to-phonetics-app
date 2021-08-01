@@ -57,7 +57,7 @@ body {
 }
 
 .tibetan {
-  font-family: TibetanChogyalUnicode-170221, TibetanChogyalUnicode, TibetanMachineUnicode !important;
+  font-family: TibetanChogyalUnicode-170221, TibetanChogyalUnicode-ID, TibetanChogyalUnicode, TibetanMachineUnicode !important;
   font-size: 36px !important;
   line-height: 1em !important;
   vertical-align: middle;
