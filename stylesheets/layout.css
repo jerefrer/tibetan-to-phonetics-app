@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Tibetan";
-  src: url("../vendor/fonts/TibetanChogyalUnicode-170221.ttf") format('truetype');
+  font-family: "TibetanMachineUnicode";
+  src: url("../vendor/fonts/TibetanMachineUnicode1.0_0.ttf.ttf") format('truetype');
 }
 
 body {
@@ -57,7 +57,7 @@ body {
 }
 
 .tibetan {
-  font-family: "Tibetan" !important;
+  font-family: TibetanChogyalUnicode-170221, TibetanChogyalUnicode, TibetanMachineUnicode !important;
   font-size: 36px !important;
   line-height: 1em !important;
   vertical-align: middle;
