@@ -24,12 +24,12 @@ new TibetanTransliterator( &#39;ཨེ་མ་ཧོཿ སྤྲོས་བ�
 new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;, { language: &#39;english (loose)&#39; }).transliterate();
 =&gt; &#39;gangi lodrö&#39;
 
-new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;, { language: &#39;french (strict)&#39; }).transliterate();
+new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;, { language: &#39;french&#39; }).transliterate();
 =&gt; &#39;kangki lotreu&#39;
 
 # Or set the language once and for all instead of every transliteration:
 
-TibetanTransliteratorSettings.change(&#39;french (strict)&#39;);
+TibetanTransliteratorSettings.change(&#39;french&#39;);
 new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;).transliterate();</code></pre>
 <h3 id="as-a-tool">As a tool</h3>
 <h4 id="indexhtml"><code>index.html</code></h4>

@@ -23,6 +23,7 @@
 -----------------------------------------------------------------------------*/
 
 var originalSettings = {
+
   // End link char (as in pa-o or be-u)
   'endLinkChar': '-',
 
@@ -38,7 +39,7 @@ var originalSettings = {
   'drengbuGaBaLaNga': 'e', // འཕྲེང་ / drengbu and suffix ga, ba, la, nga
   'aNa': 'e',              // རྒྱན་  / no vowel and suffix na
   'aLa': 'e',              // རྒྱལ་  / no vowel and suffix la
-  'aKikuI': 'é',           // པའི
+  'aKikuI': "a'i",         // པའི
 
   // Regular consonants
   'ka': 'k',               // ཀ
@@ -46,8 +47,8 @@ var originalSettings = {
   'ga': 'k',               // ག
   'nga': 'ng',             // ང
   'ca': 'ch',              // ཅ
-  'cha': 'ch',             // ཆ
-  'ja': 'ch',              // ཇ
+  'cha': "ch'",            // ཆ
+  'ja': "ch'",             // ཇ
   'nya': 'ny',             // ཉ
   'ta': 't',               // ཏ
   'tha': 'th',             // ཐ
@@ -55,10 +56,10 @@ var originalSettings = {
   'na': 'n',               // ན
   'pa': 'p',               // པ
   'pha': "p'",             // ཕ
-  'ba': 'p',               // བ
+  'ba': "p'",              // བ
   'ma': 'm',               // མ
   'tsa': 'ts',             // ཙ
-  'tsha': 'ts',            // ཚ
+  'tsha': "ts'",           // ཚ
   'dza': 'dz',             // ཛ
   'wa': 'w',               // ཝ
   'zha': 'zh',             // ཞ
@@ -90,8 +91,8 @@ var originalSettings = {
   'gaYata': 'ky',          // གྱ
   'gaModYata': 'gy',       // སྒྱ / ga with yata and prefix/superscribed
   'paYata': 'ch',          // པྱ
-  'phaYata': 'ch',         // ཕྱ
-  'baYata': 'ch',          // བྱ
+  'phaYata': "ch'",        // ཕྱ
+  'baYata': "ch'",         // བྱ
   'baModYata': 'j',        // སྦྱ / ba with yata and prefix/superscribed
   'daoWaYata': 'y',        // དབྱ
 
@@ -110,4 +111,5 @@ var originalSettings = {
   'maSuffix': 'm',         // དམ
   'raSuffix': 'r',         // དར
   'laSuffix': 'l',         // དལ
+
 }

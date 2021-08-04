@@ -22,32 +22,23 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-settingsPerLanguage['french (strict)'] = {
-  'doubleS': true,
+settingsPerLanguage['english (semi-strict)'] = {
 
-  'u': 'ou',
-  'ü': 'u',
-  'ö': 'eu',
+  // Vowels
+  'aKikuI': 'é',           // པའི
 
-  'ca': 'tch',
-  'cha': "tch'",
-  'ja': 'dj',
-  'tha': "t'",
-  'tsha': "ts'",
-  'sa': 's',
-  'sha': 'ch',
-  'zha': 'sh',
+  // Regular consonants
+  'cha': 'ch',             // ཆ
+  'ja': 'ch',              // ཇ
+  'ba': 'p',               // བ
+  'tsha': 'ts',            // ཚ
 
-  'rata2': "t'r",
-  'jaMod': 'dj',
-  'gaMod': 'gu',
-  'gaModYata': 'gui',
-  'paYata': 'tch',
-  'phaYata': "tch'",
-  'baYata': "tch'",
-  'baModYata': 'dj',
+  // Yatas
+  'phaYata': 'ch',         // ཕྱ
+  'baYata': 'ch',          // བྱ
+
 }
 
-exceptionsPerLanguage['french (strict)'] = {
+exceptionsPerLanguage['english (semi-strict)'] = {
 
 }

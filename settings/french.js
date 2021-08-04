@@ -22,36 +22,42 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-settingsPerLanguage['english (loose)'] = {
+settingsPerLanguage['french'] = {
 
-  // Linking char (as in pa-o or pe-u)
-  'endLinkChar': "'",
+  'doubleS': true,
 
   // Vowels
-  'aKikuI': 'é',              // པའི
+  'u': 'ou',               // འུ
+  'ü': 'u',                // འུས
+  'ö': 'eu',               // འོས
+  'aKikuI': 'é',           // པའི
 
   // Regular consonants
-  'ga': 'g',                  // ག
-  'cha': 'ch',                // ཆ
-  'ba': 'p',                  // བ
-  'tsha': 'ts',               // ཚ
-  'ja': 'j',                  // ཇ
-  'da': 'd',                  // ད
-  'pha': 'p',                 // ཕ
-  'ba': 'b',                  // བ
-  'zha': 'sh',                // ཞ
+  'ca': 'tch',             // ཅ
+  'cha': "tch'",           // ཆ
+  'ja': 'dj',              // ཇ
+  'tha': "t'",             // ཐ
+  'ba': 'p',               // བ
+  'tsha': "ts'",           // ཚ
+  'sha': 'ch',             // ཤ
+  'zha': 'sh',             // ཞ
+
+  // Modified consonants (with prefix or superscribed)
+  'jaMod': 'dj',           // རྗ
+  'gaMod': 'gu',           // རྒ
 
   // Ratas
-  'rata2': 'tr',              // ཁྲ  // 2nd column with rata
-  'rata3': 'dr',              // བྲ  // 3rd column with rata
+  'rata2': "t'r",          // ཁྲ  / 2nd col with rata
 
   // Yatas
-  'gaYata': 'gy',             // གྱ
-  'phaYata': 'ch',            // ཕྱ
-  'baYata': 'ch',             // བྱ
+  'gaModYata': 'gui',      // སྒྱ / ga with yata and prefix/superscribed
+  'paYata': 'tch',         // པྱ
+  'phaYata': "tch'",       // ཕྱ
+  'baYata': "tch'",        // བྱ
+  'baModYata': 'dj',       // སྦྱ / ba with yata and prefix/superscribed
 
 }
 
-exceptionsPerLanguage['english (loose)'] = {
+exceptionsPerLanguage['french'] = {
 
 }

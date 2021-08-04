@@ -1,4 +1,4 @@
-var defaultLanguage = 'english (strict)';
+var defaultLanguage = 'english (semi-strict)';
 
 var defaultToOriginal = function(settings) {
   return _(settings).defaults(originalSettings);
