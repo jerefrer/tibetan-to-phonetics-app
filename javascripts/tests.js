@@ -15,10 +15,10 @@ $(function() {
       }
     },
     template: `
-      <span style="margin-left: 20px; font-size: 1.2em">
+      <span style="font-size: 1.2em">
         <span
           v-for="part in parts"
-          v-bind:style="[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']"
+          :style="[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']"
           >{{part.added || part.removed ? part.value.replace(/ /, '_') : part.value}}</span>
       </span>
     `
@@ -34,33 +34,24 @@ $(function() {
       },
       actual: function() {
         return this.test.transliterated;
-      },
-      spanStyle: function() {
-        var s = {};
-        if (!this.sentence) s['width'] = '120px;'
-        else s['display'] = 'block';
-        return s;
-      },
-      tibetanStyle: function() {
-        var s = {};
-        if (!this.sentence) s['width'] = '30px;'
-        return s;
       }
     },
     template: `
       <span
-        class="ui black label test" v-bind:style="spanStyle"
-        v-on:click="test.runTest()"
-        >
+        class="ui black label test"
+        :style="{display: sentence ? 'block' : 'inline-block'}"
+        @click="test.runTest()"
+      >
         <span>
           <i v-if=" test.pass" class="check green icon"></i>
           <i v-if="!test.pass" class="times red icon"></i>
         </span>
-        <span class="tibetan" v-bind:style="tibetanStyle">{{test.tibetan}}</span>
+        <span class="tibetan">{{test.tibetan}}</span>
         <test-diff
           v-if="expected != actual"
-          v-bind:expected="expected"
-          v-bind:actual="actual"
+          :expected="expected"
+          :actual="actual"
+          :style="{ marginLeft: sentence ? '20px' : 'inherit' }"
         ></test-diff>
       </span>
     `
@@ -84,9 +75,7 @@ $(function() {
     template: `
       <tr
         class="ui inverted segment results-group">
-        <td class="header"
-          v-on:click="opened=!opened"
-        >
+        <td class="header" @click="opened = !opened">
           {{name}}
         </td>
         <td class="count">{{passedCount}}/{{total}}</td>
@@ -98,9 +87,9 @@ $(function() {
           <test-result
             v-if="!opened"
             v-for="(test, index) in tests"
-            v-bind:sentence="sentences"
-            v-bind:test="test"
-            v-bind:key="index"
+            :sentence="sentences"
+            :test="test"
+            :key="index"
           >
           </test-result>
         </td>
@@ -164,11 +153,18 @@ $(function() {
           <thead>
             <tr>
               <td class="ui inverted header">
-                Total: <span v-bind:style="style">{{percentage.toPrecision(3)}}% ({{passedCount}}/{{total}})</span>
+                Total:
+                <span :style="style">
+                  {{percentage.toPrecision(3)}}%
+                  ({{passedCount}}/{{total}})
+                </span>
                 <span v-if="passedCount != total">
                    —
                   Texts only:
-                  <span v-bind:style="style">{{percentageTexts.toPrecision(3)}}% ({{textsPassed}}/{{textsTotal}})</span>
+                  <span :style="style">
+                    {{percentageTexts.toPrecision(3)}}%
+                    ({{textsPassed}}/{{textsTotal}})
+                  </span>
                 </span>
                  —
                 Ran in: <span ref="time"></span>ms
@@ -178,10 +174,10 @@ $(function() {
           <tbody>
             <results-group
              v-for="(test, index) in tests"
-             v-bind:key="index"
-             v-bind:name="test.name"
-             v-bind:sentences="test.sentences"
-             v-bind:tests="test.tests">
+             :key="index"
+             :name="test.name"
+             :sentences="test.sentences"
+             :tests="test.tests">
             </results-group>
           </tbody>
         </table>
