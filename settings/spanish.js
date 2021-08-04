@@ -23,25 +23,39 @@
 -----------------------------------------------------------------------------*/
 
 settingsPerLanguage['spanish'] = {
-  'ü': 'u',
-  'ö': 'o',
 
-  'aKikuI': 'e',
-  'drengbu': 'e',
+  // Vowels
+  'ü': 'u',                // འུས
+  'ö': 'o',                // འོས
+  'drengbu': 'e',          // འེ
+  'aKikuI': 'e',           // འི
 
-  'kha': 'k',
-  'nya': 'ñ',
-  'tha': 't',
-  'pha': 'p',
-  'dza': 'ds',
-  'zha': 'sh',
+  // Regular consonants
+  'kha': 'k',              // ཁ
+  'cha': 'ch',             // ཆ
+  'nya': 'ñ',              // ཉ
+  'tha': 't',              // ཐ
+  'pha': 'p',              // ཕ
+  'ba': 'p',               // བ
+  'tsha': 'ts',            // ཚ
+  'dza': 'ds',             // ཛ
+  'zha': 'sh',             // ཞ
 
-  'rata2': 'tr',
-  'jaMod': 'y',
-  'gaMod': 'gu',
-  'zaMod': 's',
-  'baModYata': 'y',
-  'gaModYata': 'gui',
+  // Modified consonants (with prefix or superscribed)
+  'gaMod': 'gu',           // གཇ
+  'jaMod': 'y',            // རྗ
+  'zaMod': 's',            // བཟ
+
+  // Ratas
+  'rata2': 'tr',           // ཁྲ  / 2nd col with rata
+
+  // Yatas
+  'gaModYata': 'gui',      // སྒྱ / ga with yata and prefix/superscribed
+  'paYata': 'ch',          // པྱ
+  'phaYata': 'ch',         // ཕྱ
+  'baYata': 'ch',          // བྱ
+  'baModYata': 'y',        // སྦྱ / ba with yata and prefix/superscribed
+
 }
 
 exceptionsPerLanguage['spanish'] = {
