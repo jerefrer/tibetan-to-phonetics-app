@@ -137,7 +137,7 @@ var Group = function Group(tibetan) {
       if (firstSyllable.last() == secondSyllable.first()) return firstSyllable.slice(0, firstSyllable.length - 1);else return firstSyllable;
     },
     addDoubleSIfNecesary: function addDoubleSIfNecesary(firstSyllable, secondSyllable) {
-      if (TibetanTransliteratorSettings.get('doubleS') && secondSyllable.match(/^s[^h]/) && !firstSyllable.last().match(/[gk]/)) return firstSyllable + 's';else return firstSyllable;
+      if (TibetanTransliteratorSettings.get('doubleS') && !firstSyllable.last().match(/[gk]/) && secondSyllable.match(/^s[^h]/)) return firstSyllable + 's';else return firstSyllable;
     },
     shiftSyllables: function shiftSyllables(numberOfShifts) {
       var that = this;

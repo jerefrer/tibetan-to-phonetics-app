@@ -1,6 +1,6 @@
 "use strict";
 
-var defaultLanguage = 'english (strict)';
+var defaultLanguage = 'english (semi-strict)';
 
 var defaultToOriginal = function defaultToOriginal(settings) {
   return _(settings).defaults(originalSettings);

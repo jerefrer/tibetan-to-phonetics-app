@@ -14,7 +14,7 @@ $(function () {
         return JsDiff.diffChars(this.expected, this.actual);
       }
     },
-    template: "\n      <span style=\"margin-left: 20px; font-size: 1.2em\">\n        <span\n          v-for=\"part in parts\"\n          v-bind:style=\"[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']\"\n          >{{part.added || part.removed ? part.value.replace(/ /, '_') : part.value}}</span>\n      </span>\n    "
+    template: "\n      <span style=\"font-size: 1.2em\">\n        <span\n          v-for=\"part in parts\"\n          :style=\"[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']\"\n          >{{part.added || part.removed ? part.value.replace(/ /, '_') : part.value}}</span>\n      </span>\n    "
   });
   Vue.component('test-result', {
     props: {
@@ -27,19 +27,9 @@ $(function () {
       },
       actual: function actual() {
         return this.test.transliterated;
-      },
-      spanStyle: function spanStyle() {
-        var s = {};
-        if (!this.sentence) s['width'] = '120px;';else s['display'] = 'block';
-        return s;
-      },
-      tibetanStyle: function tibetanStyle() {
-        var s = {};
-        if (!this.sentence) s['width'] = '30px;';
-        return s;
       }
     },
-    template: "\n      <span\n        class=\"ui black label test\" v-bind:style=\"spanStyle\"\n        v-on:click=\"test.runTest()\"\n        >\n        <span>\n          <i v-if=\" test.pass\" class=\"check green icon\"></i>\n          <i v-if=\"!test.pass\" class=\"times red icon\"></i>\n        </span>\n        <span class=\"tibetan\" v-bind:style=\"tibetanStyle\">{{test.tibetan}}</span>\n        <test-diff\n          v-if=\"expected != actual\"\n          v-bind:expected=\"expected\"\n          v-bind:actual=\"actual\"\n        ></test-diff>\n      </span>\n    "
+    template: "\n      <span\n        class=\"ui black label test\"\n        :style=\"{display: sentence ? 'block' : 'inline-block'}\"\n        @click=\"test.runTest()\"\n      >\n        <span>\n          <i v-if=\" test.pass\" class=\"check green icon\"></i>\n          <i v-if=\"!test.pass\" class=\"times red icon\"></i>\n        </span>\n        <span class=\"tibetan\">{{test.tibetan}}</span>\n        <test-diff\n          v-if=\"expected != actual\"\n          :expected=\"expected\"\n          :actual=\"actual\"\n          :style=\"{ marginLeft: sentence ? '20px' : 'inherit' }\"\n        ></test-diff>\n      </span>\n    "
   });
   Vue.component('results-group', {
     props: {
@@ -59,7 +49,7 @@ $(function () {
         total: this.tests.length
       };
     },
-    template: "\n      <tr\n        class=\"ui inverted segment results-group\">\n        <td class=\"header\"\n          v-on:click=\"opened=!opened\"\n        >\n          {{name}}\n        </td>\n        <td class=\"count\">{{passedCount}}/{{total}}</td>\n        <td class=\"result\">\n          <i v-if=\" allPassed\" class=\"check green icon\"></i>\n          <i v-if=\"!allPassed\" class=\"times red icon\"></i>\n        </td>\n        <td>\n          <test-result\n            v-if=\"!opened\"\n            v-for=\"(test, index) in tests\"\n            v-bind:sentence=\"sentences\"\n            v-bind:test=\"test\"\n            v-bind:key=\"index\"\n          >\n          </test-result>\n        </td>\n      </tr>\n    "
+    template: "\n      <tr\n        class=\"ui inverted segment results-group\">\n        <td class=\"header\" @click=\"opened = !opened\">\n          {{name}}\n        </td>\n        <td class=\"count\">{{passedCount}}/{{total}}</td>\n        <td class=\"result\">\n          <i v-if=\" allPassed\" class=\"check green icon\"></i>\n          <i v-if=\"!allPassed\" class=\"times red icon\"></i>\n        </td>\n        <td>\n          <test-result\n            v-if=\"!opened\"\n            v-for=\"(test, index) in tests\"\n            :sentence=\"sentences\"\n            :test=\"test\"\n            :key=\"index\"\n          >\n          </test-result>\n        </td>\n      </tr>\n    "
   });
   new Vue({
     el: '#main',
@@ -115,6 +105,6 @@ $(function () {
     updated: function updated() {
       TibetanTransliteratorSettings.change(storedLanguage);
     },
-    template: "\n      <div>\n        <table class=\"ui inverted definition table\">\n          <thead>\n            <tr>\n              <td class=\"ui inverted header\">\n                Total: <span v-bind:style=\"style\">{{percentage.toPrecision(3)}}% ({{passedCount}}/{{total}})</span>\n                <span v-if=\"passedCount != total\">\n                   \u2014\n                  Texts only:\n                  <span v-bind:style=\"style\">{{percentageTexts.toPrecision(3)}}% ({{textsPassed}}/{{textsTotal}})</span>\n                </span>\n                 \u2014\n                Ran in: <span ref=\"time\"></span>ms\n              </td>\n            </tr>\n          </thead>\n          <tbody>\n            <results-group\n             v-for=\"(test, index) in tests\"\n             v-bind:key=\"index\"\n             v-bind:name=\"test.name\"\n             v-bind:sentences=\"test.sentences\"\n             v-bind:tests=\"test.tests\">\n            </results-group>\n          </tbody>\n        </table>\n      </div>\n    "
+    template: "\n      <div>\n        <table class=\"ui inverted definition table\">\n          <thead>\n            <tr>\n              <td class=\"ui inverted header\">\n                Total:\n                <span :style=\"style\">\n                  {{percentage.toPrecision(3)}}%\n                  ({{passedCount}}/{{total}})\n                </span>\n                <span v-if=\"passedCount != total\">\n                   \u2014\n                  Texts only:\n                  <span :style=\"style\">\n                    {{percentageTexts.toPrecision(3)}}%\n                    ({{textsPassed}}/{{textsTotal}})\n                  </span>\n                </span>\n                 \u2014\n                Ran in: <span ref=\"time\"></span>ms\n              </td>\n            </tr>\n          </thead>\n          <tbody>\n            <results-group\n             v-for=\"(test, index) in tests\"\n             :key=\"index\"\n             :name=\"test.name\"\n             :sentences=\"test.sentences\"\n             :tests=\"test.tests\">\n            </results-group>\n          </tbody>\n        </table>\n      </div>\n    "
   });
 });
