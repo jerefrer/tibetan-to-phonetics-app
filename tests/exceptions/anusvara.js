@@ -11,10 +11,10 @@ testGroups.push({
     { tibetan: 'ཡྃ་', transliteration: 'yam' },
     { tibetan: 'ཁྂ་', transliteration: 'kham' },
 
-    { tibetan: 'ཝཾ', transliteration: 'wam' },
     { tibetan: 'བཾ', transliteration: 'bam' },
+    { tibetan: 'མཾ', transliteration: 'mam' },
+    { tibetan: 'ཝཾ', transliteration: 'wam' },
 
-    { tibetan: 'མཾ', transliteration: 'mang' },
     { tibetan: 'ཧཾ', transliteration: 'hang' },
     { tibetan: 'ཧུཾ', transliteration: 'hung' },
   ]

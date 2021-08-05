@@ -295,7 +295,7 @@ var Syllable = function(syllable) {
     },
     getSuffix: function() {
       if (this.anusvara)
-        if (this.root.match(/[ཧམ]/))
+        if (this.root.match(/[ཧ]/))
           return t('ngaSuffix');
         else
           return t('maSuffix');
