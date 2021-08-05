@@ -5,9 +5,11 @@ var removeUntranscribedPunctuationAndNormalize = function(tibetan) {
     .replace(/་+/g, '་')
     .replace(/་$/g, '')
     .replace(/ༀ/g, 'ཨོཾ')
+    .replace(/([ཾྃྂ])([ཱཱཱེིོིྀུུ])/g, '$2$1') // Malformed: anusvara before vowel
     .replace(/ཱུ/g, 'ཱུ')
     .replace(/ཱི/g, 'ཱི')
-    .replace(/ཱྀ/g, 'ཱྀ');
+    .replace(/ཱྀ/g, 'ཱྀ')
+    .replace(/དྷ/g, 'དྷ');
 }
 
 // We normalize exceptions keys here so that we can also normalize the tibetan

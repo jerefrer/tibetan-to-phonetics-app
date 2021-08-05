@@ -230,7 +230,8 @@ var Syllable = function(syllable) {
         case 'ཐ':
           if      (this.rata())                      return t('rata2');
           else                                       return t('tha'); break;
-        case 'ན':                                    return t('na'); break;
+        case 'ན':
+        case 'ཎ':                                    return t('na'); break;
         case 'པ':
           if      (this.rata())                      return t('rata1');
           else if (this.yata())                      return t('paYata');

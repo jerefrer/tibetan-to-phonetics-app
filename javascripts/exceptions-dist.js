@@ -1,7 +1,8 @@
 "use strict";
 
 var removeUntranscribedPunctuationAndNormalize = function removeUntranscribedPunctuationAndNormalize(tibetan) {
-  return tibetan.replace(/[༵\u0F04-\u0F0A\u0F0D-\u0F1F\u0F3A-\u0F3F\u0FBE-\uF269]/g, '').trim().replace(/ཿ/g, '་').replace(/་+/g, '་').replace(/་$/g, '').replace(/ༀ/g, 'ཨོཾ').replace(/ཱུ/g, 'ཱུ').replace(/ཱི/g, 'ཱི').replace(/ཱྀ/g, 'ཱྀ');
+  return tibetan.replace(/[༵\u0F04-\u0F0A\u0F0D-\u0F1F\u0F3A-\u0F3F\u0FBE-\uF269]/g, '').trim().replace(/ཿ/g, '་').replace(/་+/g, '་').replace(/་$/g, '').replace(/ༀ/g, 'ཨོཾ').replace(/([ཾྃྂ])([ཱཱཱེིོིྀུུ])/g, '$2$1') // Malformed: anusvara before vowel
+  .replace(/ཱུ/g, 'ཱུ').replace(/ཱི/g, 'ཱི').replace(/ཱྀ/g, 'ཱྀ').replace(/དྷ/g, 'དྷ');
 }; // We normalize exceptions keys here so that we can also normalize the tibetan
 // on the other side and simply check for existence in the object.
 
