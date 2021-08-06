@@ -1,7 +1,7 @@
 const routes = [
   { path: '/', component: Homepage },
-  { path: '/tests', component: Tests },
-  { path: '/compare', component: Compare },
+  { path: '/tests', component: TestsPage },
+  { path: '/compare', component: ComparePage },
 ]
 
 const router = new VueRouter({ routes })

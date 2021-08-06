@@ -5,10 +5,10 @@ var routes = [{
   component: Homepage
 }, {
   path: '/tests',
-  component: Tests
+  component: TestsPage
 }, {
   path: '/compare',
-  component: Compare
+  component: ComparePage
 }];
 var router = new VueRouter({
   routes: routes

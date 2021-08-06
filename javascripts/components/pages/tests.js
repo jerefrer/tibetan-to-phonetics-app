@@ -2,7 +2,7 @@ var processTime;
 var storedLanguage;
 var startedAt;
 
-var Tests = Vue.component('tests', {
+var TestsPage = Vue.component('tests-page', {
   data () {
     var passedCount = 0;
     var textsPassed = 0;
