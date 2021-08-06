@@ -15,5 +15,8 @@ Vue.component('clipboard-button', {
       }, 1000);
     }
   },
+  mounted: function mounted() {
+    new Clipboard('#copy-to-clipboard');
+  },
   template: "\n    <div\n      id=\"copy-to-clipboard\"\n      data-clipboard-target=\"#transliteration\"\n      v-on:click=\"updateText\"\n    >\n      <i class=\"paste icon\"></i> {{text}}\n    </div>\n  "
 });

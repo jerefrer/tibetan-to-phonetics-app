@@ -243,6 +243,7 @@ var Syllable = function Syllable(syllable) {
           break;
 
         case 'ན':
+        case 'ཎ':
           return t('na');
           break;
 
@@ -347,7 +348,7 @@ var Syllable = function Syllable(syllable) {
       }
     },
     getSuffix: function getSuffix() {
-      if (this.anusvara) if (this.root.match(/[ཧམ]/)) return t('ngaSuffix');else return t('maSuffix');
+      if (this.anusvara) if (this.root.match(/[ཧ]/)) return t('ngaSuffix');else return t('maSuffix');
 
       switch (this.suffix) {
         case 'ག':

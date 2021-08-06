@@ -13,6 +13,9 @@ Vue.component('clipboard-button', {
       }, 1000)
     }
   },
+  mounted() {
+    new Clipboard('#copy-to-clipboard');
+  },
   template: `
     <div
       id="copy-to-clipboard"

@@ -1,5 +1,5 @@
 Vue.component('tibetan-input', {
-  props: ['value'],
+  props: ['value', 'allFields'],
   methods: {
     checkInput: function(value) {
       if (value.trim()) {
@@ -16,6 +16,9 @@ Vue.component('tibetan-input', {
     },
     selectTextarea: function() {
       $('#tibetan').focus();
+    },
+    updateHeight() {
+      updateHeight(this.allFields)
     }
   },
   template: `
@@ -32,6 +35,6 @@ Vue.component('tibetan-input', {
       ></textarea>
     </div>
   `,
-  mounted: function() { updateHeight() },
-  updated: function() { updateHeight() }
+  mounted: function() { this.updateHeight() },
+  updated: function() { this.updateHeight() }
 });

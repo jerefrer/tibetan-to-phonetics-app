@@ -3,12 +3,23 @@
   src: url("../vendor/fonts/TibetanMachineUnicode1.0_0.ttf") format('truetype');
 }
 
-body {
-  padding: 30px;
-  background: #001211;
-  color: rgba(255, 255, 255, 0.9);
-  overflow: hidden;
+body.pushable,
+body.pushable>.pusher {
+  background: #001211 !important;
 }
+
+#menu-button {
+  position: fixed;
+  top: 35px;
+  left: 17.5px;
+  z-index: 999999;
+}
+
+#app {
+  padding: 30px 70px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
 #languages {
   display: flex;
   text-align: center;
