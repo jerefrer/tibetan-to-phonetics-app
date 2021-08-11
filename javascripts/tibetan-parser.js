@@ -120,6 +120,18 @@ var TibetanParser = function(syllable, options) {
         this.completionU = true;
       }
     },
+    handleAndOrParticleAAng: function() {
+      if (this.length() > 2 && this.syllable.match(/འང$/)) {
+        this.syllable = this.syllable.replace(/འང$/, '');
+        this.andOrParticleAAng = true;
+      }
+    },
+    handleConcessiveParticleAAm: function() {
+      if (this.length() > 2 && this.syllable.match(/འམ$/)) {
+        this.syllable = this.syllable.replace(/འམ$/, '');
+        this.concessiveParticleAAm = true;
+      }
+    },
     wasur: function() {
       var match = this.syllable.match('ྭ');
       if (match) return match[0];
@@ -142,6 +154,8 @@ var TibetanParser = function(syllable, options) {
       this.handleDreldraAi();
       this.handleEndingU();
       this.handleEndingO();
+      this.handleAndOrParticleAAng();
+      this.handleConcessiveParticleAAm();
       if (this.length() == 1) this.root = this.syllable[0];
       if (this.vowel()) this.root = this.at(this.vowel(), -1);
       if (this.wasur()) this.root = this.syllable[this.syllable.replace(/[ྲྱཱཾ༵ྃྂ]/g, '').indexOf(this.wasur()) - 1];
@@ -165,6 +179,8 @@ var TibetanParser = function(syllable, options) {
       }
       this.figureOutPrefixAndSuffixes();
       if (this.aKikuI) this.suffix = 'འི';
+      if (this.andOrParticleAAng) this.suffix = 'འང';
+      if (this.concessiveParticleAAm) this.suffix = 'འམ';
       if (this.completionU) this.suffix = 'འུ';
       if (this.completionO) this.suffix = 'འོ';
       if (this.superscribed() && !this.options.keepMainAsSuperscribed) this.convertMainAsRegularChar();
