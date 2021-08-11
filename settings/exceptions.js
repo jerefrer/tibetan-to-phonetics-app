@@ -193,4 +193,5 @@ var originalGeneralExceptions = {
   'ཧ་ན་ཧ་ན་': 'hana hana',
   'ཕཊ྄': 'phet',
   'ཕཊ': 'phet',
+  'མཉྫུ་གྷོ་ཥ': 'man_ju_go_sha'
 }
