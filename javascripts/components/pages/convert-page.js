@@ -1,7 +1,7 @@
-var Homepage = Vue.component('homepage', {
+var ConvertPage = Vue.component('convert-page', {
   data () {
     return {
-      selectedLanguage: TibetanTransliteratorSettings.language,
+      selectedLanguageId: Storage.get('selectedLanguageId') || Languages.defaultLanguageId,
       options: Storage.get('options') || { capitalize: true },
       tibetan: Storage.get('tibetan') || `
         ཧཱུྃ༔
@@ -19,6 +19,9 @@ var Homepage = Vue.component('homepage', {
   watch: {
     tibetan (value) {
       Storage.set('tibetan', value);
+    },
+    selectedLanguageId (value) {
+      Storage.set('selectedLanguageId', value);
     }
   },
   computed: {
@@ -26,22 +29,34 @@ var Homepage = Vue.component('homepage', {
       return this.tibetan ? this.tibetan.split("\n") : [];
     }
   },
+  methods: {
+    updateBoxesHeight() {
+      $('#tibetan').autosize();
+      setTimeout(function() {
+        $('#transliteration').css('height', $('textarea.tibetan').css('height'));
+      }, 0)
+    }
+  },
+  mounted () { this.updateBoxesHeight() },
+  updated () { this.updateBoxesHeight() },
   template: `
     <div class="ui fluid container">
-      <language-menu v-model="selectedLanguage"></language-menu>
-      <options-menu v-model="options" />
+      <div id="menu">
+        <language-menu v-model="selectedLanguageId" />
+        <slider-checkbox
+          v-model="options.capitalize"
+          text="Capital letter at the beginning of each group"
+        />
+      </div>
       <div id="scrollable-area-container">
-        <clipboard-button v-if="tibetan"></clipboard-button>
+        <clipboard-button v-if="tibetan" />
         <div id="scrollable-area">
-          <tibetan-input
-            v-model="tibetan"
-            :allFields="['#tibetan']"
-          ></tibetan-input>
+          <tibetan-input v-model="tibetan" />
           <transliterated-lines
             :lines="lines"
-            :language="selectedLanguage"
+            :languageId="selectedLanguageId"
             :options="options"
-          ></transliterated-lines>
+          />
         </div>
       </div>
     </div>
@@ -50,15 +65,15 @@ var Homepage = Vue.component('homepage', {
 
 Vue.component('transliterated-lines', {
   props: {
-    language: String,
+    languageId: String,
     options: Object,
     lines: Array
   },
   computed: {
     transliteratedLines: function() {
-      TibetanTransliteratorSettings.change(this.language);
+      var language = Languages.find(this.languageId);
       return this.lines.map((line) => {
-        return new TibetanTransliterator(line, this.options).transliterate();
+        return new TibetanTransliterator(line, language, this.options).transliterate();
       }).join("\n");
     },
   },

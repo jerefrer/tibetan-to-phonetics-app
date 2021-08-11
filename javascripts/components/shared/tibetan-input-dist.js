@@ -1,7 +1,7 @@
 "use strict";
 
 Vue.component('tibetan-input', {
-  props: ['value', 'allFields'],
+  props: ['value'],
   methods: {
     checkInput: function checkInput(value) {
       if (value.trim()) {
@@ -19,26 +19,7 @@ Vue.component('tibetan-input', {
     },
     selectTextarea: function selectTextarea() {
       $('#tibetan').focus();
-    },
-    updateHeight: function (_updateHeight) {
-      function updateHeight() {
-        return _updateHeight.apply(this, arguments);
-      }
-
-      updateHeight.toString = function () {
-        return _updateHeight.toString();
-      };
-
-      return updateHeight;
-    }(function () {
-      updateHeight(this.allFields);
-    })
+    }
   },
-  template: "\n    <div class=\"ui form\" style=\"position: relative;\">\n      <div v-if=\"!value\" id=\"tibetan-placeholder\" v-on:click=\"selectTextarea\">\n        Try inputing some Tibetan here...\n      </div>\n      <textarea\n        v-bind:value=\"value\"\n        v-on:input=\"checkInput($event.target.value)\"\n        id=\"tibetan\"\n        class=\"tibetan\"\n        autofocus=\"true\"\n      ></textarea>\n    </div>\n  ",
-  mounted: function mounted() {
-    this.updateHeight();
-  },
-  updated: function updated() {
-    this.updateHeight();
-  }
+  template: "\n    <div class=\"ui form\" style=\"position: relative;\">\n      <div v-if=\"!value\" id=\"tibetan-placeholder\" v-on:click=\"selectTextarea\">\n        Try inputing some Tibetan here...\n      </div>\n      <textarea\n        v-bind:value=\"value\"\n        v-on:input=\"checkInput($event.target.value)\"\n        id=\"tibetan\"\n        class=\"tibetan\"\n        autofocus=\"true\"\n      ></textarea>\n    </div>\n  "
 });

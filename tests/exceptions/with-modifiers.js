@@ -4,6 +4,7 @@ testGroups.push({
     { tibetan: 'པདྨའི་', transliteration: 'padmé' },
     { tibetan: 'པདྨས་', transliteration: 'padmé' },
     { tibetan: 'པདྨར་', transliteration: 'padmar' },
+    { tibetan: 'པདྨའོ་', transliteration: 'padma-o' },
 
     { tibetan: 'པདྨོའི་', transliteration: 'padmö' },
     { tibetan: 'པདྨོས་', transliteration: 'padmö' },
@@ -16,5 +17,10 @@ testGroups.push({
     { tibetan: 'རྡོ་རྗེའི', transliteration: 'dorjé' },
     { tibetan: 'རྡོ་རྗེས་', transliteration: 'dorjé' },
     { tibetan: 'རྡོ་རྗེར་', transliteration: 'dorjer' },
+    { tibetan: 'རྡོ་རྗེའོ་', transliteration: 'dorjé-o' },
+
+    { tibetan: 'ཌཱཀྐི་', transliteration: 'daki' },
+    { tibetan: 'ཌཱཀྐིའི་', transliteration: 'daki' },
+    { tibetan: 'ཌཱཀྐིའོ་', transliteration: 'daki-o' },
   ]
 })

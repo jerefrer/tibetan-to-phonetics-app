@@ -22,10 +22,17 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-settingsPerLanguage['english (strict)'] = {
+defaultLanguages.push({
 
-}
+  id: 'english-strict',
+  name: 'English (strict)',
 
-exceptionsPerLanguage['english (strict)'] = {
+  rules: {
 
-}
+  },
+
+  exceptions: {
+
+  }
+
+})

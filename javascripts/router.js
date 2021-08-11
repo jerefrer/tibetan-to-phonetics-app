@@ -1,15 +1,13 @@
 const routes = [
-  { path: '/', component: Homepage },
+  { path: '/', component: ConvertPage },
   { path: '/tests', component: TestsPage },
   { path: '/compare', component: ComparePage },
+  { path: '/settings', component: SettingsPage },
+  {
+    path: '/settings/:languageId',
+    name: 'edit-setting',
+    component: EditSettingPage
+  }
 ]
 
-const router = new VueRouter({ routes })
-
-const app = new Vue({
-  router
-}).$mount('#app')
-
-setTimeout(() => {
-  app.$router.afterEach((to, from) => $('.sidebar').sidebar('hide'))
-}, 1000)
+const router = new VueRouter({ routes, linkExactActiveClass: 'active' })

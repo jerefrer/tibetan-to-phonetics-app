@@ -22,36 +22,43 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-settingsPerLanguage['english (loose)'] = {
+defaultLanguages.push({
 
-  // Linking char (as in pa-o or pe-u)
-  'endLinkChar': "'",
+  id: 'english-loose',
+  name: 'English (loose)',
 
-  // Vowels
-  'aKikuI': 'é',              // པའི
+  rules: {
 
-  // Regular consonants
-  'ga': 'g',                  // ག
-  'cha': 'ch',                // ཆ
-  'ba': 'p',                  // བ
-  'tsha': 'ts',               // ཚ
-  'ja': 'j',                  // ཇ
-  'da': 'd',                  // ད
-  'pha': 'p',                 // ཕ
-  'ba': 'b',                  // བ
-  'zha': 'sh',                // ཞ
+    // Linking char (as in pa-o or pe-u)
+    'endLinkChar': "'",
 
-  // Ratas
-  'rata2': 'tr',              // ཁྲ  // 2nd column with rata
-  'rata3': 'dr',              // བྲ  // 3rd column with rata
+    // Vowels
+    'aKikuI': 'é',              // པའི
 
-  // Yatas
-  'gaYata': 'gy',             // གྱ
-  'phaYata': 'ch',            // ཕྱ
-  'baYata': 'ch',             // བྱ
+    // Regular consonants
+    'ga': 'g',                  // ག
+    'cha': 'ch',                // ཆ
+    'ba': 'p',                  // བ
+    'tsha': 'ts',               // ཚ
+    'ja': 'j',                  // ཇ
+    'da': 'd',                  // ད
+    'pha': 'p',                 // ཕ
+    'ba': 'b',                  // བ
+    'zha': 'sh',                // ཞ
 
-}
+    // Ratas
+    'rata2': 'tr',              // ཁྲ  // 2nd column with rata
+    'rata3': 'dr',              // བྲ  // 3rd column with rata
 
-exceptionsPerLanguage['english (loose)'] = {
+    // Yatas
+    'gaYata': 'gy',             // གྱ
+    'phaYata': 'ch',            // ཕྱ
+    'baYata': 'ch',             // བྱ
 
-}
+  },
+
+  exceptions: {
+
+  }
+
+})

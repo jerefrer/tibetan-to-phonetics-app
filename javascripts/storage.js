@@ -15,7 +15,11 @@ var Storage = {
       jsonValue = localStorage[key];
     else
       jsonValue = Cookie.read(key);
-    return jsonValue && JSON.parse(jsonValue);
+    try {
+      return jsonValue && JSON.parse(jsonValue);
+    } catch (e) {
+      return undefined;
+    }
   },
   set: function(keyName, value) {
     var key = this.scopedKey(keyName);

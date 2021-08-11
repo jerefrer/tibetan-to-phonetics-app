@@ -1,5 +1,4 @@
 var processTime;
-var storedLanguage;
 var startedAt;
 
 var TestsPage = Vue.component('tests-page', {
@@ -10,11 +9,15 @@ var TestsPage = Vue.component('tests-page', {
     var ranTests = testGroups.map(function(testGroup) {
       testGroup.tests.each(function(test) {
         test.runTest = function() {
-          if (testGroup.language) TibetanTransliteratorSettings.change(testGroup.language)
-          else                    TibetanTransliteratorSettings.default();
-          this.transliterated = new TibetanTransliterator(this.tibetan, {
-            capitalize: testGroup.capitalize
-          }).transliterate();
+          var language =
+            testGroup.language
+            ? Languages.findOriginal(testGroup.language)
+            : Languages.originalDefault();
+          this.transliterated = new TibetanTransliterator(
+            this.tibetan,
+            language,
+            { capitalize: testGroup.capitalize}
+          ).transliterate();
           return this.transliterated == this.transliteration;
         }
         test.pass = test.runTest();
@@ -47,21 +50,16 @@ var TestsPage = Vue.component('tests-page', {
   },
   beforeCreate() {
     startedAt = new Date().getTime();
-    storedLanguage = TibetanTransliteratorSettings.language;
   },
   mounted () {
     $(this.$refs.time).text(processTime);
-    TibetanTransliteratorSettings.change(storedLanguage);
-  },
-  updated () {
-    TibetanTransliteratorSettings.change(storedLanguage);
   },
   template: `
     <div>
-      <table class="ui inverted definition table">
+      <table class="ui definition table">
         <thead>
           <tr>
-            <td class="ui inverted header">
+            <td class="ui header" colspan="10">
               Total:
               <span :style="style">
                 {{percentage.toPrecision(3)}}%
@@ -86,8 +84,8 @@ var TestsPage = Vue.component('tests-page', {
            :key="index"
            :name="test.name"
            :sentences="test.sentences"
-           :tests="test.tests">
-          </results-group>
+           :tests="test.tests"
+          />
         </tbody>
       </table>
     </div>
@@ -112,7 +110,7 @@ Vue.component('results-group', {
   },
   template: `
     <tr
-      class="ui inverted segment results-group">
+      class="ui segment results-group">
       <td class="header" @click="opened = !opened">
         {{name}}
       </td>
@@ -128,8 +126,7 @@ Vue.component('results-group', {
           :sentence="sentences"
           :test="test"
           :key="index"
-        >
-        </test-result>
+        />
       </td>
     </tr>
   `
@@ -150,7 +147,7 @@ Vue.component('test-result', {
   },
   template: `
     <span
-      class="ui black label test"
+      class="ui basic label test"
       :style="{display: sentence ? 'block' : 'inline-block'}"
       @click="test.runTest()"
     >

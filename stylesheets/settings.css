@@ -1,0 +1,98 @@
+.tab-menu {
+  justify-content: center;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+}
+  .tab-menu .item span {
+    margin-left: 0.5em;
+    opacity: 0.5;
+  }
+  .tab-menu .item span:hover {
+    opacity: 1;
+  }
+    .tab-menu .item span i {
+      margin: 0;
+    }
+
+.settings .tab-menu {
+  font-size: 1.75em !important;
+  margin-bottom: 2em;
+}
+
+.settings .tab > .header {
+  margin-bottom: 1em;
+}
+
+.settings .card {
+  width: 360px !important;
+}
+
+  .settings .card .content .buttons {
+    float: right;
+    margin: -14px -14px 14px 14px;
+  }
+
+    .settings .card .content .buttons .button {
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 0;
+    }
+
+    .settings .new.card .content {
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+
+.settings .header .button {
+  margin-left: 1em;
+  vertical-align: middle;
+}
+
+.exceptions .exception {
+  display: flex;
+}
+  .exceptions .exception input {
+    padding: 3px 10px !important;
+    font-family: 'Monlam Uni Ouchan2' !important;
+    font-size: 23px !important;
+    border-radius: 0;
+  }
+  .exceptions .exception input:first-child {
+    border-right: none;
+    text-align: right;
+  }
+  .exceptions .exception input:last-child {
+    border-radius: 0;
+    border-left: none !important;
+  }
+  .exceptions .exception:first-child input:first-child {
+    border-top-left-radius: 4px;
+  }
+  .exceptions .exception:first-child input:last-child {
+    border-top-right-radius: 4px;
+  }
+
+.reset-exceptions,
+.new.exception {
+  justify-content: center;
+  font-weight: bold !important;
+  color: rgba(255,255,255,0.9) !important;
+  background: #222 !important;
+  border: 1px solid #333 !important;
+  border-top-width: 3px !important;
+}
+.reset-exceptions {
+  line-height: 22px !important;
+}
+.new.exception {
+  line-height: 43px;
+  cursor: pointer;
+}
+.reset-exceptions:hover,
+.new.exception:hover {
+  background: #333 !important;
+  color: rgba(255,255,255,0.9) !important;
+}

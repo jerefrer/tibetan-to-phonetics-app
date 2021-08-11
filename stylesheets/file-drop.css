@@ -1,0 +1,52 @@
+/***
+  Styles below are only required if you're using <iframe> fallback in
+  addition to HTML5 drag & drop (only working in Firefox/Chrome/Opera 15+).
+  You can @import this file and override individual styles. Drag & drop zone
+  can be styled in absolutely any way you want so there are no defaults.
+ ***/
+
+/* Essential FileDrop zone element configuration: */
+.fd-zone {
+  position: relative;
+  overflow: hidden;
+  width: 360px;
+  padding: 30px;
+  margin: 0 auto;
+  text-align: center;
+  background: #222;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 10px;
+  border: 2px dotted #333;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.fd-zone form {
+  margin-top: -16px;
+}
+
+.fd-zone .divider {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Hides <input type="file"> while simulating "Browse" button: */
+.fd-file {
+  opacity: 0;
+  font-size: 118px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  padding: 0;
+  margin: -31px;
+  cursor: pointer;
+  filter: alpha(opacity=0);
+  font-family: sans-serif;
+}
+
+/***
+  With .over you can provide feedback when user drags a file over the drop zone:
+ ***/
+
+.fd-zone.over { border-color: #444; background: #2d2d2d; }

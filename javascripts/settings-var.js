@@ -1,2 +1,1 @@
-var settingsPerLanguage = {};
-var exceptionsPerLanguage = {};
+var defaultLanguages = [];

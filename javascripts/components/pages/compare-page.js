@@ -1,7 +1,7 @@
 var ComparePage = Vue.component('compare-page', {
   data() {
     return {
-      selectedLanguage: TibetanTransliteratorSettings.language,
+      selectedLanguageId: Storage.get('selectedLanguageId') || Languages.defaultLanguageId,
       transliteration: Storage.get('compareTransliteration') || `
         Lüpa mépar gukpar nüma
         Chatsal gyachin mélha tsangpa
@@ -47,6 +47,9 @@ var ComparePage = Vue.component('compare-page', {
     }
   },
   watch: {
+    selectedLanguageId (value) {
+      Storage.set('selectedLanguageId', value);
+    },
     transliteration (value) {
       Storage.set('compareTransliteration', value);
     },
@@ -64,26 +67,41 @@ var ComparePage = Vue.component('compare-page', {
       var lines = this.transliteration.split("\n");
       lines[result.lineIndex] = result.updatedLine;
       this.transliteration = lines.join("\n");
+    },
+    updateBoxesHeight() {
+      var fields = ['#tibetan', '#transliteration', '#transliterated'];
+      $(fields.join(',')).css('height', 'auto').autosize();
+      var highest = fields.max(function(element) { return $(element).height() || 0 });
+      var others = fields.exclude(highest);
+      $(highest).autosize();
+      setTimeout(function() {
+        var height = $(highest).css('height');
+        _(others).each(function(element) {
+          $(element).css('height', height)
+        })
+      }, 0)
     }
   },
+  mounted () { this.updateBoxesHeight() },
+  updated () { this.updateBoxesHeight() },
   template: `
     <div class="ui container compare">
-      <language-menu v-model="selectedLanguage"></language-menu>
+      <div id="menu">
+        <language-menu v-model="selectedLanguageId" />
+      </div>
       <div id="scrollable-area-container">
         <div id="scrollable-area">
-          <tibetan-input
-            v-model="tibetan"
-            :allFields="['#tibetan', '#transliteration', '#transliterated']"
-          ></tibetan-input>
+          <tibetan-input v-model="tibetan" />
           <transliteration-input
             v-model="transliteration"
-            v-on:paste="transliteration = $event"></transliteration-input>
+            @paste="transliteration = $event"
+          />
           <compared-lines
-            v-bind:lines="lines"
-            v-bind:expectedTransliteration="transliteration"
-            v-bind:language="selectedLanguage"
-            v-on:click-part="correctSource($event)"
-          ></compared-lines>
+            :lines="lines"
+            :expectedTransliteration="transliteration"
+            :languageId="selectedLanguageId"
+            @click-part="correctSource($event)"
+          />
         </div>
       </div>
     </div>
@@ -98,8 +116,8 @@ Vue.component('transliteration-input', {
         Input the transliteration here...
       </div>
       <textarea
-        v-bind:value="value"
-        v-on:input="$emit('input', $event.target.value)"
+        :value="value"
+        @input="$emit('input', $event.target.value)"
         spellcheck="false"
         id="transliteration"
       ></textarea>
@@ -122,7 +140,7 @@ Vue.component('transliteration-input', {
 Vue.component('compared-lines', {
   props: {
     expectedTransliteration: String,
-    language: String,
+    languageId: String,
     lines: Array
   },
   methods: {
@@ -136,11 +154,11 @@ Vue.component('compared-lines', {
   computed: {
     transliteratedLines: function() {
       var that = this;
-      TibetanTransliteratorSettings.change(this.language);
+      var language = Languages.find(this.languageId);
       return this.lines.map(function(line, index) {
         return {
           expected: that.expectedLines()[index],
-          actual: new TibetanTransliterator(line).transliterate().capitalize()
+          actual: new TibetanTransliterator(line, language).transliterate().capitalize()
         }
       });
     },
@@ -150,11 +168,11 @@ Vue.component('compared-lines', {
       <compare-diff
         class="line"
         v-for="(line, index) in transliteratedLines"
-        v-bind:key="index"
-        v-bind:lineIndex="index"
-        v-bind:expected="line.expected"
-        v-bind:actual="line.actual"
-        v-on:click-part="emitClickPart($event)"
+        :key="index"
+        :lineIndex="index"
+        :expected="line.expected"
+        :actual="line.actual"
+        @click-part="emitClickPart($event)"
       ></compare-diff>
     </div>
   `
@@ -193,9 +211,9 @@ Vue.component('compare-diff', {
     <div>
       <span
         v-for="(part, partIndex) in parts"
-        v-on:click="(part.added || part.removed) && emitClickPart(part, partIndex)"
-        v-bind:style="[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']"
-        >{{part.added || part.removed ? part.value && part.value.replace(/ /, '_') : part.value}}</span>
+        @click="(part.added || part.removed) && emitClickPart(part, partIndex)"
+        :style="[part.added ? {color: '#2185d0', 'font-weight': 'bold'} : '', part.removed ? {color: '#db2828', 'font-weight': 'bold'} : '']"
+        >{{part.added || part.removed ? part.value && part.value.replace(/ /g, '_') : part.value}}</span>
     </div>
   `
 })

@@ -22,42 +22,49 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-settingsPerLanguage['spanish'] = {
+defaultLanguages.push({
 
-  // Vowels
-  'ü': 'u',                // འུས
-  'ö': 'o',                // འོས
-  'drengbu': 'e',          // འེ
-  'aKikuI': 'e',           // འི
+  id: 'spanish',
+  name: 'Spanish',
 
-  // Regular consonants
-  'kha': 'k',              // ཁ
-  'cha': 'ch',             // ཆ
-  'nya': 'ñ',              // ཉ
-  'tha': 't',              // ཐ
-  'pha': 'p',              // ཕ
-  'ba': 'p',               // བ
-  'tsha': 'ts',            // ཚ
-  'dza': 'ds',             // ཛ
-  'zha': 'sh',             // ཞ
+  rules: {
 
-  // Modified consonants (with prefix or superscribed)
-  'gaMod': 'gu',           // གཇ
-  'jaMod': 'y',            // རྗ
-  'zaMod': 's',            // བཟ
+    // Vowels
+    'ü': 'u',                // འུས
+    'ö': 'o',                // འོས
+    'drengbu': 'e',          // འེ
+    'aKikuI': 'e',           // འི
 
-  // Ratas
-  'rata2': 'tr',           // ཁྲ  / 2nd col with rata
+    // Regular consonants
+    'kha': 'k',              // ཁ
+    'cha': 'ch',             // ཆ
+    'nya': 'ñ',              // ཉ
+    'tha': 't',              // ཐ
+    'pha': 'p',              // ཕ
+    'ba': 'p',               // བ
+    'tsha': 'ts',            // ཚ
+    'dza': 'ds',             // ཛ
+    'zha': 'sh',             // ཞ
 
-  // Yatas
-  'gaModYata': 'gui',      // སྒྱ / ga with yata and prefix/superscribed
-  'paYata': 'ch',          // པྱ
-  'phaYata': 'ch',         // ཕྱ
-  'baYata': 'ch',          // བྱ
-  'baModYata': 'y',        // སྦྱ / ba with yata and prefix/superscribed
+    // Modified consonants (with prefix or superscribed)
+    'gaMod': 'gu',           // གཇ
+    'jaMod': 'y',            // རྗ
+    'zaMod': 's',            // བཟ
 
-}
+    // Ratas
+    'rata2': 'tr',           // ཁྲ  / 2nd col with rata
 
-exceptionsPerLanguage['spanish'] = {
-  'ཁ་ཊྭཾ་ག': 'kat_vam_ga'
-}
+    // Yatas
+    'gaModYata': 'gui',      // སྒྱ / ga with yata and prefix/superscribed
+    'paYata': 'ch',          // པྱ
+    'phaYata': 'ch',         // ཕྱ
+    'baYata': 'ch',          // བྱ
+    'baModYata': 'y',        // སྦྱ / ba with yata and prefix/superscribed
+
+  },
+
+  exceptions: {
+    'ཁ་ཊྭཾ་ག': 'kat_vam_ga'
+  }
+
+})

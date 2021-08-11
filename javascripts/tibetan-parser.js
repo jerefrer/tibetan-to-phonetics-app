@@ -144,8 +144,9 @@ var TibetanParser = function(syllable, options) {
       this.handleEndingO();
       if (this.length() == 1) this.root = this.syllable[0];
       if (this.vowel()) this.root = this.at(this.vowel(), -1);
-      if (this.subscribed()) this.root = this.at(this.subscribed(), -1);
-      if (this.superscribed()) this.root = this.at(this.superscribed(), 1);
+      if (this.wasur()) this.root = this.syllable[this.syllable.replace(/[ྲྱཱཾ༵ྃྂ]/g, '').indexOf(this.wasur()) - 1];
+      else if (this.subscribed()) this.root = this.at(this.subscribed(), -1);
+      else if (this.superscribed()) this.root = this.at(this.superscribed(), 1);
       if (!this.root) {
         if (this.length() == 2) {
           this.root = this.syllable[0];

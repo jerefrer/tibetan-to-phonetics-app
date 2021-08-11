@@ -1,35 +1,49 @@
 Vue.component('language-menu', {
   model: {
-    prop: 'value',
-    event: 'change'
+    prop: 'value'
   },
   props: {
     value: String
   },
-  data: function() {
-    return {
-      languages: TibetanTransliteratorSettings.languages()
+  computed: {
+    languages () {
+      return Languages.all()
+    },
+    language () {
+      return Languages.find(this.value);
     }
   },
   mounted: function() {
-    $('.radio').checkbox();
+    $(this.$refs.dropdownDiv).dropdown({
+      values: _(this.languages).map((language) => {
+        return {
+          value: language.id,
+          html: language.name,
+          name: language.name,
+          selected: this.value == language.id
+        }
+      }),
+      onChange: () => {
+        setTimeout(() => {
+          var value = $(this.$refs.dropdownDiv).dropdown('get value');
+          this.$emit('input', value);
+        }, 0);
+      }
+    })
   },
   template: `
-    <div id="languages">
-      <div
-        v-for="(language, index) in languages"
-      >
-        <div class="ui radio checkbox">
-          <input type="radio"
-            tabindex="0"
-            class="hidden"
-            name="language"
-            v-bind:value="language"
-            v-bind:checked="language == value"
-            v-on:change="$emit('change', $event.target.value)">
-          <label>{{language.capitalize()}}</label>
+    <div class="languages">
+      <div class="ui normal selection dropdown" ref="dropdownDiv">
+        <input type="hidden" />
+        <i class="dropdown icon"></i>
+        <div class="text"></div>
+        <div class="menu">
         </div>
       </div>
+      <link-to-edit-language
+        class="right attached"
+        :language="language"
+      />
     </div>
   `
 })

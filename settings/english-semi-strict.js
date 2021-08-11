@@ -22,23 +22,30 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-settingsPerLanguage['english (semi-strict)'] = {
+defaultLanguages.push({
 
-  // Vowels
-  'aKikuI': 'é',           // པའི
+  id: 'english-semi-strict',
+  name: 'English (semi-strict)',
 
-  // Regular consonants
-  'cha': 'ch',             // ཆ
-  'ja': 'ch',              // ཇ
-  'ba': 'p',               // བ
-  'tsha': 'ts',            // ཚ
+  rules: {
 
-  // Yatas
-  'phaYata': 'ch',         // ཕྱ
-  'baYata': 'ch',          // བྱ
+    // Vowels
+    'aKikuI': 'é',           // པའི
 
-}
+    // Regular consonants
+    'cha': 'ch',             // ཆ
+    'ja': 'ch',              // ཇ
+    'ba': 'p',               // བ
+    'tsha': 'ts',            // ཚ
 
-exceptionsPerLanguage['english (semi-strict)'] = {
+    // Yatas
+    'phaYata': 'ch',         // ཕྱ
+    'baYata': 'ch',          // བྱ
 
-}
+  },
+
+  exceptions: {
+
+  }
+
+})

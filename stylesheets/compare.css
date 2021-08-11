@@ -27,7 +27,8 @@
 .compare #transliterated {
   margin-right: 0;
   padding: 15px 30px;
-  background: #222;
+  background: white;
+  border: 1px solid rgba(34,36,38,.15);
   border-radius: 4px;
 }
 

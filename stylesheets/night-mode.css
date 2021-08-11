@@ -1,0 +1,268 @@
+#app.night {
+  background: #001211 !important;
+}
+
+.night .header {
+  color: white !important;
+}
+
+
+.night #menu-button,
+.night #color-mode-button {
+  background-color: #1b1c1d;
+  color: #fff;
+  text-shadow: none;
+  background-image: none;
+  box-shadow: 0 0 0 0 rgb(34 36 38 / 15%) inset;
+  -webkit-box-shadow: 0 0 0 0 rgb(34 36 38 / 15%) inset;
+}
+.night #menu-button:hover,
+.night #color-mode-button:hover {
+  background-color: #27292a;
+}
+
+
+.night #menu .languages .button {
+  margin-right: 17px;
+  color: rgba(255,255,255,0.5);
+  background: #333;
+  border: 1px solid #333;
+  border-left: none;
+}
+.night #menu .languages .button:hover {
+  background: #444;
+  color: rgba(255,255,255,0.6);
+}
+
+.night.ui.checkbox label,
+.night.ui.checkbox+label {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.night.ui.slider.checkbox input~.box,
+.night.ui.slider.checkbox input~label {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+.night.ui.slider.checkbox input:checked~.box,
+.night.ui.slider.checkbox input:checked~label,
+.night.ui.slider.checkbox input:focus:checked~.box,
+.night.ui.slider.checkbox input:focus:checked~label {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.night.ui.slider.checkbox input:focus:checked~.box:before,
+.night.ui.slider.checkbox input:focus:checked~label:before {
+  background-color: #545454!important
+}
+
+.night .card {
+  background: #222 !important;
+  border-color: rgba(34,36,38,.1) !important;
+  box-shadow: 0 1px 3px 0 rgba(34,36,38,.05), 0 0 0 1px rgba(34,36,38,0.5) !important;
+}
+
+.night .card .header,
+.night .card .description {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.night .card .extra.content {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.night input {
+  color: rgba(255, 255, 255, 0.9) !important;
+  background: #222 !important;
+  border: 1px solid #333 !important;
+}
+.night input::selection {
+  color: rgba(255, 255, 255, 0.9);
+}
+.night input:-internal-autofill-selected {
+  background-color: #222 !important;
+}
+.night .ui.action.input:not([class*="left action"])>input:focus {
+  border-right-color: transparent !important;
+}
+
+.night textarea {
+  color: rgba(255,255,255,0.9) !important;
+  background: #222 !important;
+  border: none !important;
+}
+.night textarea:focus {
+  border-color: transparent !important;
+}
+
+.night .ui.labeled.input .label {
+  background: #333 !important;
+  color: rgba(255,255,255,0.9) !important;
+}
+
+.night .selection.dropdown {
+  color: rgba(255, 255, 255, 0.9) !important;
+  background: #222 !important;
+  border: 1px solid #333 !important;
+}
+.night .selection.dropdown .text {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.night .selection.dropdown .menu {
+  background: #222 !important;
+  border-color: #333 !important;
+}
+.night .selection.dropdown .item {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #333 !important;
+}
+.night .selection.dropdown .menu > .item:hover {
+  background: #333 !important;
+  z-index: 13;
+}
+
+.night .ui.checkbox label,
+.night .ui.checkbox+label {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.night .ui.slider.checkbox input~.box,
+.night .ui.slider.checkbox input~label {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+.night .ui.slider.checkbox input:checked~.box,
+.night .ui.slider.checkbox input:checked~label,
+.night .ui.slider.checkbox input:focus:checked~.box,
+.night .ui.slider.checkbox input:focus:checked~label {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.night .ui.slider.checkbox input:focus:checked~.box:before,
+.night .ui.slider.checkbox input:focus:checked~label:before {
+  background-color: #545454!important
+}
+
+.night #copy-to-clipboard {
+  color:  rgba(255,255,255,0.7);
+  background: #333;
+}
+.night #copy-to-clipboard:hover {
+  color: rgba(255,255,255,0.9);
+  background: #363636;
+}
+
+.night .ui.secondary.menu {
+  border: 0 solid transparent;
+  background-color: transparent;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+.night .ui.secondary.menu .item {
+  color: rgba(255,255,255,.7) !important;
+}
+.night .ui.secondary.menu .item.active,
+.night .ui.secondary.menu .item:hover {
+  color: #fff !important;
+}
+
+.night .tab-menu {
+  border-bottom: 2px solid rgba(255,255,255,.1) !important;
+}
+
+.night .tab-menu .item.active {
+  border-bottom: 2px solid white !important;
+}
+
+.night .settings .button {
+  background: #333 !important;
+  color: rgba(255,255,255,0.9) !important;
+}
+  .night .settings .button:hover {
+    background: #444 !important;
+    color: rgba(255,255,255,0.6) !important;
+  }
+
+.night .edit-setting .group .rule.different .label {
+  background: #03487c !important;
+}
+  .night .edit-setting .group .rule.different .label span {
+    opacity: 0.7 !important;
+  }
+.night .edit-setting .group .rule.different input {
+  border-color: #03487c !important;
+}
+.night .edit-setting .group .rule.different .revert.button {
+  background-color: #03487c !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.night .edit-setting .group .rule.different .revert.button:hover {
+  background-color: #07406c !important;
+}
+.night .edit-setting .group .rule.different .revert.button:active {
+  background-color: #07346c !important;
+}
+.night .edit-setting .group .rule.different .label span,
+.night .edit-setting .group .rule .label:last-child span {
+  opacity: 0.75;
+}
+
+
+.night .compare #transliterated {
+  background: #222;
+  border: none;
+}
+
+
+.night .definition.table thead td {
+  border-bottom: none;
+}
+
+.night .test.label {
+  background: #1b1c1d !important;
+  color: white;
+}
+.night .test.label:hover {
+  background: #333 !important;
+}
+
+
+.night .ui.table {
+  background: #333333;
+  color: rgba(255, 255, 255, 0.9);
+  border: none;
+}
+.night .ui.table th {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.9);
+}
+.night .ui.table tr td {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+.night .ui.table tr.disabled td,
+.night .ui.table tr td.disabled,
+.night .ui.table tr.disabled:hover td,
+.night .ui.table tr:hover td.disabled {
+  pointer-events: none;
+  color: rgba(225, 225, 225, 0.3);
+}
+.night .ui.definition.table tfoot:not(.full-width) th:first-child,
+.night .ui.definition.table thead:not(.full-width) th:first-child {
+  background: #FFFFFF;
+}
+.night .ui.definition.table tr td:first-child {
+  background: rgba(255, 255, 255, 0.02);
+  color: #ffffff;
+}
+
+
+.night .ui.segment {
+  border: none;
+  box-shadow: none;
+}
+.night .ui.segment,
+.night .ui.primary.segment {
+  background: #1B1C1D;
+  color: rgba(255, 255, 255, 0.9);
+}
+.night .ui.attached.segment {
+  border-color: #555555;
+}

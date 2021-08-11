@@ -2,19 +2,39 @@
 
 Vue.component('language-menu', {
   model: {
-    prop: 'value',
-    event: 'change'
+    prop: 'value'
   },
   props: {
     value: String
   },
-  data: function data() {
-    return {
-      languages: TibetanTransliteratorSettings.languages()
-    };
+  computed: {
+    languages: function languages() {
+      return Languages.all();
+    },
+    language: function language() {
+      return Languages.find(this.value);
+    }
   },
   mounted: function mounted() {
-    $('.radio').checkbox();
+    var _this = this;
+
+    $(this.$refs.dropdownDiv).dropdown({
+      values: _(this.languages).map(function (language) {
+        return {
+          value: language.id,
+          html: language.name,
+          name: language.name,
+          selected: _this.value == language.id
+        };
+      }),
+      onChange: function onChange() {
+        setTimeout(function () {
+          var value = $(_this.$refs.dropdownDiv).dropdown('get value');
+
+          _this.$emit('input', value);
+        }, 0);
+      }
+    });
   },
-  template: "\n    <div id=\"languages\">\n      <div\n        v-for=\"(language, index) in languages\"\n      >\n        <div class=\"ui radio checkbox\">\n          <input type=\"radio\"\n            tabindex=\"0\"\n            class=\"hidden\"\n            name=\"language\"\n            v-bind:value=\"language\"\n            v-bind:checked=\"language == value\"\n            v-on:change=\"$emit('change', $event.target.value)\">\n          <label>{{language.capitalize()}}</label>\n        </div>\n      </div>\n    </div>\n  "
+  template: "\n    <div class=\"languages\">\n      <div class=\"ui normal selection dropdown\" ref=\"dropdownDiv\">\n        <input type=\"hidden\" />\n        <i class=\"dropdown icon\"></i>\n        <div class=\"text\"></div>\n        <div class=\"menu\">\n        </div>\n      </div>\n      <link-to-edit-language\n        class=\"right attached\"\n        :language=\"language\"\n      />\n    </div>\n  "
 });

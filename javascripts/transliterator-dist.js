@@ -1,8 +1,19 @@
 "use strict";
 
-var TibetanTransliterator = function TibetanTransliterator(tibetan) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  if (options.language) TibetanTransliteratorSettings.change(options.language);
+var t, findException;
+
+var TibetanTransliterator = function TibetanTransliterator(tibetan, language) {
+  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  var exceptions = new Exceptions(language);
+
+  t = function t(key) {
+    return language.rules[key];
+  };
+
+  findException = function findException(text) {
+    return exceptions.find(text);
+  };
+
   return {
     tibetan: tibetan,
     capitalize: options.capitalize,
@@ -137,7 +148,7 @@ var Group = function Group(tibetan) {
       if (firstSyllable.last() == secondSyllable.first()) return firstSyllable.slice(0, firstSyllable.length - 1);else return firstSyllable;
     },
     addDoubleSIfNecesary: function addDoubleSIfNecesary(firstSyllable, secondSyllable) {
-      if (TibetanTransliteratorSettings.get('doubleS') && !firstSyllable.last().match(/[gk]/) && secondSyllable.match(/^s[^h]/)) return firstSyllable + 's';else return firstSyllable;
+      if (t('doubleS') && !firstSyllable.last().match(/[gk]/) && secondSyllable.match(/^s[^h]/)) return firstSyllable + 's';else return firstSyllable;
     },
     shiftSyllables: function shiftSyllables(numberOfShifts) {
       var that = this;
@@ -164,7 +175,7 @@ var Syllable = function Syllable(syllable) {
     syllable: syllable,
     transliterate: function transliterate() {
       var consonant = this.consonant();
-      if (consonant == undefined) return '???';
+      if (consonant == undefined) return '࿗';
       return consonant + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU();
     },
     consonant: function consonant() {

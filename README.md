@@ -15,7 +15,7 @@ Usage
 
 ```js
 new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
-=> 'kangki lotrö' // using default language: 'english (strict)'
+=> 'kangki lotrö' // using default language: 'english-strict'
 
 # Use the 'capitalize' option to capitalize the first letter of every group
 
@@ -24,7 +24,7 @@ new TibetanTransliterator( 'ཨེ་མ་ཧོཿ སྤྲོས་བྲལ
 
 # Use the 'language' option to choose which set of rules you wish to follow:
 
-new TibetanTransliterator('གང་གི་བློ་གྲོས་', { language: 'english (loose)' }).transliterate();
+new TibetanTransliterator('གང་གི་བློ་གྲོས་', { language: 'english-loose' }).transliterate();
 => 'gangi lodrö'
 
 new TibetanTransliterator('གང་གི་བློ་གྲོས་', { language: 'french' }).transliterate();
@@ -32,7 +32,7 @@ new TibetanTransliterator('གང་གི་བློ་གྲོས་', { lan
 
 # Or set the language once and for all instead of every transliteration:
 
-TibetanTransliteratorSettings.change('french');
+Languages.change('french');
 new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
 ```
 
@@ -173,9 +173,9 @@ A zillion thanks also to:
 * Joe B. Wilson and everybody involved in publishing *Translating Tibetan from
   Buddhism* which is equally great.
 * Tony Duff and friends for producing all these beautiful Tibetan fonts.
-* Everybody involved in building an maintaining Vue.js, jQuery, SemanticUI,
-  Sugar.js, Underscore.js, DevDocs, Zeal and Google Chrome for making web
-  development so easy and enjoyable.
+* Everybody involved in building an maintaining Vue.js, SemanticUI, FontAwesome,
+  SublimeText, jQuery, Sugar.js, Underscore.js, DevDocs, Zeal and Google Chrome
+  for making web development so easy and enjoyable.
 
 Through the virtue coming from this work, may all beings human and
 otherwise reach absolute freedom.

@@ -18,5 +18,5 @@ Vue.component('clipboard-button', {
   mounted: function mounted() {
     new Clipboard('#copy-to-clipboard');
   },
-  template: "\n    <div\n      id=\"copy-to-clipboard\"\n      data-clipboard-target=\"#transliteration\"\n      v-on:click=\"updateText\"\n    >\n      <i class=\"paste icon\"></i> {{text}}\n    </div>\n  "
+  template: "\n    <div\n      id=\"copy-to-clipboard\"\n      class=\"ui button\"\n      data-clipboard-target=\"#transliteration\"\n      v-on:click=\"updateText\"\n    >\n      <i class=\"paste icon\"></i> {{text}}\n    </div>\n  "
 });

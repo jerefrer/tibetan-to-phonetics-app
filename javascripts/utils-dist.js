@@ -1,19 +1,8 @@
 "use strict";
 
-var updateHeight = function updateHeight(fields) {
-  $(fields.join(',')).css('height', 'auto').autosize();
-  var highest = fields.max(function (element) {
-    return $(element).height() || 0;
-  });
-  var others = fields.exclude(highest);
-  $(highest).autosize();
-  setTimeout(function () {
-    var height = $(highest).css('height');
-
-    _(others).each(function (element) {
-      $(element).css('height', height);
-    });
-  }, 0);
+var removeUntranscribedPunctuationAndNormalize = function removeUntranscribedPunctuationAndNormalize(tibetan) {
+  return tibetan.replace(/[༵\u0F04-\u0F0A\u0F0D-\u0F1F\u0F3A-\u0F3F\u0FBE-\uF269]/g, '').trim().replace(/ཿ/g, '་').replace(/་+/g, '་').replace(/་$/g, '').replace(/ༀ/g, 'ཨོཾ').replace(/([ཾྃྂ])([ཱཱཱེིོིྀུུ])/g, '$2$1') // Malformed: anusvara before vowel
+  .replace(/ཱུ/g, 'ཱུ').replace(/ཱི/g, 'ཱི').replace(/ཱྀ/g, 'ཱྀ').replace(/དྷ/g, 'དྷ');
 };
 
 var extractTransliteration = function extractTransliteration(text) {

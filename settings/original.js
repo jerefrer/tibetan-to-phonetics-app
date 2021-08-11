@@ -22,7 +22,7 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-var originalSettings = {
+var originalRules = {
 
   // End link char (as in pa-o or be-u)
   'endLinkChar': '-',
@@ -104,7 +104,7 @@ var originalSettings = {
   'lha': 'lh',             // ལྷ
 
   // Suffixes
-  'kaSuffix': 'k',         // དཀ
+  'kaSuffix': 'k',         // དག
   'ngaSuffix': 'ng',       // དང
   'naSuffix': 'n',         // དན
   'baSuffix': 'p',         // དབ

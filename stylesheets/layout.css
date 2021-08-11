@@ -3,43 +3,47 @@
   src: url("../vendor/fonts/TibetanMachineUnicode1.0_0.ttf") format('truetype');
 }
 
-body.pushable,
-body.pushable>.pusher {
-  background: #001211 !important;
-}
-
-#menu-button {
+#menu-button,
+#color-mode-button {
   position: fixed;
-  top: 35px;
-  left: 17.5px;
+  top: 32px;
   z-index: 999999;
+}
+#menu-button {
+  left: 17.5px;
+}
+#color-mode-button {
+  right: 17.5px;
 }
 
 #app {
+  min-height: 100%;
   padding: 30px 70px;
-  color: rgba(255, 255, 255, 0.9);
+  background: #fcfcfc !important;
 }
 
-#languages {
+#menu {
   display: flex;
-  text-align: center;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 2em;
 }
-#languages > div {
-  flex: 1;
-}
-#languages .radio {
-  padding: 15px;
-  background: #222;
-  border-radius: 4px;
-}
-#languages .radio:hover {
-  background: #272727;
-  cursor: pointer;
-}
-#languages label {
-  color: rgba(255,255,255,0.9);
-}
+  #menu > div {
+    flex: 0 auto;
+  }
+  #menu .languages {
+    display: flex;
+  }
+    #menu .languages .dropdown {
+      margin-left: 74px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    #menu .languages .button {
+      margin-right: 17px;
+      border-left: none;
+      box-shadow: none !important;
+    }
 
 #options {
   display: flex;
@@ -78,14 +82,10 @@ textarea {
   width: 100%;
   min-height: calc(100vh - 60px) !important;
   max-height: none !important;
-  margin-top: -15px !important;
+  margin-top: -14px !important;
   padding: 30px !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-  background: #222 !important;
-  border: none !important;
   overflow: hidden;
 }
-
 
 #transliteration {
   font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -108,35 +108,12 @@ textarea {
   position: absolute;
   top: 0px;
   right: 18px;
-  width: 152px;
-  padding: 10px;
-  color:  rgba(255,255,255,0.7);
-  background: #333;
-  border-bottom-left-radius: 4px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   z-index: 999;
 }
 #copy-to-clipboard:hover {
-  color: rgba(255,255,255,0.9);
-  background: #363636;
   cursor: pointer;
 }
 
-.ui.checkbox label,
-.ui.checkbox+label {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-.ui.slider.checkbox input~.box,
-.ui.slider.checkbox input~label {
-  color: rgba(255, 255, 255, 0.6) !important;
-}
-.ui.slider.checkbox input:checked~.box,
-.ui.slider.checkbox input:checked~label,
-.ui.slider.checkbox input:focus:checked~.box,
-.ui.slider.checkbox input:focus:checked~label {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-.ui.slider.checkbox input:focus:checked~.box:before,
-.ui.slider.checkbox input:focus:checked~label:before {
-  background-color: #545454!important
-}

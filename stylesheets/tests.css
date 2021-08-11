@@ -1,19 +1,27 @@
-table .header {
+.definition.table .header {
   width: 600px;
   padding: 15px !important;
 }
 
+.definition.table thead td {
+  border-bottom: 1px solid rgba(34,36,38,.1);
+}
+
 .results-group .header {
   cursor: pointer;
+}
+.results-group .header:hover {
+  background: rgba(0,0,0,.07) !important;
 }
 
 .ui.label.test {
   margin: 2px;
   padding: 0 0 0 5px;
   font-weight: normal;
+  border: none;
 }
 .ui.label.test:hover {
-  background: #333 !important;
+  background: rgba(0,0,0,.03);
   cursor: pointer;
 }
 .ui.label.test .tibetan {

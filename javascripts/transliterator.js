@@ -1,6 +1,9 @@
-var TibetanTransliterator = function(tibetan, options = {}) {
-  if (options.language)
-    TibetanTransliteratorSettings.change(options.language);
+var t, findException;
+
+var TibetanTransliterator = function(tibetan, language, options = {}) {
+  var exceptions = new Exceptions(language);
+  t = (key) => language.rules[key];
+  findException = (text) => exceptions.find(text);
   return {
     tibetan: tibetan,
     capitalize: options.capitalize,
@@ -138,7 +141,7 @@ var Group = function(tibetan, options = {}) {
     },
     addDoubleSIfNecesary: function(firstSyllable, secondSyllable) {
       if (
-        TibetanTransliteratorSettings.get('doubleS') &&
+        t('doubleS') &&
         !firstSyllable.last().match(/[gk]/) &&
         secondSyllable.match(/^s[^h]/)
       )
@@ -166,7 +169,7 @@ var Syllable = function(syllable) {
     syllable: syllable,
     transliterate: function() {
       var consonant = this.consonant();
-      if (consonant == undefined) return '???';
+      if (consonant == undefined) return '࿗';
       return consonant + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU()
     },
     consonant: function() {

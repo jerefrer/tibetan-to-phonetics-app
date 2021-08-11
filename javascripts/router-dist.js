@@ -2,22 +2,22 @@
 
 var routes = [{
   path: '/',
-  component: Homepage
+  component: ConvertPage
 }, {
   path: '/tests',
   component: TestsPage
 }, {
   path: '/compare',
   component: ComparePage
+}, {
+  path: '/settings',
+  component: SettingsPage
+}, {
+  path: '/settings/:languageId',
+  name: 'edit-setting',
+  component: EditSettingPage
 }];
 var router = new VueRouter({
-  routes: routes
+  routes: routes,
+  linkExactActiveClass: 'active'
 });
-var app = new Vue({
-  router: router
-}).$mount('#app');
-setTimeout(function () {
-  app.$router.afterEach(function (to, from) {
-    return $('.sidebar').sidebar('hide');
-  });
-}, 1000);
