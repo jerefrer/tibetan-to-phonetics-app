@@ -1,4 +1,5 @@
 var t, findException;
+var missedSyllables = [];
 
 var TibetanTransliterator = function(tibetan, language, options = {}) {
   var exceptions = new Exceptions(language);
@@ -169,7 +170,10 @@ var Syllable = function(syllable) {
     syllable: syllable,
     transliterate: function() {
       var consonant = this.consonant();
-      if (consonant == undefined) return '࿗';
+      if (consonant == undefined) {
+        missedSyllables.push(syllable);
+        return '࿗';
+      }
       return consonant + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU()
     },
     consonant: function() {
