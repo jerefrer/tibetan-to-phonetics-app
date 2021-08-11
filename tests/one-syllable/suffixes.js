@@ -54,6 +54,12 @@ testGroups.push({
     { tibetan: 'བགེའོ', transliteration: 'gé-o' },
     { tibetan: 'བགོའོ', transliteration: 'go-o' },
 
+    // 'm as and/or particle
+    { tibetan: 'པའང',  transliteration: 'pa-ang' },
+
+    // 'ng as concessive particle
+    { tibetan: 'པའམ',  transliteration: 'pa-am' },
+
     // 'u for specific words
     { tibetan: 'བེའུ', transliteration: 'pé-u' },
     { tibetan: 'མིའུ', transliteration: 'mi-u' },

@@ -400,6 +400,14 @@ var Syllable = function Syllable(syllable) {
           return t('laSuffix');
           break;
 
+        case 'འང':
+          return t('endLinkChar') + t('a') + t('ngaSuffix');
+          break;
+
+        case 'འམ':
+          return t('endLinkChar') + t('a') + t('maSuffix');
+          break;
+
         default:
           return '';
       }

@@ -316,6 +316,8 @@ var Syllable = function(syllable) {
         case 'མ': return t('maSuffix'); break;
         case 'ར': return t('raSuffix'); break;
         case 'ལ': return t('laSuffix'); break;
+        case 'འང': return t('endLinkChar') + t('a') + t('ngaSuffix'); break;
+        case 'འམ': return t('endLinkChar') + t('a') + t('maSuffix'); break;
         default: return '';
       }
     },

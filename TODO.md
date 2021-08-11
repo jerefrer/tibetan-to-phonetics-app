@@ -59,6 +59,7 @@
 * French: Decide when to use doubleS
 
 ## Special cases
+* པའང and པའམ are handled, but can there be things such as གྱེའང་ or བགའོང་?
 * རྱ
 * དྷ
 * བྷ
