@@ -46,6 +46,7 @@ testGroups.push({
     { tibetan: 'མ་ཧཱ་ཀཱ་ལཱ་', transliteration: 'mahakalaya'},
     { tibetan: 'ཏིཥྛ་བཛྲ།', transliteration: 'tishtha vajra'},
     { tibetan: 'རཀྵ་', transliteration: 'raksha'},
+    { tibetan: 'མཉྫུ་གྷོ་ཥ', transliteration: 'manjugosha'},
 
     { tibetan: 'ཨོཾ་མཾ་ཨཾ་ཙཾ་ཏཾ་', transliteration: 'om mam ang tsam tam' },
     {

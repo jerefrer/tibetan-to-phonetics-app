@@ -23,7 +23,16 @@ var Exceptions = function(language, tibetan) {
       if (!exception)
         exception = this.exceptions[tibetan];
       if (exception) {
-        if (modifier) exception += modifier;
+        if (modifier) {
+          if (modifier == 'ས' && exception.last() == 'a')
+            exception = exception.slice(0, -1) + t('drengbu');
+          else if (modifier == 'ས' && exception.last() == 'o')
+            exception = exception.slice(0, -1) + t('ö');
+          else if (modifier == 'ས' && exception.last() == 'u')
+            exception = exception.slice(0, -1) + t('ü');
+          else
+            exception += modifier;
+        }
         transliteration = this.transcribeTibetanParts(exception);
         transliteration = this.removeDuplicateEndingLetters(transliteration);
         spaceAfter = transliteration.last() == ' ';
