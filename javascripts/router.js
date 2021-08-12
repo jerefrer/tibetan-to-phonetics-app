@@ -6,7 +6,8 @@ const routes = [
     path: '/settings/:languageId',
     name: 'edit-setting',
     component: EditSettingPage
-  }
+  },
+  { path: '*', redirect: '/' }
 ]
 
 const router = new VueRouter({ routes, linkExactActiveClass: 'active' })

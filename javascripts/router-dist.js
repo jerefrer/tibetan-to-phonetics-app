@@ -13,6 +13,9 @@ var routes = [{
   path: '/settings/:languageId',
   name: 'edit-setting',
   component: EditSettingPage
+}, {
+  path: '*',
+  redirect: '/'
 }];
 var router = new VueRouter({
   routes: routes,
