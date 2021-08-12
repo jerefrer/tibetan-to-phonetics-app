@@ -4,6 +4,10 @@ testGroups.push({
     { tibetan: 'ཧཱུཾ', transliteration: 'hung' },
     { tibetan: 'ཧཱུྃ', transliteration: 'hung' },
     { tibetan: 'ཧཱུྂ', transliteration: 'hung' },
+    { tibetan: 'བྷྲཱུཾ', transliteration: 'bhrum' },
+    { tibetan: 'བྷྲཱུྃ', transliteration: 'bhrum' },
+    { tibetan: 'བྷྲཱུྂ', transliteration: 'bhrum' },
+
     { tibetan: 'ཨ་ཨ་ཨ།', transliteration: 'a a a'},
     { tibetan: 'རཾ་ཡཾ་ཁཾ་', transliteration: 'ram yam kham' },
     { tibetan: 'རྃ་ཡྃ་ཁྃ་', transliteration: 'ram yam kham' },
