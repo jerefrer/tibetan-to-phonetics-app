@@ -2,6 +2,7 @@ var ComparePage = Vue.component('compare-page', {
   data() {
     return {
       selectedLanguageId: Storage.get('selectedLanguageId') || Languages.defaultLanguageId,
+      options: Storage.get('options') || { capitalize: true },
       transliteration: Storage.get('compareTransliteration') || `
         Lüpa mépar gukpar nüma
         Chatsal gyachin mélha tsangpa
@@ -88,6 +89,10 @@ var ComparePage = Vue.component('compare-page', {
     <div class="ui container compare">
       <div id="menu">
         <language-menu v-model="selectedLanguageId" />
+        <slider-checkbox
+          v-model="options.capitalize"
+          text="Capital letter at the beginning of each group"
+        />
       </div>
       <div id="scrollable-area-container">
         <div id="scrollable-area">
@@ -100,6 +105,7 @@ var ComparePage = Vue.component('compare-page', {
             :lines="lines"
             :expectedTransliteration="transliteration"
             :languageId="selectedLanguageId"
+            :options="options"
             @click-part="correctSource($event)"
           />
         </div>
@@ -141,7 +147,8 @@ Vue.component('compared-lines', {
   props: {
     expectedTransliteration: String,
     languageId: String,
-    lines: Array
+    lines: Array,
+    options: Object
   },
   methods: {
     expectedLines: function() {
@@ -153,12 +160,11 @@ Vue.component('compared-lines', {
   },
   computed: {
     transliteratedLines: function() {
-      var that = this;
       var language = Languages.find(this.languageId);
-      return this.lines.map(function(line, index) {
+      return this.lines.map((line, index) => {
         return {
-          expected: that.expectedLines()[index],
-          actual: new TibetanTransliterator(line, language).transliterate().capitalize()
+          expected: this.expectedLines()[index],
+          actual: new TibetanTransliterator(line, language, this.options).transliterate()
         }
       });
     },
