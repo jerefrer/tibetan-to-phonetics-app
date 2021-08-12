@@ -209,7 +209,9 @@
   background: #222;
   border: none;
 }
-
+.night .compare #transliterated span {
+  color: rgba(255, 255, 255, 0.9);
+}
 
 .night .definition.table thead td {
   border-bottom: none;
