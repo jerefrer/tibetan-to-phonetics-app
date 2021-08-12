@@ -1,7 +1,15 @@
 "use strict";
 
 var processTime;
-var startedAt;
+var startedAt; // We don't want to use the Storage'd exceptions but only the default ones.
+
+Exceptions.generalExceptions = normalizeExceptions(originalGeneralExceptions);
+$(function () {
+  new Vue({
+    el: '#app',
+    template: "\n      <div id=\"app\" class=\"night\">\n        <tests-page />\n      </div>\n    "
+  });
+});
 var TestsPage = Vue.component('tests-page', {
   data: function data() {
     var passedCount = 0;

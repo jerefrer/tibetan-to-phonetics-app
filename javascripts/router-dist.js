@@ -4,9 +4,6 @@ var routes = [{
   path: '/',
   component: ConvertPage
 }, {
-  path: '/tests',
-  component: TestsPage
-}, {
   path: '/compare',
   component: ComparePage
 }, {

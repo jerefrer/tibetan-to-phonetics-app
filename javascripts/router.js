@@ -1,6 +1,5 @@
 const routes = [
   { path: '/', component: ConvertPage },
-  { path: '/tests', component: TestsPage },
   { path: '/compare', component: ComparePage },
   { path: '/settings', component: SettingsPage },
   {

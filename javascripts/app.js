@@ -34,10 +34,6 @@ const app = new Vue({
           <i class="cogs icon"></i>
           Settings
         </router-link>
-        <router-link class="item" to="/tests">
-          <i class="flask icon"></i>
-          Tests
-        </router-link>
       </div>
 
       <div class="pusher">
