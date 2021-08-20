@@ -1,31 +1,69 @@
+let redirectIfInvalidTab = function (to, next) {
+  if (_(['rules', 'exceptions']).includes(to.params.tab))
+    next()
+  else
+    next('/settings');
+}
+
 var SettingsPage = Vue.component('settings-page', {
   data () {
     return {
-      currentTab: 'rules',
       showDropZone: false,
+      showLivePreview: false,
       languages: Languages.languages,
-      exceptions: Exceptions.generalExceptionsAsArray()
+      selectedLanguageId: Languages.defaultLanguageId,
+      exceptions: Exceptions.generalExceptionsAsArray(),
+      options: { capitalize: true },
     }
   },
+  beforeRouteEnter (to, from, next) {
+    redirectIfInvalidTab(to, next);
+  },
+  beforeRouteUpdate (to, from, next) {
+    redirectIfInvalidTab(to, next);
+  },
   watch: {
+    selectedLanguageId (value) {
+      Storage.set('selectedLanguageId', value);
+    },
+    options: {
+      deep: true,
+      handler (value) {
+        Storage.set('options', value);
+      }
+    },
     exceptions: {
       deep: true,
       handler (exceptionsAsArray) {
-        var exceptions = _(exceptionsAsArray).inject((hash, exception) => {
-          if (exception.key.trim() && exception.value.trim())
-            hash[exception.key] = exception.value;
-          return hash;
-        }, {});
-        Exceptions.updateGeneralExceptions(exceptions);
+        Exceptions.updateGeneralExceptions(this.exceptionsAsObject);
       }
     }
   },
   computed: {
+    currentTab (value) {
+      return this.$route.params.tab;
+    },
     defaultLanguages () {
       return _(this.languages).where({isDefault: true});
     },
     customLanguages () {
       return _(this.languages).where({isCustom: true});
+    },
+    someLocalStorage () {
+      return localforage._driver;
+    },
+    fakeLanguageForLivePreview () {
+      return {
+        rules: Languages.find(this.selectedLanguageId).rules,
+        exceptions: this.exceptionsAsObject
+      }
+    },
+    exceptionsAsObject () {
+      return _(this.exceptions).inject((hash, exception) => {
+        if (exception.key.trim() && exception.value.trim())
+          hash[exception.key] = exception.value;
+        return hash;
+      }, {});
     }
   },
   methods: {
@@ -83,7 +121,7 @@ var SettingsPage = Vue.component('settings-page', {
         };
         reader.readAsText(file);
       };
-      initializeDragAndDrop = function() {
+      var initializeDragAndDrop = function() {
         var uploadOptions = { iframe: { url: '?/upload' }, multiple: true, logging: 0 };
         var uploadArea = new FileDrop('mantra-import', uploadOptions);
         uploadArea.event('send', processFile);
@@ -94,11 +132,14 @@ var SettingsPage = Vue.component('settings-page', {
     }
   },
   template: `
-    <div class="ui container settings">
+    <div
+      class="ui container settings with-live-preview"
+      :class="{'with-live-preview-active': showLivePreview}"
+    >
 
       <div class="ui huge secondary pointing menu tab-menu">
-        <tab-link v-model="currentTab" tabId="rules">Rules</tab-link>
-        <tab-link v-model="currentTab" tabId="exceptions">Exceptions</tab-link>
+        <tab-link tabId="rules">Rules</tab-link>
+        <tab-link tabId="exceptions">Exceptions</tab-link>
       </div>
 
       <div v-if="currentTab == 'rules'" class="ui active tab">
@@ -121,13 +162,13 @@ var SettingsPage = Vue.component('settings-page', {
 
         <div class="ui large centered header">
           Custom rule sets
-          <div class="ui button" @click="showImportModal">
+          <div v-if="someLocalStorage" class="ui button" @click="showImportModal">
             <i class="upload icon" />
             Import
           </div>
         </div>
 
-        <div class="ui centered cards">
+        <div v-if="someLocalStorage" class="ui centered cards">
 
           <language-card
             v-for="language in customLanguages"
@@ -149,11 +190,31 @@ var SettingsPage = Vue.component('settings-page', {
 
         </div>
 
+        <div v-else class="ui warning message text container">
+
+          <div class="header">
+            Your browser does not support storing data locally, which is
+            necessary for custom rule sets to work.
+          </div>
+
+          <p>
+            You can still enjoy using the default rule sets, but if you want to
+            create your own or import other people's you will need to update
+            your browser to its latest version or start using a modern browser
+            like Mozilla Firefox or Google Chrome.
+          </p>
+
+        </div>
+
       </div>
 
-      <div v-if="currentTab == 'exceptions'" class="ui active tab">
+      <div v-if="currentTab == 'exceptions'" class="ui text container active tab">
 
-        <div class="ui hidden section divider"></div>
+        <div ref="div" class="ui large secondary center aligned segment">
+          These are the general exceptions that apply to all rule sets.
+        </div>
+
+        <exceptions-instructions />
 
         <div class="exceptions">
           <div
@@ -167,7 +228,7 @@ var SettingsPage = Vue.component('settings-page', {
             <input class="tibetan" v-model="exception.key"   spellcheck="false" />
             <input class="tibetan" v-model="exception.value" spellcheck="false" />
           </div>
-          <div class="new exception" @click="addNewException">
+          <div class="ui attached button new exception" @click="addNewException">
             <i class="plus icon" />
             Add a new exception
           </div>
@@ -183,22 +244,40 @@ var SettingsPage = Vue.component('settings-page', {
 
       </div>
 
-    </div>
-  `
-})
+      <div
+        v-if="currentTab == 'exceptions'"
+        class="live-preview"
+        :class="{active: showLivePreview}"
+      >
 
-Vue.component('tab-link', {
-  model: {
-    prop: 'value'
-  },
-  props: {
-    value: String,
-    tabId: String
-  },
-  template: `
-    <a class="item" :class="{active: value == tabId}" @click="$emit('input', tabId)">
-      <slot />
-    </a>
+        <button
+          class="ui top attached icon button"
+          @click="showLivePreview=!showLivePreview"
+        >
+          <i class="up arrow icon" />
+          Live preview
+        </button>
+
+        <div id="menu">
+
+          <language-menu v-model="selectedLanguageId" />
+
+          <slider-checkbox
+            v-model="options.capitalize"
+            text="Capital letter at the beginning of each group"
+          />
+
+        </div>
+
+        <convert-boxes
+          :language="fakeLanguageForLivePreview"
+          :options="options"
+          tibetanStorageKey="live-preview"
+        />
+
+      </div>
+
+    </div>
   `
 })
 
@@ -229,17 +308,26 @@ Vue.component('language-card', {
       saveAs(blob, this.language.name + '.tt-rule-set');
     }
   },
+  mounted () {
+    setTimeout(() => {
+      $('[title]', this.$refs.card).popup({
+        position: 'top center',
+        variation: 'inverted'
+      });
+    }, 100)
+  },
   template: `
-    <div class="ui card">
+    <div class="ui card" ref="card">
       <div class="content">
         <div class="ui large icon buttons">
           <link-to-edit-language :language="language" />
-          <div class="ui button" @click="$emit('copy')">
+          <div class="ui button" title="Copy" @click="$emit('copy')">
             <i class="copy icon"></i>
           </div>
           <div
             v-if="isCustom"
             class="ui button"
+            title="Download"
             @click="download"
           >
             <i class="download icon"></i>
@@ -247,6 +335,7 @@ Vue.component('language-card', {
           <div
             v-if="isCustom"
             class="ui button"
+            title="Delete"
             @click="$emit('delete')"
           >
             <i class="times icon"></i>

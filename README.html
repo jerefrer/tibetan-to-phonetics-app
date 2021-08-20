@@ -12,7 +12,7 @@ based on customizable sets of rules.</p>
 <h2 id="usage">Usage</h2>
 <h3 id="as-a-library">As a library</h3>
 <pre><code class="language-js">new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;).transliterate();
-=&gt; &#39;kangki lotrö&#39; // using default language: &#39;english (strict)&#39;
+=&gt; &#39;kangki lotrö&#39; // using default language: &#39;english-strict&#39;
 
 # Use the &#39;capitalize&#39; option to capitalize the first letter of every group
 
@@ -21,7 +21,7 @@ new TibetanTransliterator( &#39;ཨེ་མ་ཧོཿ སྤྲོས་བ�
 
 # Use the &#39;language&#39; option to choose which set of rules you wish to follow:
 
-new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;, { language: &#39;english (loose)&#39; }).transliterate();
+new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;, { language: &#39;english-loose&#39; }).transliterate();
 =&gt; &#39;gangi lodrö&#39;
 
 new TibetanTransliterator(&#39;གང་གི་བློ་གྲོས་&#39;, { language: &#39;french&#39; }).transliterate();
@@ -131,9 +131,9 @@ great book.</p>
 <li>Joe B. Wilson and everybody involved in publishing <em>Translating Tibetan from
 Buddhism</em> which is equally great.</li>
 <li>Tony Duff and friends for producing all these beautiful Tibetan fonts.</li>
-<li>Everybody involved in building an maintaining Vue.js, jQuery, SemanticUI,
-Sugar.js, Underscore.js, DevDocs, Zeal and Google Chrome for making web
-development so easy and enjoyable.</li>
+<li>Everybody involved in building an maintaining Vue.js, SemanticUI, FontAwesome,
+SublimeText, jQuery, Sugar.js, Underscore.js, DevDocs, Zeal and Google Chrome
+for making web development so easy and enjoyable.</li>
 </ul>
 <p>Through the virtue coming from this work, may all beings human and
 otherwise reach absolute freedom.</p>

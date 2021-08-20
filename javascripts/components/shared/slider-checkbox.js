@@ -7,11 +7,9 @@ Vue.component('slider-checkbox', {
     text: String
   },
   mounted: function() {
-    var vm = this;
-    $(vm.$refs.checkbox).checkbox({
-      onChange: function(input) {
-        vm.$emit('input', $(vm.$refs.checkbox).checkbox('is checked'));
-      }
+    $(this.$refs.checkbox).checkbox({
+      onChange: (input) =>
+        this.$emit('input', $(this.$refs.checkbox).checkbox('is checked'))
     });
   },
   template: `

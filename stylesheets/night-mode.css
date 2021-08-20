@@ -6,6 +6,9 @@
   color: white !important;
 }
 
+.night .warning.message .header {
+  color: #794b02 !important;
+}
 
 .night #menu-button,
 .night #color-mode-button {
@@ -171,13 +174,26 @@
   border-bottom: 2px solid white !important;
 }
 
-.night .settings .button {
+.night .settings .button,
+.night .edit-setting .button {
   background: #333 !important;
   color: rgba(255,255,255,0.9) !important;
 }
-  .night .settings .button:hover {
+  .night .settings .button:hover,
+  .night .edit-setting .button:hover {
     background: #444 !important;
     color: rgba(255,255,255,0.6) !important;
+  }
+
+.night .exceptions-instructions {
+  background: #1b1c1d !important;
+  box-shadow: 0 0 0 2px #246370 inset, 0 0 0 0 transparent !important;
+}
+  .night .exceptions-instructions .header {
+    color: #93bfc8 !important;
+  }
+  .night .exceptions-instructions .content {
+    color: #93bfc8;
   }
 
 .night .edit-setting .group .rule.different .label {
@@ -204,6 +220,11 @@
   opacity: 0.75;
 }
 
+.night .scrollable-area .result {
+  background: #222;
+  color: rgba(255, 255, 255, 0.9);
+  border: none;
+}
 
 .night .compare #transliterated {
   background: #222;
@@ -267,4 +288,20 @@
 }
 .night .ui.attached.segment {
   border-color: #555555;
+}
+
+.night .live-preview {
+  background: #151515 !important;
+}
+
+.night .live-preview .button {
+  color: rgba(255, 255, 255, 0.9);
+  background: #151515 !important;
+}
+.night .live-preview .button:hover {
+  background: #272727 !important;
+}
+
+.night .secondary.segment {
+  color: rgba(255, 255, 255, 0.6) !important;
 }

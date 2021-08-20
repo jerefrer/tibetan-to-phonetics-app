@@ -1,11 +1,27 @@
+let redirectIfInvalidLanguageIdOrTab = function (to, next) {
+  if (Languages.find(to.params.languageId))
+    if (_(['rules', 'exceptions']).includes(to.params.tab))
+      next()
+    else
+      next ('/settings/' + to.params.languageId + '/rules')
+  else
+    next('/settings');
+}
+
 var EditSettingPage = Vue.component('edit-setting-page', {
   data () {
     return {
-      currentTab: 'rules',
       name: undefined,
       rules: {},
-      exceptions: []
+      exceptions: [],
+      showLivePreview: false
     }
+  },
+  beforeRouteEnter (to, from, next) {
+    redirectIfInvalidLanguageIdOrTab(to, next);
+  },
+  beforeRouteUpdate (to, from, next) {
+    redirectIfInvalidLanguageIdOrTab(to, next);
   },
   watch: {
     name(value) {
@@ -25,8 +41,24 @@ var EditSettingPage = Vue.component('edit-setting-page', {
     }
   },
   computed: {
+    currentTab () {
+      return this.$route.params.tab;
+    },
     language () {
       return Languages.find(this.$route.params.languageId);
+    },
+    exceptionsAsObject () {
+      return _(this.exceptions).inject((hash, exception) => {
+        if (exception.key.trim() && exception.value.trim())
+          hash[exception.key] = exception.value;
+        return hash;
+      }, {});
+    },
+    fakeLanguageForLivePreview () {
+      return {
+        rules: this.rules,
+        exceptions: this.exceptionsAsObject
+      }
     },
     groups () {
       return _({
@@ -147,16 +179,11 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       return new TibetanTransliterator(text, this.language).transliterate();
     },
     updateLanguage() {
-      var exceptionsAsObject = _(this.exceptions).inject((hash, exception) => {
-        if (exception.key.trim() && exception.value.trim())
-          hash[exception.key] = exception.value;
-        return hash;
-      }, {});
       Languages.update(
         this.$route.params.languageId,
         this.name,
         this.rules,
-        exceptionsAsObject
+        this.exceptionsAsObject
       );
     },
     addNewException () {
@@ -181,7 +208,10 @@ var EditSettingPage = Vue.component('edit-setting-page', {
     });
   },
   template: `
-    <div class="ui container edit-setting">
+    <div
+      class="ui container edit-setting with-live-preview"
+      :class="{'with-live-preview-active': showLivePreview}"
+    >
 
       <div class="ui header">
         <div class="ui fluid input">
@@ -190,10 +220,9 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       </div>
 
       <div class="ui huge secondary pointing menu tab-menu">
-        <tab-link v-model="currentTab" tabId="rules">Rules</tab-link>
+        <tab-link tabId="rules">Rules</tab-link>
         <tab-link
           v-if="language.isEditable || exceptions.length"
-          v-model="currentTab"
           tabId="exceptions"
         >
           Exceptions
@@ -226,7 +255,22 @@ var EditSettingPage = Vue.component('edit-setting-page', {
 
       </div>
 
-      <div v-if="currentTab == 'exceptions'" class="ui active tab">
+      <div v-if="currentTab == 'exceptions'" class="ui text container active tab">
+
+        <div ref="div" class="ui large secondary center aligned segment">
+          <p>
+            These are the exceptions specific to this rule set, which will be
+            applied on top of the general ones.
+          </p>
+          <p>
+            This means that if you define an exception here that has the same
+            left-hand value as one of the general exceptions, then the
+            exception defined here will be used and the general exception
+            will be ignored.
+          </p>
+        </div>
+
+        <exceptions-instructions />
 
         <div class="exceptions">
           <div
@@ -248,7 +292,11 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           </div>
           <div
             v-if="language.isEditable"
-            class="new exception"
+            class="ui button new exception"
+            :class="{
+              'bottom': !language.isDefault || !language.isEditable,
+              'attached': exceptions.length
+            }"
             @click="addNewException"
           >
             <i class="plus icon" />
@@ -265,6 +313,24 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           Reset all to default (all modifications will be lost)
         </div>
 
+      </div>
+
+      <div
+        v-if="language.isEditable"
+        class="live-preview"
+        :class="{active: showLivePreview}"
+      >
+        <button
+          class="ui top attached icon button"
+          @click="showLivePreview=!showLivePreview"
+        >
+          <i class="up arrow icon" />
+          Live preview
+        </button>
+        <convert-boxes
+          :language="fakeLanguageForLivePreview"
+          tibetanStorageKey="live-preview"
+        />
       </div>
 
     </div>

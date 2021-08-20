@@ -1,13 +1,25 @@
 "use strict";
 
+var redirectIfInvalidLanguageIdOrTab = function redirectIfInvalidLanguageIdOrTab(to, next) {
+  if (Languages.find(to.params.languageId)) {
+    if (_(['rules', 'exceptions']).includes(to.params.tab)) next();else next('/settings/' + to.params.languageId + '/rules');
+  } else next('/settings');
+};
+
 var EditSettingPage = Vue.component('edit-setting-page', {
   data: function data() {
     return {
-      currentTab: 'rules',
       name: undefined,
       rules: {},
-      exceptions: []
+      exceptions: [],
+      showLivePreview: false
     };
+  },
+  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    redirectIfInvalidLanguageIdOrTab(to, next);
+  },
+  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    redirectIfInvalidLanguageIdOrTab(to, next);
   },
   watch: {
     name: function name(value) {
@@ -27,8 +39,23 @@ var EditSettingPage = Vue.component('edit-setting-page', {
     }
   },
   computed: {
+    currentTab: function currentTab() {
+      return this.$route.params.tab;
+    },
     language: function language() {
       return Languages.find(this.$route.params.languageId);
+    },
+    exceptionsAsObject: function exceptionsAsObject() {
+      return _(this.exceptions).inject(function (hash, exception) {
+        if (exception.key.trim() && exception.value.trim()) hash[exception.key] = exception.value;
+        return hash;
+      }, {});
+    },
+    fakeLanguageForLivePreview: function fakeLanguageForLivePreview() {
+      return {
+        rules: this.rules,
+        exceptions: this.exceptionsAsObject
+      };
     },
     groups: function groups() {
       return _({
@@ -60,12 +87,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       return new TibetanTransliterator(text, this.language).transliterate();
     },
     updateLanguage: function updateLanguage() {
-      var exceptionsAsObject = _(this.exceptions).inject(function (hash, exception) {
-        if (exception.key.trim() && exception.value.trim()) hash[exception.key] = exception.value;
-        return hash;
-      }, {});
-
-      Languages.update(this.$route.params.languageId, this.name, this.rules, exceptionsAsObject);
+      Languages.update(this.$route.params.languageId, this.name, this.rules, this.exceptionsAsObject);
     },
     addNewException: function addNewException() {
       this.exceptions.push({
@@ -93,7 +115,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       };
     });
   },
-  template: "\n    <div class=\"ui container edit-setting\">\n\n      <div class=\"ui header\">\n        <div class=\"ui fluid input\">\n          <input v-model=\"name\" :readonly=\"!language.isEditable\" />\n        </div>\n      </div>\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link v-model=\"currentTab\" tabId=\"rules\">Rules</tab-link>\n        <tab-link\n          v-if=\"language.isEditable || exceptions.length\"\n          v-model=\"currentTab\"\n          tabId=\"exceptions\"\n        >\n          Exceptions\n        </tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui equal width grid\">\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Regular consonants\" />\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Vowels\" />\n        </div>\n\n        <es-group :groups=\"groups\" :rules=\"rules\" class=\"ten wide\"\n          name=\"Modified consonants (with prefix or superscribed)\" />\n\n        <div class=\"ui equal width grid\">\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Ratas\" />\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Yatas\" />\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Latas\" />\n        </div>\n\n        <es-group :groups=\"groups\" :rules=\"rules\" name=\"Suffixes\" />\n\n        <div class=\"ui equal width grid\">\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Special cases\" />\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Formatting\" />\n          <div class=\"column\"></div>\n        </div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui active tab\">\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n          >\n            <input\n              class=\"tibetan\"\n              spellcheck=\"false\"\n              v-model=\"exception.key\"\n              :readonly=\"!language.isEditable\"\n            />\n            <input\n              class=\"tibetan\"\n              spellcheck=\"false\"\n              v-model=\"exception.value\"\n              :readonly=\"!language.isEditable\"\n            />\n          </div>\n          <div\n            v-if=\"language.isEditable\"\n            class=\"new exception\"\n            @click=\"addNewException\"\n          >\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          v-if=\"language.isDefault && language.isEditable\"\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n    </div>\n  "
+  template: "\n    <div\n      class=\"ui container edit-setting with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <div class=\"ui header\">\n        <div class=\"ui fluid input\">\n          <input v-model=\"name\" :readonly=\"!language.isEditable\" />\n        </div>\n      </div>\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link tabId=\"rules\">Rules</tab-link>\n        <tab-link\n          v-if=\"language.isEditable || exceptions.length\"\n          tabId=\"exceptions\"\n        >\n          Exceptions\n        </tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui equal width grid\">\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Regular consonants\" />\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Vowels\" />\n        </div>\n\n        <es-group :groups=\"groups\" :rules=\"rules\" class=\"ten wide\"\n          name=\"Modified consonants (with prefix or superscribed)\" />\n\n        <div class=\"ui equal width grid\">\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Ratas\" />\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Yatas\" />\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Latas\" />\n        </div>\n\n        <es-group :groups=\"groups\" :rules=\"rules\" name=\"Suffixes\" />\n\n        <div class=\"ui equal width grid\">\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Special cases\" />\n          <es-group :groups=\"groups\" :rules=\"rules\" name=\"Formatting\" />\n          <div class=\"column\"></div>\n        </div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui text container active tab\">\n\n        <div ref=\"div\" class=\"ui large secondary center aligned segment\">\n          <p>\n            These are the exceptions specific to this rule set, which will be\n            applied on top of the general ones.\n          </p>\n          <p>\n            This means that if you define an exception here that has the same\n            left-hand value as one of the general exceptions, then the\n            exception defined here will be used and the general exception\n            will be ignored.\n          </p>\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n          >\n            <input\n              class=\"tibetan\"\n              spellcheck=\"false\"\n              v-model=\"exception.key\"\n              :readonly=\"!language.isEditable\"\n            />\n            <input\n              class=\"tibetan\"\n              spellcheck=\"false\"\n              v-model=\"exception.value\"\n              :readonly=\"!language.isEditable\"\n            />\n          </div>\n          <div\n            v-if=\"language.isEditable\"\n            class=\"ui button new exception\"\n            :class=\"{\n              'bottom': !language.isDefault || !language.isEditable,\n              'attached': exceptions.length\n            }\"\n            @click=\"addNewException\"\n          >\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          v-if=\"language.isDefault && language.isEditable\"\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"language.isEditable\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n        <convert-boxes\n          :language=\"fakeLanguageForLivePreview\"\n          tibetanStorageKey=\"live-preview\"\n        />\n      </div>\n\n    </div>\n  "
 });
 Vue.component('es-group', {
   props: {

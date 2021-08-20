@@ -4,9 +4,10 @@ Vue.component('link-to-edit-language', {
   },
   template: `
     <router-link
-      :to="{ name: 'edit-setting', params: { languageId: language.id } }"
+      :to="{ name: 'edit-setting', params: { languageId: language.id, tab: 'rules' } }"
       tag="div"
       class="ui icon button"
+      :title="language.isEditable ? 'Edit' : 'Show'"
     >
       <i
         class="icon"

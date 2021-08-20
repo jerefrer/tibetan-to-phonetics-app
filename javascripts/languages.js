@@ -13,6 +13,7 @@ var Languages = {
     return this.findOriginal(this.defaultLanguageId);
   },
   find: function(languageId, options = {}) {
+    if (!languageId) return;
     if (languageId.toString().match(/^\d*$/)) languageId = parseInt(languageId);
     return _(this.languages).findWhere({id: languageId});
   },
@@ -25,7 +26,7 @@ var Languages = {
     language.name = name;
     language.rules = rules;
     language.exceptions = exceptions;
-    Storage.set('languages', this.languages);
+    this.updateStore();
   },
   create (fromLanguage, name) {
     var id = this.maxId() + 1;
@@ -37,7 +38,7 @@ var Languages = {
       rules: _(fromLanguage && fromLanguage.rules || {}).defaults(originalRules),
       exceptions: fromLanguage && fromLanguage.exceptions || {}
     })
-    Storage.set('languages', this.languages);
+    this.updateStore();
   },
   copy(language) {
     this.create(language, 'Copy of ' + language.name);
@@ -47,9 +48,11 @@ var Languages = {
   },
   delete(language) {
     this.languages = _(this.languages).without(language);
-    Storage.set('languages', this.languages);
-    if (Storage.get('selectedLanguageId') == language.id)
-      Storage.set('selectedLanguageId', defaultLanguageId);
+    this.updateStore();
+    Storage.get('selectedLanguageId', undefined, (value) => {
+      if (value == language.id)
+        Storage.set('selectedLanguageId', defaultLanguageId);
+    })
   },
   maxId () {
     return (
@@ -59,10 +62,20 @@ var Languages = {
       { id: 0 }
     ).id;
   },
-  initialize () {
-    this.languages =
-      Storage.get('languages') ||
-      defaultLanguages.map((language) => this.initializeLanguage(language));
+  updateStore() {
+    localforage.setItem('languages', this.languages);
+  },
+  initialize (callback) {
+    localforage.getItem('languages').then((value) => {
+      this.languages =
+        value ||
+        defaultLanguages.map((language) => this.initializeLanguage(language));
+      callback();
+    }).catch((error) => {
+      this.languages =
+        defaultLanguages.map((language) => this.initializeLanguage(language));
+      callback();
+    });
   },
   initializeLanguage (language) {
     language.isDefault = true;
@@ -75,4 +88,3 @@ var Languages = {
       .length;
   }
 }
-Languages.initialize();

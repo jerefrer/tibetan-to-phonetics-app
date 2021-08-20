@@ -15,6 +15,7 @@ var Languages = {
   },
   find: function find(languageId) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    if (!languageId) return;
     if (languageId.toString().match(/^\d*$/)) languageId = parseInt(languageId);
     return _(this.languages).findWhere({
       id: languageId
@@ -34,7 +35,7 @@ var Languages = {
     language.name = name;
     language.rules = rules;
     language.exceptions = exceptions;
-    Storage.set('languages', this.languages);
+    this.updateStore();
   },
   create: function create(fromLanguage, name) {
     var id = this.maxId() + 1;
@@ -46,7 +47,7 @@ var Languages = {
       rules: _(fromLanguage && fromLanguage.rules || {}).defaults(originalRules),
       exceptions: fromLanguage && fromLanguage.exceptions || {}
     });
-    Storage.set('languages', this.languages);
+    this.updateStore();
   },
   copy: function copy(language) {
     this.create(language, 'Copy of ' + language.name);
@@ -56,8 +57,10 @@ var Languages = {
   },
   "delete": function _delete(language) {
     this.languages = _(this.languages).without(language);
-    Storage.set('languages', this.languages);
-    if (Storage.get('selectedLanguageId') == language.id) Storage.set('selectedLanguageId', defaultLanguageId);
+    this.updateStore();
+    Storage.get('selectedLanguageId', undefined, function (value) {
+      if (value == language.id) Storage.set('selectedLanguageId', defaultLanguageId);
+    });
   },
   maxId: function maxId() {
     return (this.languages.filter(function (language) {
@@ -66,11 +69,22 @@ var Languages = {
       id: 0
     }).id;
   },
-  initialize: function initialize() {
+  updateStore: function updateStore() {
+    localforage.setItem('languages', this.languages);
+  },
+  initialize: function initialize(callback) {
     var _this = this;
 
-    this.languages = Storage.get('languages') || defaultLanguages.map(function (language) {
-      return _this.initializeLanguage(language);
+    localforage.getItem('languages').then(function (value) {
+      _this.languages = value || defaultLanguages.map(function (language) {
+        return _this.initializeLanguage(language);
+      });
+      callback();
+    })["catch"](function (error) {
+      _this.languages = defaultLanguages.map(function (language) {
+        return _this.initializeLanguage(language);
+      });
+      callback();
     });
   },
   initializeLanguage: function initializeLanguage(language) {
@@ -86,4 +100,3 @@ var Languages = {
     }).length;
   }
 };
-Languages.initialize();

@@ -12,6 +12,10 @@ testGroups.push({
     { tibetan: '༨',  transliteration:  '8'},
     { tibetan: '༩',  transliteration:  '9'},
     { tibetan: '༡༠',  transliteration: '10'},
+    { tibetan: '༢༡',  transliteration: '21'},
+    { tibetan: '༢༠༠༠', transliteration: '2000'},
+    { tibetan: '༢༡༢༧', transliteration: '2127'},
+    { tibetan: '༢༠༠༠ ༢༡༢༧ ༣ ༢༡', transliteration: '2000 2127 3 21'},
     { tibetan: '༡༢༣༤༥', transliteration: '12345'},
     {
       tibetan: 'ཨོཾ་ཨཱཿཧཱུཾ། ༣ ཧ་ཧོ་ཧྲཱི། ༡',

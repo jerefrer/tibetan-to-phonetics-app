@@ -1,3 +1,4 @@
+var valll;
 Vue.component('tibetan-input', {
   props: ['value'],
   methods: {
@@ -20,15 +21,16 @@ Vue.component('tibetan-input', {
   },
   template: `
     <div class="ui form" style="position: relative;">
-      <div v-if="!value" id="tibetan-placeholder" v-on:click="selectTextarea">
+      <div v-if="!value" id="tibetan-placeholder" @click="selectTextarea">
         Try inputing some Tibetan here...
       </div>
       <textarea
-        v-bind:value="value"
-        v-on:input="checkInput($event.target.value)"
+        :value="value"
+        @input="checkInput($event.target.value)"
         id="tibetan"
         class="tibetan"
         autofocus="true"
+        spellcheck="false"
       ></textarea>
     </div>
   `

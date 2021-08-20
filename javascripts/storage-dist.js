@@ -2,6 +2,9 @@
 
 var Storage = {
   appKey: 'TibetanTransliterator',
+  scopedKey: function scopedKey(keyName) {
+    return this.appKey + '.' + keyName;
+  },
   localStorageSupported: function localStorageSupported() {
     try {
       return !!window.localStorage;
@@ -12,34 +15,45 @@ var Storage = {
     ;
     return true;
   },
-  scopedKey: function scopedKey(keyName) {
-    return this.appKey + '.' + keyName;
+  localStorageSet: function localStorageSet(keyName, value) {
+    var key = this.scopedKey(keyName);
+    localStorage[key] = value;
   },
-  get: function get(keyName) {
+  localStorageGet: function localStorageGet(keyName) {
+    var key = this.scopedKey(keyName);
+    return localStorage[key];
+  },
+  get: function get(keyName, defaultValue, callback) {
     var jsonValue;
     var key = this.scopedKey(keyName);
-    if (this.localStorageSupported()) jsonValue = localStorage[key];else jsonValue = Cookie.read(key);
 
-    try {
-      return jsonValue && JSON.parse(jsonValue);
-    } catch (e) {
-      return undefined;
+    if (localforage._driver) {
+      localforage.getItem(key).then(function (value) {
+        return callback(value != undefined ? value : defaultValue);
+      })["catch"](function (error) {
+        return callback(defaultValue);
+      });
+    } else {
+      jsonValue = Cookie.read(key);
+
+      try {
+        callback(jsonValue && JSON.parse(jsonValue) || defaultValue);
+      } catch (e) {
+        callback(defaultValue);
+      }
     }
   },
   set: function set(keyName, value) {
     var key = this.scopedKey(keyName);
     var jsonValue = JSON.stringify(value);
-    if (this.localStorageSupported()) localStorage[key] = jsonValue;else {
+    if (localforage._driver) localforage.setItem(key, value);else {
       var tenYears = 87600;
       Cookie.write(key, jsonValue, tenYears);
     }
-    return true;
   },
   "delete": function _delete(keyName) {
     var key = this.scopedKey(keyName);
-    if (this.localStorageSupported()) delete localStorage[key];else {
-      Cookie.remove(key);
-    }
+    if (localforage._driver) localforage.removeItem(key);else Cookie.remove(key);
   }
 };
 var Cookie = {
@@ -78,4 +92,44 @@ var Cookie = {
   remove: function remove(name) {
     this.write(name, '', -1);
   }
-};
+}; // var Cookie = {
+//   write: function(name, value, hours) {
+//     let expire = '';
+//     if (hours) {
+//       expire = new Date((new Date()).getTime() + hours * 3600000);
+//       expire = '; expires=' + expire.toGMTString();
+//     }
+//     var chunkSize = 1000;
+//     var escapedValue = escape(value);
+//     if (escapedValue.length > chunkSize) {
+//       document.cookie = name + '=' + escape('--- COOKIE SPLIT ---') + expire;
+//       var nbChunks = Math.ceil(escapedValue.length / chunkSize);
+//       _(nbChunks).times((i) => {
+//         var n = i + 1;
+//         var splitKey = name + '-' + n;
+//         var chunk = escapedValue.substring(chunkSize * i, chunkSize * n);
+//         document.cookie = splitKey + '=' + chunk + expire;
+//       })
+//     }
+//   },
+//   read: function(name) {
+//     let cookieValue = '',
+//     search = name + '=';
+//     if (document.cookie.length > 0) {
+//       let cookie = document.cookie,
+//       offset = cookie.indexOf(search);
+//       if (offset !== -1) {
+//         offset += search.length;
+//         let end = cookie.indexOf(';', offset);
+//         if (end === -1) {
+//           end = cookie.length;
+//         }
+//         cookieValue = unescape(cookie.substring(offset, end));
+//       }
+//     }
+//     return cookieValue;
+//   },
+//   remove: function(name) {
+//     this.write(name, '', -1);
+//   }
+// }

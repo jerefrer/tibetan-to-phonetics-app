@@ -60,6 +60,7 @@
 
 ## Special cases
 * པའང and པའམ are handled, but can there be things such as གྱེའང་ or བགའོང་?
+  * Should they be included in the possible modifiers after exceptions?
 * རྱ
 * དྷ
 * བྷ

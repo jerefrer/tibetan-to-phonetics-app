@@ -73,6 +73,10 @@ testGroups.push({
       tibetan: 'ས་པ་རི་ཝཱ་ར་ཨི་དཾ་བ་ལིངྟ་ཁ་ཁ་ཁཱ་ཧི་ཁཱ་ཧི༔',
       transliteration: 'sapariwara idam balingta kha kha khahi khahi'
     },
+    {
+      tibetan: 'ༀ་ཨ་ཀཱ་རོ་མུ་ཁཾ་སརྦ་དྷརྨཱ་ཎཾ་ཨཱདྱ་ནུཏྤནྣ་ཏོཏྟ་ༀ་ཨཱཿཧཱུྃ་ཕཊ་སྭཱཧཱ།',
+      transliteration: 'om akaro mukham sarwa dharma nam adi anütpena tota om ah hung phet svaha'
+    },
 
   ]
 })

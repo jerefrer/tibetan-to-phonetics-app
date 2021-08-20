@@ -9,10 +9,11 @@ Vue.component('slider-checkbox', {
     text: String
   },
   mounted: function mounted() {
-    var vm = this;
-    $(vm.$refs.checkbox).checkbox({
+    var _this = this;
+
+    $(this.$refs.checkbox).checkbox({
       onChange: function onChange(input) {
-        vm.$emit('input', $(vm.$refs.checkbox).checkbox('is checked'));
+        return _this.$emit('input', $(_this.$refs.checkbox).checkbox('is checked'));
       }
     });
   },

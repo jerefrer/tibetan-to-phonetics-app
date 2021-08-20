@@ -1,5 +1,5 @@
 var t, findException;
-var missedSyllables = [];
+var syllablesWithUnknownConsonant = [];
 
 var TibetanTransliterator = function(tibetan, language, options = {}) {
   var exceptions = new Exceptions(language);
@@ -30,7 +30,7 @@ var TibetanTransliterator = function(tibetan, language, options = {}) {
         '༠': '0', '༡': '1', '༢': '2', '༣': '3', '༤': '4',
         '༥': '5', '༦': '6', '༧': '7', '༨': '8', '༩': '9'
       }).each((arabic, tibetan) => {
-        text = text.replace(tibetan, arabic);
+        text = text.replace(new RegExp(tibetan, 'g'), arabic);
       })
       return text;
     }
@@ -171,7 +171,7 @@ var Syllable = function(syllable) {
     transliterate: function() {
       var consonant = this.consonant();
       if (consonant == undefined) {
-        missedSyllables.push(syllable);
+        syllablesWithUnknownConsonant.push(syllable);
         return '࿗';
       }
       return consonant + this.getVowel() + this.getSuffix() + this.endingO() + this.endingU()
@@ -199,6 +199,7 @@ var Syllable = function(syllable) {
               if      (this.getVowel() == 'a')       return 'g';   // 'gage' and not 'guage'
               else if (this.getVowel() == 'o')       return 'g';   // 'gong' and not 'guong'
               else if (this.getVowel() == 'u')       return 'g';   // 'guru' and not 'guuru'
+              else if (this.getVowel() == 'ou')      return 'g';   // 'gourou' and not 'guourou'
             }
             return t('gaMod');
           }
@@ -271,7 +272,8 @@ var Syllable = function(syllable) {
         case 'ཡ':                                    return t('ya'); break;
         case 'ར':                                    return t('ra'); break;
         case 'ལ':                                    return t('la'); break;
-        case 'ཤ':                                    return t('sha'); break;
+        case 'ཤ':
+        case 'ཥ':                                    return t('sha'); break;
         case 'ས':                                    return t('sa'); break;
         case 'ཧ':
           if      (this.superscribed == 'ལ')         return t('lha');
@@ -289,12 +291,12 @@ var Syllable = function(syllable) {
           else                                                return t('drengbu'); break;
         case 'ུ':
           if (this.aKikuIOrSuffixIsLaSaDaNa()) return t('ü');
-          else                                    return t('u'); break;
+          else                                 return t('u'); break;
         case 'ོ':
           if (this.aKikuIOrSuffixIsLaSaDaNa()) return t('ö');
-          else                                    return t('o'); break;
+          else                                 return t('o'); break;
         default:
-          if      (this.aKikuI())                         return t('aKikuI');
+          if      (this.aKikuI())                           return t('aKikuI');
           else if (this.suffix && this.suffix.match(/[སད]/)) return t('drengbu');
           else if (this.suffix && this.suffix.match(/[ནཎ]/)) return t('aNa');
           else if (this.suffix && this.suffix == 'ལ')        return t('aLa');

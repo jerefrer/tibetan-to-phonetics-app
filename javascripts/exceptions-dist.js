@@ -1,5 +1,7 @@
 "use strict";
 
+var resetGeneralExceptions = false;
+
 var Exceptions = function Exceptions(language, tibetan) {
   return {
     language: language,
@@ -69,12 +71,27 @@ var Exceptions = function Exceptions(language, tibetan) {
 
 var normalizeExceptions = function normalizeExceptions(exceptions) {
   return _(exceptions).inject(function (hash, value, key) {
-    if (key.trim().length) hash[removeUntranscribedPunctuationAndNormalize(key)] = value;
+    if (key.trim().length) {
+      var normalizedKey = removeUntranscribedPunctuationAndNormalize(key);
+      var normalizedValue = removeUntranscribedPunctuationAndNormalize(value);
+      if (normalizedKey != normalizedValue) hash[normalizedKey] = value;
+    }
+
     return hash;
   }, {});
 };
 
-Exceptions.generalExceptions = Storage.get('general-exceptions') || normalizeExceptions(originalGeneralExceptions);
+Exceptions.initialize = function (callback) {
+  var _this = this;
+
+  if (resetGeneralExceptions) {
+    this.generalExceptions = normalizeExceptions(originalGeneralExceptions);
+    callback();
+  } else Storage.get('general-exceptions', normalizeExceptions(originalGeneralExceptions), function (value) {
+    _this.generalExceptions = value;
+    callback();
+  });
+};
 
 Exceptions.generalExceptionsAsArray = function () {
   return _(this.generalExceptions).map(function (value, key) {

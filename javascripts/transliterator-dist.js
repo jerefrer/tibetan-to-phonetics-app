@@ -1,7 +1,7 @@
 "use strict";
 
 var t, findException;
-var missedSyllables = [];
+var syllablesWithUnknownConsonant = [];
 
 var TibetanTransliterator = function TibetanTransliterator(tibetan, language) {
   var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
@@ -48,7 +48,7 @@ var TibetanTransliterator = function TibetanTransliterator(tibetan, language) {
         '༨': '8',
         '༩': '9'
       }).each(function (arabic, tibetan) {
-        text = text.replace(tibetan, arabic);
+        text = text.replace(new RegExp(tibetan, 'g'), arabic);
       });
 
       return text;
@@ -178,7 +178,7 @@ var Syllable = function Syllable(syllable) {
       var consonant = this.consonant();
 
       if (consonant == undefined) {
-        missedSyllables.push(syllable);
+        syllablesWithUnknownConsonant.push(syllable);
         return '࿗';
       }
 
@@ -205,6 +205,7 @@ var Syllable = function Syllable(syllable) {
               if (this.getVowel() == 'a') return 'g'; // 'gage' and not 'guage'
               else if (this.getVowel() == 'o') return 'g'; // 'gong' and not 'guong'
                 else if (this.getVowel() == 'u') return 'g'; // 'guru' and not 'guuru'
+                  else if (this.getVowel() == 'ou') return 'g'; // 'gourou' and not 'guourou'
             }
             return t('gaMod');
           } else if (this.rata()) return t('rata3');else if (this.yata()) return t('gaYata');else return t('ga');
@@ -324,6 +325,7 @@ var Syllable = function Syllable(syllable) {
           break;
 
         case 'ཤ':
+        case 'ཥ':
           return t('sha');
           break;
 

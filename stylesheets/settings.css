@@ -55,18 +55,17 @@
   display: flex;
 }
   .exceptions .exception input {
+    width: 50%;
     padding: 3px 10px !important;
-    font-family: 'Monlam Uni Ouchan2' !important;
-    font-size: 23px !important;
     border-radius: 0;
   }
   .exceptions .exception input:first-child {
-    border-right: none;
     text-align: right;
   }
   .exceptions .exception input:last-child {
+    font-size: 23px !important;
+    font-family: 'Monlam Uni Ouchan2' !important;
     border-radius: 0;
-    border-left: none !important;
   }
   .exceptions .exception:first-child input:first-child {
     border-top-left-radius: 4px;
@@ -77,22 +76,42 @@
 
 .reset-exceptions,
 .new.exception {
+  padding: 0 !important;
+  line-height: 60px !important;
   justify-content: center;
   font-weight: bold !important;
-  color: rgba(255,255,255,0.9) !important;
-  background: #222 !important;
-  border: 1px solid #333 !important;
   border-top-width: 3px !important;
 }
-.reset-exceptions {
-  line-height: 22px !important;
+
+.exceptions-instructions {
+  box-shadow: 0 0 0 2px #a9d5de inset, 0 0 0 0 transparent !important;
 }
-.new.exception {
-  line-height: 43px;
-  cursor: pointer;
-}
-.reset-exceptions:hover,
-.new.exception:hover {
-  background: #333 !important;
-  color: rgba(255,255,255,0.9) !important;
-}
+  .exceptions-instructions .header {
+    margin: -1em !important;
+    padding: 1.5em 1em !important;
+    text-align: center;
+    color: #0e566c !important;
+  }
+    .exceptions-instructions .header > * {
+      vertical-align: middle !important;
+    }
+    .exceptions-instructions .header .icon {
+      font-size: 1.5em !important;
+    }
+    .exceptions-instructions .header span {
+      font-size: 1.1em !important;
+    }
+
+    .exceptions-instructions .content ul li {
+      margin-bottom: 2em !important;
+    }
+
+      .exceptions-instructions table,
+      .exceptions-instructions span.tibetan {
+        font-family: 'Monlam Uni Ouchan2' !important;
+        font-size: 23px !important;
+      }
+      .exceptions-instructions table {
+        width: auto !important;
+        margin: 0.5em 0 !important;
+      }
