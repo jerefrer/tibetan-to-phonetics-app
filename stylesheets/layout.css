@@ -43,6 +43,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: calc(100% + 10px);
   margin-bottom: 2em;
 }
   #menu > div {
@@ -52,7 +53,6 @@
     display: flex;
   }
     #menu .languages .dropdown {
-      margin-left: 74px;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
