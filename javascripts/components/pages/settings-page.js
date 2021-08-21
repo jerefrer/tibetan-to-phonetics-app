@@ -13,6 +13,7 @@ var SettingsPage = Vue.component('settings-page', {
       languages: Languages.languages,
       selectedLanguageId: Languages.defaultLanguageId,
       exceptions: Exceptions.generalExceptionsAsArray(),
+      ignoreGeneralExceptionsStorage: ignoreGeneralExceptionsStorage,
       options: { capitalize: true },
     }
   },
@@ -25,6 +26,9 @@ var SettingsPage = Vue.component('settings-page', {
   watch: {
     selectedLanguageId (value) {
       Storage.set('selectedLanguageId', value);
+    },
+    ignoreGeneralExceptionsStorage (value) {
+      Storage.set('ignoreGeneralExceptionsStorage', value);
     },
     options: {
       deep: true,
@@ -40,6 +44,9 @@ var SettingsPage = Vue.component('settings-page', {
     }
   },
   computed: {
+    isDevMode () {
+      return isDevMode
+    },
     currentTab (value) {
       return this.$route.params.tab;
     },
@@ -96,14 +103,29 @@ var SettingsPage = Vue.component('settings-page', {
         this.exceptions = Exceptions.generalExceptionsAsArray();
       }
     },
-    showImportModal () {
+    showLanguageUploadModal () {
+      this.showUploadModal('tt-rule-set', (result) => {
+        var language = JSON.parse(reader.result);
+        Languages.import(language);
+        this.languages = Languages.languages;
+      });
+    },
+    showExceptionsUploadModal () {
+      this.showUploadModal('tt-exceptions', (result) => {
+        var exceptions = JSON.parse(result);
+        _(exceptions).defaults(this.exceptionsAsObject);
+        Exceptions.updateGeneralExceptions(exceptions);
+        this.exceptions = Exceptions.generalExceptionsAsArray();
+      });
+    },
+    showUploadModal (fileExtension, callback) {
       var modal = $('<div class="ui basic modal">');
       modal.html(`
         <i class="close icon"></i>
         <div class="content">
-          <div id="mantra-import">
+          <div id="file-upload">
             <span class="dndtxt">
-              Drag here the .tt-rule-set file or click here to browse to it
+              Drag here the .${fileExtension} file or click here to browse to it
             </span>
           </div>
         </div>
@@ -113,9 +135,7 @@ var SettingsPage = Vue.component('settings-page', {
         var reader = new FileReader();
         reader.onload = () => {
           try {
-            var language = JSON.parse(reader.result);
-            Languages.import(language);
-            this.languages = Languages.languages;
+            callback(reader.result);
           } catch(error) {};
           modal.modal('hide');
         };
@@ -123,12 +143,18 @@ var SettingsPage = Vue.component('settings-page', {
       };
       var initializeDragAndDrop = function() {
         var uploadOptions = { iframe: { url: '?/upload' }, multiple: true, logging: 0 };
-        var uploadArea = new FileDrop('mantra-import', uploadOptions);
+        var uploadArea = new FileDrop('file-upload', uploadOptions);
         uploadArea.event('send', processFile);
       }
       $('.ui.modal').remove();
       modal.modal().modal('show');
       initializeDragAndDrop();
+    },
+    downloadExceptions () {
+      var json = JSON.stringify(this.exceptionsAsObject);
+      var blob = new Blob([json], { type: 'text/javascript' });
+      var datetime = new Date().toJSON().replace(/[T:]/g, '-').substr(0, 19);
+      saveAs(blob, datetime + '.tt-exceptions');
     }
   },
   template: `
@@ -162,9 +188,9 @@ var SettingsPage = Vue.component('settings-page', {
 
         <div class="ui large centered header">
           Custom rule sets
-          <div v-if="someLocalStorage" class="ui button" @click="showImportModal">
+          <div v-if="someLocalStorage" class="ui button" @click="showLanguageUploadModal">
             <i class="upload icon" />
-            Import
+            Upload
           </div>
         </div>
 
@@ -210,8 +236,34 @@ var SettingsPage = Vue.component('settings-page', {
 
       <div v-if="currentTab == 'exceptions'" class="ui text container active tab">
 
-        <div ref="div" class="ui large secondary center aligned segment">
-          These are the general exceptions that apply to all rule sets.
+        <div class="ui large center aligned segment">
+          <div id="dev-mode-label">
+            Dev mode
+          </div>
+          <slider-checkbox
+            v-model="ignoreGeneralExceptionsStorage"
+            text="Ignore the stored general exceptions and use the default ones"
+          />
+        </div>
+
+        <div
+          ref="div"
+          id="general-exceptions-message"
+          class="ui large secondary segment"
+        >
+          <div>
+            These are the general exceptions that apply to all rule sets.
+          </div>
+          <div>
+            <div class="ui button" @click="showExceptionsUploadModal">
+              <i class="upload icon"></i>
+              Upload
+            </div>
+            <div class="ui button" @click="downloadExceptions">
+              <i class="download icon"></i>
+              Download
+            </div>
+          </div>
         </div>
 
         <exceptions-instructions />

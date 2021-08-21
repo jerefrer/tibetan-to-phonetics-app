@@ -1,5 +1,3 @@
-var resetGeneralExceptions = false;
-
 var Exceptions = function(language, tibetan) {
   return {
     language: language,
@@ -86,7 +84,7 @@ var normalizeExceptions = function (exceptions) {
 }
 
 Exceptions.initialize = function(callback) {
-  if (resetGeneralExceptions) {
+  if (ignoreGeneralExceptionsStorage) {
     this.generalExceptions = normalizeExceptions(originalGeneralExceptions);
     callback();
   } else

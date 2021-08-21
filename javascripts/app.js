@@ -8,7 +8,10 @@ var initializeStorage = function(callback) {
       callback();
   }
   Languages.initialize(callbackIfReady);
-  Exceptions.initialize(callbackIfReady);
+  Storage.get('ignoreGeneralExceptionsStorage', false, (value) => {
+    ignoreGeneralExceptionsStorage = value;
+    Exceptions.initialize(callbackIfReady);
+  });
 }
 
 $(function() {
