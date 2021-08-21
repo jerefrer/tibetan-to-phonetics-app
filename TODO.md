@@ -80,6 +80,10 @@
 * མཆོད་རྟེན་ : chöten? chorten?
 * མགོན་པོ་ : gönpo? gompo? gonpo?
 * འཕགས་མཆོག་ == pachok? p'achok? p'akchok?
+* རྣམ་པར་སྨིན་པའང་བསམ་མི་ཁྱབ། །
+  * Should it be 'Nampar minpa-ang sami khyap'?
+    * which is the case currently and is how it's done in the Prayer Book 1
+  * Or 'Nampar minpa angsam mi khyap'?
 
 ## Differences between Kham and Lhasa dialects
 * suffix ལ་

@@ -61,14 +61,14 @@ var Group = function(tibetan, options = {}) {
             this.group += this.BaAsWaWhenSecondSyllable(syllable);
           else {
             var firstTransliteration = new Syllable(syllable).transliterate();
-            if (this.handleSecondSyllable(firstTransliteration));
+            if (this.handleSecondSyllable(firstTransliteration, syllable));
             else this.group += firstTransliteration;
           }
         }
       }
       return this.group.trim();
     },
-    handleSecondSyllable: function(firstTransliteration) {
+    handleSecondSyllable: function(firstTransliteration, firstTibetan) {
       var secondSyllable = this.syllables.shift();
       if (secondSyllable) {
         var spaceBefore = false;
@@ -87,6 +87,14 @@ var Group = function(tibetan, options = {}) {
             secondTransliteration = new Syllable(secondSyllable).transliterate();
         }
         if (firstTransliteration) {
+          if (this.AngOrAm(firstTibetan)) {
+            this.group += firstTransliteration + ' ';
+            // Because *-am is two syllables, we add back the second syllable
+            // to the array and return so that it gets processed as the first
+            // syllable of the next pair.
+            this.syllables.unshift(secondSyllable);
+            return true;
+          }
           firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
           firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
           firstTransliteration = this.addDoubleSIfNecesary(firstTransliteration, secondTransliteration);
@@ -123,6 +131,9 @@ var Group = function(tibetan, options = {}) {
       else if (syllable == 'བོས') return t('wa') + t('ö');
       else if (syllable == 'བོའི') return t('wa') + t('ö');
       else if (syllable == 'བུས') return t('wa') + t('ü');
+    },
+    AngOrAm (tibetan) {
+      return tibetan.match(/.+འ[ངམ]$/);
     },
     connectWithDashIfNecessary: function(firstSyllable, secondSyllable) {
       var twoVowels = this.endsWithVowel(firstSyllable) && this.startsWithVowel(secondSyllable);
