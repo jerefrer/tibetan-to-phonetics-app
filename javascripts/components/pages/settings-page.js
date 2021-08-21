@@ -28,7 +28,9 @@ var SettingsPage = Vue.component('settings-page', {
       Storage.set('selectedLanguageId', value);
     },
     ignoreGeneralExceptionsStorage (value) {
-      Storage.set('ignoreGeneralExceptionsStorage', value);
+      Storage.set('ignoreGeneralExceptionsStorage', value, () => {
+        location.reload();
+      });
     },
     options: {
       deep: true,
@@ -236,13 +238,13 @@ var SettingsPage = Vue.component('settings-page', {
 
       <div v-if="currentTab == 'exceptions'" class="ui text container active tab">
 
-        <div class="ui large center aligned segment">
-          <div id="dev-mode-label">
+        <div class="ui large segment dev-mode">
+          <div class="left">
             Dev mode
           </div>
           <slider-checkbox
             v-model="ignoreGeneralExceptionsStorage"
-            text="Ignore the stored general exceptions and use the default ones"
+            text="Ignore all modifications made here and use the default exceptions from file"
           />
         </div>
 

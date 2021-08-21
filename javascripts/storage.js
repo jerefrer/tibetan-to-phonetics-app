@@ -32,14 +32,15 @@ var Storage = {
       }
     }
   },
-  set: function(keyName, value) {
+  set: function(keyName, value, callback) {
     var key = this.scopedKey(keyName);
     var jsonValue = JSON.stringify(value);
     if (localforage._driver)
-      localforage.setItem(key, value);
+      localforage.setItem(key, value).then(() => { if (callback) callback() });
     else {
       var tenYears = 87600;
       Cookie.write(key, jsonValue, tenYears);
+      if (callback) callback();
     }
   },
   delete: function(keyName) {

@@ -51,16 +51,25 @@
   vertical-align: middle;
 }
 
-#dev-mode-label {
-  position: absolute;
-  left: 0;
-  top: 0;
+.dev-mode.segment {
+  display: flex;
+  padding: 0;
+  align-items: center;
+}
+.dev-mode.segment .left {
+  flex: 0 auto;
   line-height: 0.8em;
   background: #444;
   padding: 1em 1em 1.2em 1em;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   font-variant: small-caps;
+}
+.dev-mode.segment .checkbox {
+  flex: 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #general-exceptions-message {

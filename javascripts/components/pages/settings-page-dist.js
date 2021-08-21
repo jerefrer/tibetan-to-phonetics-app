@@ -12,6 +12,7 @@ var SettingsPage = Vue.component('settings-page', {
       languages: Languages.languages,
       selectedLanguageId: Languages.defaultLanguageId,
       exceptions: Exceptions.generalExceptionsAsArray(),
+      ignoreGeneralExceptionsStorage: ignoreGeneralExceptionsStorage,
       options: {
         capitalize: true
       }
@@ -27,6 +28,11 @@ var SettingsPage = Vue.component('settings-page', {
     selectedLanguageId: function selectedLanguageId(value) {
       Storage.set('selectedLanguageId', value);
     },
+    ignoreGeneralExceptionsStorage: function ignoreGeneralExceptionsStorage(value) {
+      Storage.set('ignoreGeneralExceptionsStorage', value, function () {
+        location.reload();
+      });
+    },
     options: {
       deep: true,
       handler: function handler(value) {
@@ -41,6 +47,19 @@ var SettingsPage = Vue.component('settings-page', {
     }
   },
   computed: {
+    isDevMode: function (_isDevMode) {
+      function isDevMode() {
+        return _isDevMode.apply(this, arguments);
+      }
+
+      isDevMode.toString = function () {
+        return _isDevMode.toString();
+      };
+
+      return isDevMode;
+    }(function () {
+      return isDevMode;
+    }),
     currentTab: function currentTab(value) {
       return this.$route.params.tab;
     },
@@ -100,11 +119,30 @@ var SettingsPage = Vue.component('settings-page', {
         this.exceptions = Exceptions.generalExceptionsAsArray();
       }
     },
-    showImportModal: function showImportModal() {
+    showLanguageUploadModal: function showLanguageUploadModal() {
       var _this = this;
 
+      this.showUploadModal('tt-rule-set', function (result) {
+        var language = JSON.parse(reader.result);
+        Languages["import"](language);
+        _this.languages = Languages.languages;
+      });
+    },
+    showExceptionsUploadModal: function showExceptionsUploadModal() {
+      var _this2 = this;
+
+      this.showUploadModal('tt-exceptions', function (result) {
+        var exceptions = JSON.parse(result);
+
+        _(exceptions).defaults(_this2.exceptionsAsObject);
+
+        Exceptions.updateGeneralExceptions(exceptions);
+        _this2.exceptions = Exceptions.generalExceptionsAsArray();
+      });
+    },
+    showUploadModal: function showUploadModal(fileExtension, callback) {
       var modal = $('<div class="ui basic modal">');
-      modal.html("\n        <i class=\"close icon\"></i>\n        <div class=\"content\">\n          <div id=\"mantra-import\">\n            <span class=\"dndtxt\">\n              Drag here the .tt-rule-set file or click here to browse to it\n            </span>\n          </div>\n        </div>\n      ");
+      modal.html("\n        <i class=\"close icon\"></i>\n        <div class=\"content\">\n          <div id=\"file-upload\">\n            <span class=\"dndtxt\">\n              Drag here the .".concat(fileExtension, " file or click here to browse to it\n            </span>\n          </div>\n        </div>\n      "));
 
       var processFile = function processFile(files) {
         var file = files.first().nativeFile;
@@ -112,9 +150,7 @@ var SettingsPage = Vue.component('settings-page', {
 
         reader.onload = function () {
           try {
-            var language = JSON.parse(reader.result);
-            Languages["import"](language);
-            _this.languages = Languages.languages;
+            callback(reader.result);
           } catch (error) {}
 
           ;
@@ -132,16 +168,24 @@ var SettingsPage = Vue.component('settings-page', {
           multiple: true,
           logging: 0
         };
-        var uploadArea = new FileDrop('mantra-import', uploadOptions);
+        var uploadArea = new FileDrop('file-upload', uploadOptions);
         uploadArea.event('send', processFile);
       };
 
       $('.ui.modal').remove();
       modal.modal().modal('show');
       initializeDragAndDrop();
+    },
+    downloadExceptions: function downloadExceptions() {
+      var json = JSON.stringify(this.exceptionsAsObject);
+      var blob = new Blob([json], {
+        type: 'text/javascript'
+      });
+      var datetime = new Date().toJSON().replace(/[T:]/g, '-').substr(0, 19);
+      saveAs(blob, datetime + '.tt-exceptions');
     }
   },
-  template: "\n    <div\n      class=\"ui container settings with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link tabId=\"rules\">Rules</tab-link>\n        <tab-link tabId=\"exceptions\">Exceptions</tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui large centered header\">\n          Default rule sets\n        </div>\n\n        <div class=\"ui centered cards\">\n          <language-card\n            v-for=\"language in defaultLanguages\"\n            :key=\"language.id\"\n            :language=\"language\"\n            @copy=\"copyLanguage(language)\"\n            @delete=\"deleteLanguage(language)\"\n          />\n        </div>\n\n        <div class=\"ui hidden section divider\"></div>\n\n        <div class=\"ui large centered header\">\n          Custom rule sets\n          <div v-if=\"someLocalStorage\" class=\"ui button\" @click=\"showImportModal\">\n            <i class=\"upload icon\" />\n            Import\n          </div>\n        </div>\n\n        <div v-if=\"someLocalStorage\" class=\"ui centered cards\">\n\n          <language-card\n            v-for=\"language in customLanguages\"\n            :key=\"language.id\"\n            :language=\"language\"\n            :isCustom=\"true\"\n            @copy=\"copyLanguage(language)\"\n            @delete=\"deleteLanguage(language)\"\n          />\n\n          <div class=\"ui new link card\" @click=\"addNewLanguage\">\n            <div class=\"content\">\n              <div class=\"header\">\n                <i class=\"plus icon\" />\n                New rule set\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n        <div v-else class=\"ui warning message text container\">\n\n          <div class=\"header\">\n            Your browser does not support storing data locally, which is\n            necessary for custom rule sets to work.\n          </div>\n\n          <p>\n            You can still enjoy using the default rule sets, but if you want to\n            create your own or import other people's you will need to update\n            your browser to its latest version or start using a modern browser\n            like Mozilla Firefox or Google Chrome.\n          </p>\n\n        </div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui text container active tab\">\n\n        <div ref=\"div\" class=\"ui large secondary center aligned segment\">\n          These are the general exceptions that apply to all rule sets.\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n            :class=\"{\n              top: index == 0,\n              bottom: index == exceptions.length - 1\n            }\"\n          >\n            <input class=\"tibetan\" v-model=\"exception.key\"   spellcheck=\"false\" />\n            <input class=\"tibetan\" v-model=\"exception.value\" spellcheck=\"false\" />\n          </div>\n          <div class=\"ui attached button new exception\" @click=\"addNewException\">\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"currentTab == 'exceptions'\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n\n        <div id=\"menu\">\n\n          <language-menu v-model=\"selectedLanguageId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :language=\"fakeLanguageForLivePreview\"\n          :options=\"options\"\n          tibetanStorageKey=\"live-preview\"\n        />\n\n      </div>\n\n    </div>\n  "
+  template: "\n    <div\n      class=\"ui container settings with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link tabId=\"rules\">Rules</tab-link>\n        <tab-link tabId=\"exceptions\">Exceptions</tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui large centered header\">\n          Default rule sets\n        </div>\n\n        <div class=\"ui centered cards\">\n          <language-card\n            v-for=\"language in defaultLanguages\"\n            :key=\"language.id\"\n            :language=\"language\"\n            @copy=\"copyLanguage(language)\"\n            @delete=\"deleteLanguage(language)\"\n          />\n        </div>\n\n        <div class=\"ui hidden section divider\"></div>\n\n        <div class=\"ui large centered header\">\n          Custom rule sets\n          <div v-if=\"someLocalStorage\" class=\"ui button\" @click=\"showLanguageUploadModal\">\n            <i class=\"upload icon\" />\n            Upload\n          </div>\n        </div>\n\n        <div v-if=\"someLocalStorage\" class=\"ui centered cards\">\n\n          <language-card\n            v-for=\"language in customLanguages\"\n            :key=\"language.id\"\n            :language=\"language\"\n            :isCustom=\"true\"\n            @copy=\"copyLanguage(language)\"\n            @delete=\"deleteLanguage(language)\"\n          />\n\n          <div class=\"ui new link card\" @click=\"addNewLanguage\">\n            <div class=\"content\">\n              <div class=\"header\">\n                <i class=\"plus icon\" />\n                New rule set\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n        <div v-else class=\"ui warning message text container\">\n\n          <div class=\"header\">\n            Your browser does not support storing data locally, which is\n            necessary for custom rule sets to work.\n          </div>\n\n          <p>\n            You can still enjoy using the default rule sets, but if you want to\n            create your own or import other people's you will need to update\n            your browser to its latest version or start using a modern browser\n            like Mozilla Firefox or Google Chrome.\n          </p>\n\n        </div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui text container active tab\">\n\n        <div class=\"ui large segment dev-mode\">\n          <div class=\"left\">\n            Dev mode\n          </div>\n          <slider-checkbox\n            v-model=\"ignoreGeneralExceptionsStorage\"\n            text=\"Ignore all modifications made here and use the default exceptions from file\"\n          />\n        </div>\n\n        <div\n          ref=\"div\"\n          id=\"general-exceptions-message\"\n          class=\"ui large secondary segment\"\n        >\n          <div>\n            These are the general exceptions that apply to all rule sets.\n          </div>\n          <div>\n            <div class=\"ui button\" @click=\"showExceptionsUploadModal\">\n              <i class=\"upload icon\"></i>\n              Upload\n            </div>\n            <div class=\"ui button\" @click=\"downloadExceptions\">\n              <i class=\"download icon\"></i>\n              Download\n            </div>\n          </div>\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n            :class=\"{\n              top: index == 0,\n              bottom: index == exceptions.length - 1\n            }\"\n          >\n            <input class=\"tibetan\" v-model=\"exception.key\"   spellcheck=\"false\" />\n            <input class=\"tibetan\" v-model=\"exception.value\" spellcheck=\"false\" />\n          </div>\n          <div class=\"ui attached button new exception\" @click=\"addNewException\">\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"currentTab == 'exceptions'\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n\n        <div id=\"menu\">\n\n          <language-menu v-model=\"selectedLanguageId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :language=\"fakeLanguageForLivePreview\"\n          :options=\"options\"\n          tibetanStorageKey=\"live-preview\"\n        />\n\n      </div>\n\n    </div>\n  "
 });
 Vue.component('language-card', {
   props: {
@@ -171,10 +215,10 @@ Vue.component('language-card', {
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this3 = this;
 
     setTimeout(function () {
-      $('[title]', _this2.$refs.card).popup({
+      $('[title]', _this3.$refs.card).popup({
         position: 'top center',
         variation: 'inverted'
       });
