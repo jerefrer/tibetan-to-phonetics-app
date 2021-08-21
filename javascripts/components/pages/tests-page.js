@@ -27,6 +27,10 @@ var TestsPage = Vue.component('tests-page', {
             testGroup.language
             ? Languages.findOriginal(testGroup.language)
             : Languages.originalDefault();
+          if (testGroup.rules) {
+            language = Object.clone(language, true);
+            _(language.rules).extend(testGroup.rules);
+          }
           this.transliterated = new TibetanTransliterator(
             this.tibetan,
             language,
