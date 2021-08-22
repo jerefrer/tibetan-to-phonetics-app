@@ -200,4 +200,5 @@ var originalGeneralExceptions = {
   'ཏོཏྟ': 'to_ta',
   'ཏུཏྟཱ': 'tut_ta',
   'ཏུཏྟཱ་ར': 'tut_ta_ra',
+  'རསྟུ': 'ར_sཏུ',
 }
