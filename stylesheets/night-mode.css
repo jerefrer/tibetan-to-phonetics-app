@@ -26,6 +26,10 @@
   background-color: #27292a;
 }
 
+.night .dev-mode.segment .left {
+  background: #444;
+  color: rgba(255,255,255,0.9);
+}
 
 .night #menu .rulesets .button {
   color: rgba(255,255,255,0.5);
