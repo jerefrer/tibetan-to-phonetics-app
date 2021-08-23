@@ -132,6 +132,12 @@
       font-size: 1.1em !important;
     }
 
+    .exceptions-instructions .content {
+      color: rgba(0,0,0,0.8);
+    }
+    .exceptions-instructions .content p {
+      opacity: 1;
+    }
     .exceptions-instructions .content ul li {
       margin-bottom: 2em !important;
     }

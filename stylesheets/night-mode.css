@@ -194,7 +194,7 @@
     color: #93bfc8 !important;
   }
   .night .exceptions-instructions .content {
-    color: #93bfc8;
+    color: rgba(255,255,255,0.8);
   }
 
 .night .edit-setting .group .rule.different .label {
