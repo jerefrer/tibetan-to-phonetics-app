@@ -165,6 +165,8 @@ var SettingsPage = Vue.component('settings-page', {
       :class="{'with-live-preview-active': showLivePreview}"
     >
 
+      <back-button />
+
       <div class="ui huge secondary pointing menu tab-menu">
         <tab-link tabId="rules">Rules</tab-link>
         <tab-link tabId="exceptions">Exceptions</tab-link>

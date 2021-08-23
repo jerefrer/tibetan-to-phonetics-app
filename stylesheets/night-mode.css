@@ -10,6 +10,7 @@
   color: #794b02 !important;
 }
 
+.night #back-button,
 .night #menu-button,
 .night #color-mode-button {
   background-color: #1b1c1d;
@@ -19,6 +20,7 @@
   box-shadow: 0 0 0 0 rgb(34 36 38 / 15%) inset;
   -webkit-box-shadow: 0 0 0 0 rgb(34 36 38 / 15%) inset;
 }
+.night #back-button:hover,
 .night #menu-button:hover,
 .night #color-mode-button:hover {
   background-color: #27292a;
@@ -173,13 +175,13 @@
   border-bottom: 2px solid white !important;
 }
 
-.night .settings .button,
-.night .edit-setting .button {
+.night .settings .button:not(#back-button),
+.night .edit-setting .button:not(#back-button) {
   background: #333 !important;
   color: rgba(255,255,255,0.9) !important;
 }
-  .night .settings .button:hover,
-  .night .edit-setting .button:hover {
+  .night .settings .button:not(#back-button):hover,
+  .night .edit-setting .button:not(#back-button):hover {
     background: #444 !important;
     color: rgba(255,255,255,0.6) !important;
   }

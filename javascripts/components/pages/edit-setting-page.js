@@ -213,6 +213,8 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       :class="{'with-live-preview-active': showLivePreview}"
     >
 
+      <back-button />
+
       <div class="ui header">
         <div class="ui fluid input">
           <input v-model="name" :readonly="!ruleset.isEditable" />

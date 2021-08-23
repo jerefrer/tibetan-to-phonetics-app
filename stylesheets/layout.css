@@ -20,17 +20,27 @@
   z-index: 99999999;
 }
 
+#back-button,
 #menu-button,
 #color-mode-button {
   position: fixed;
-  top: 32px;
   z-index: 999999;
+}
+
+#menu-button,
+#color-mode-button {
+  top: 32px;
 }
 #menu-button {
   left: 17.5px;
 }
 #color-mode-button {
   right: 17.5px;
+}
+
+#back-button {
+  top: 74px;
+  left: 17.5px;
 }
 
 #app {
