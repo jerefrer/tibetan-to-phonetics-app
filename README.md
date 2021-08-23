@@ -35,7 +35,6 @@ Usage
 ### Using as a library
 
 ```js
-var defaultRuleset = Rulesets.default();
 var transliterator = new TibetanTransliterator(); // using default 'english-strict'
 transliterator.transliterate('གང་གི་བློ་གྲོས་');
 // => 'kangki lotrö'
@@ -48,14 +47,16 @@ either passing it to the constructor:
 var transliterator = new TibetanTransliterator({ capitalize: true });
 transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
 // => 'Émaho Trötrel chökyi yingkyi zhingkham su'
+transliterator.transliterate('གང་གི་བློ་གྲོས་');
+// => 'Kangki lotrö'
 ```
 Or on a per-call basis:
 ```js
 var transliterator = new TibetanTransliterator();
-transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
-// => 'émaho trötrel chökyi yingkyi zhingkham su'
 transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', { capitalize: true });
 // => 'Émaho Trötrel chökyi yingkyi zhingkham su'
+transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
+// => 'émaho trötrel chökyi yingkyi zhingkham su'
 ```
 Use different rulesets, either by passing the name of an existing set:
 ```js

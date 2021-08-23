@@ -33,8 +33,7 @@ transliteration so that it will disappear from the right box, allowing you
 to quickly prune those that are irrelevant to you.</li>
 </ul>
 <h3 id="using-as-a-library">Using as a library</h3>
-<pre><code class="language-js">var defaultRuleset = Rulesets.default();
-var transliterator = new TibetanTransliterator(); // using default &#39;english-strict&#39;
+<pre><code class="language-js">var transliterator = new TibetanTransliterator(); // using default &#39;english-strict&#39;
 transliterator.transliterate(&#39;གང་གི་བློ་གྲོས་&#39;);
 // =&gt; &#39;kangki lotrö&#39;
 transliterator.transliterate(&#39;སྒྲིབ་གཉིས་སྤྲིན་བྲལ་&#39;);
@@ -43,13 +42,15 @@ transliterator.transliterate(&#39;སྒྲིབ་གཉིས་སྤྲི�
 either passing it to the constructor:</p>
 <pre><code class="language-js">var transliterator = new TibetanTransliterator({ capitalize: true });
 transliterator.transliterate(&#39;ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ &#39;);
-// =&gt; &#39;Émaho Trötrel chökyi yingkyi zhingkham su&#39;</code></pre>
+// =&gt; &#39;Émaho Trötrel chökyi yingkyi zhingkham su&#39;
+transliterator.transliterate(&#39;གང་གི་བློ་གྲོས་&#39;);
+// =&gt; &#39;Kangki lotrö&#39;</code></pre>
 <p>Or on a per-call basis:</p>
 <pre><code class="language-js">var transliterator = new TibetanTransliterator();
-transliterator.transliterate(&#39;ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ &#39;);
-// =&gt; &#39;émaho trötrel chökyi yingkyi zhingkham su&#39;
 transliterator.transliterate(&#39;ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ &#39;, { capitalize: true });
-// =&gt; &#39;Émaho Trötrel chökyi yingkyi zhingkham su&#39;</code></pre>
+// =&gt; &#39;Émaho Trötrel chökyi yingkyi zhingkham su&#39;
+transliterator.transliterate(&#39;ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ &#39;);
+// =&gt; &#39;émaho trötrel chökyi yingkyi zhingkham su&#39;</code></pre>
 <p>Use different rulesets, either by passing the name of an existing set:</p>
 <pre><code class="language-js">var englishLooseRuletset = Rulesets.find(&#39;english-loose&#39;);
 new TibetanTransliterator({ ruleset: &#39;english-loose&#39; }).transliterate(&#39;གང་གི་བློ་གྲོས་&#39;);
