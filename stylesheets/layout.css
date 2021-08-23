@@ -3,6 +3,11 @@
   src: url("../vendor/fonts/TibetanMachineUnicode.ttf") format('truetype');
 }
 
+@font-face {
+  font-family: "Monlam Uni Ouchan2";
+  src: url("../vendor/fonts/Monlam_Uni_OuChan2.ttf") format('truetype');
+}
+
 .tibetan {
   font-family: TibetanChogyalUnicode-170221, TibetanChogyalUnicode-ID, TibetanChogyalUnicode, TibetanMachineUnicode !important;
   font-size: 36px !important;
