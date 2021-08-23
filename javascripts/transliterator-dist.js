@@ -97,7 +97,6 @@ var Group = function Group(tibetan) {
       var secondSyllable = this.syllables.shift();
 
       if (secondSyllable) {
-        var spaceBefore = false;
         var secondTransliteration;
         var secondException = this.findLongestException(secondSyllable, this.syllables);
 
@@ -106,11 +105,7 @@ var Group = function Group(tibetan) {
           secondTransliteration = secondException.transliterated;
         } else {
           var BaAsWaTransliteration;
-
-          if (BaAsWaTransliteration = this.BaAsWaWhenSecondSyllable(secondSyllable)) {
-            secondTransliteration = BaAsWaTransliteration;
-            spaceBefore = true;
-          } else secondTransliteration = new Syllable(secondSyllable).transliterate();
+          if (BaAsWaTransliteration = this.BaAsWaWhenSecondSyllable(secondSyllable)) secondTransliteration = BaAsWaTransliteration;else secondTransliteration = new Syllable(secondSyllable).transliterate();
         }
 
         if (firstTransliteration) {
@@ -126,7 +121,6 @@ var Group = function Group(tibetan) {
           firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
           firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
           firstTransliteration = this.addDoubleSIfNecesary(firstTransliteration, secondTransliteration);
-          if (spaceBefore) this.group = this.group.trim() + ' ';
           this.group += firstTransliteration;
         }
 
