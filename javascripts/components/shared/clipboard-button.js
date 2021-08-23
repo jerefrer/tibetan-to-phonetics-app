@@ -20,7 +20,7 @@ Vue.component('clipboard-button', {
     <div
       id="copy-to-clipboard"
       class="ui button"
-      data-clipboard-target="#transliteration"
+      data-clipboard-target=".clipboard-target"
       v-on:click="updateText"
     >
       <i class="paste icon"></i> {{text}}

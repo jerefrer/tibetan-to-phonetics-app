@@ -56,6 +56,7 @@ Vue.component('convert-boxes', {
       <div class="scrollable-area">
         <tibetan-input v-model="tibetan" />
         <transliterated-lines
+          class="clipboard-target"
           :lines="lines"
           :ruleset="ruleset"
           :options="options"
