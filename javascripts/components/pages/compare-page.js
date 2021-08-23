@@ -5,15 +5,15 @@ var ComparePage = Vue.component('compare-page', {
       loading: false,
       loadedFields: [],
       numberOfFieldsToLoad: 4,
-      selectedLanguageId: Languages.defaultLanguageId,
+      selectedRulesetId: Rulesets.defaultRulesetId,
       options: { capitalize: true },
       transliteration: '',
       tibetan: ''
     }
   },
   watch: {
-    selectedLanguageId (value) {
-      Storage.set('selectedLanguageId', value);
+    selectedRulesetId (value) {
+      Storage.set('selectedRulesetId', value);
     },
     options: {
       deep: true,
@@ -41,7 +41,7 @@ var ComparePage = Vue.component('compare-page', {
     }
   },
   created () {
-    this.initializeField('selectedLanguageId', Languages.defaultLanguageId);
+    this.initializeField('selectedRulesetId', Rulesets.defaultRulesetId);
     this.initializeField('options', { capitalize: true });
     this.initializeField('transliteration', `
       Chatsal gyachin mélha tsangpa
@@ -103,7 +103,7 @@ var ComparePage = Vue.component('compare-page', {
       <div v-if="!loading" class="ui container compare">
 
         <div id="menu">
-          <language-menu v-model="selectedLanguageId" />
+          <ruleset-dropdown v-model="selectedRulesetId" />
           <slider-checkbox
             v-model="options.capitalize"
             text="Capital letter at the beginning of each group"
@@ -121,7 +121,7 @@ var ComparePage = Vue.component('compare-page', {
             <compared-lines
               :lines="lines"
               :expectedTransliteration="transliteration"
-              :languageId="selectedLanguageId"
+              :rulesetId="selectedRulesetId"
               :options="options"
               @click-part="correctSource($event)"
             />
@@ -156,7 +156,7 @@ Vue.component('transliteration-input', {
 Vue.component('compared-lines', {
   props: {
     expectedTransliteration: String,
-    languageId: String,
+    rulesetId: String,
     lines: Array,
     options: Object
   },
@@ -170,13 +170,13 @@ Vue.component('compared-lines', {
       return this.expectedTransliteration .split("\n");
     },
     transliteratedLines: function() {
-      var language = Languages.find(this.languageId);
+      var ruleset = Rulesets.find(this.rulesetId);
       var numberOfLines = Math.max(this.lines.length, this.expectedLines.length);
       return _(numberOfLines).times((index) => {
         var tibetan = this.lines[index] || '';
         var transliterated =
-          new TibetanTransliterator(tibetan, language, this.options)
-          .transliterate()
+          new TibetanTransliterator(ruleset, this.options)
+          .transliterate(tibetan)
         return {
           expected: this.expectedLines[index],
           actual: transliterated

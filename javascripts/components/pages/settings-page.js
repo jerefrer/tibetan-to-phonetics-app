@@ -10,8 +10,8 @@ var SettingsPage = Vue.component('settings-page', {
     return {
       showDropZone: false,
       showLivePreview: false,
-      languages: Languages.languages,
-      selectedLanguageId: Languages.defaultLanguageId,
+      rulesets: Rulesets.rulesets,
+      selectedRulesetId: Rulesets.defaultRulesetId,
       exceptions: Exceptions.generalExceptionsAsArray(),
       ignoreGeneralExceptionsStorage: ignoreGeneralExceptionsStorage,
       options: { capitalize: true },
@@ -24,8 +24,8 @@ var SettingsPage = Vue.component('settings-page', {
     redirectIfInvalidTab(to, next);
   },
   watch: {
-    selectedLanguageId (value) {
-      Storage.set('selectedLanguageId', value);
+    selectedRulesetId (value) {
+      Storage.set('selectedRulesetId', value);
     },
     ignoreGeneralExceptionsStorage (value) {
       Storage.set('ignoreGeneralExceptionsStorage', value, () => {
@@ -52,18 +52,18 @@ var SettingsPage = Vue.component('settings-page', {
     currentTab (value) {
       return this.$route.params.tab;
     },
-    defaultLanguages () {
-      return _(this.languages).where({isDefault: true});
+    defaultRulesets () {
+      return _(this.rulesets).where({isDefault: true});
     },
-    customLanguages () {
-      return _(this.languages).where({isCustom: true});
+    customRulesets () {
+      return _(this.rulesets).where({isCustom: true});
     },
     someLocalStorage () {
       return localforage._driver;
     },
-    fakeLanguageForLivePreview () {
+    fakeRulesetForLivePreview () {
       return {
-        rules: Languages.find(this.selectedLanguageId).rules,
+        rules: Rulesets.find(this.selectedRulesetId).rules,
         exceptions: this.exceptionsAsObject
       }
     },
@@ -76,22 +76,22 @@ var SettingsPage = Vue.component('settings-page', {
     }
   },
   methods: {
-    addNewLanguage () {
-      Languages.create();
-      this.languages = Languages.languages;
+    addNewRuleset () {
+      Rulesets.create();
+      this.rulesets = Rulesets.rulesets;
     },
-    copyLanguage (language) {
-      Languages.copy(language);
-      this.languages = Languages.languages;
+    copyRuleset (ruleset) {
+      Rulesets.copy(ruleset);
+      this.rulesets = Rulesets.rulesets;
     },
-    deleteLanguage(language) {
+    deleteRuleset(ruleset) {
       if (confirm('Are you sure?')) {
-        Languages.delete(language);
-        this.languages = Languages.languages;
+        Rulesets.delete(ruleset);
+        this.rulesets = Rulesets.rulesets;
       }
     },
-    isNewLanguage (language) {
-      return _(language.id).isNumber();
+    isNewRuleset (ruleset) {
+      return _(ruleset.id).isNumber();
     },
     addNewException () {
       this.exceptions.push({
@@ -105,11 +105,11 @@ var SettingsPage = Vue.component('settings-page', {
         this.exceptions = Exceptions.generalExceptionsAsArray();
       }
     },
-    showLanguageUploadModal () {
+    showRulesetUploadModal () {
       this.showUploadModal('tt-rule-set', (result) => {
-        var language = JSON.parse(reader.result);
-        Languages.import(language);
-        this.languages = Languages.languages;
+        var ruleset = JSON.parse(reader.result);
+        Rulesets.import(ruleset);
+        this.rulesets = Rulesets.rulesets;
       });
     },
     showExceptionsUploadModal () {
@@ -177,12 +177,12 @@ var SettingsPage = Vue.component('settings-page', {
         </div>
 
         <div class="ui centered cards">
-          <language-card
-            v-for="language in defaultLanguages"
-            :key="language.id"
-            :language="language"
-            @copy="copyLanguage(language)"
-            @delete="deleteLanguage(language)"
+          <ruleset-card
+            v-for="ruleset in defaultRulesets"
+            :key="ruleset.id"
+            :ruleset="ruleset"
+            @copy="copyRuleset(ruleset)"
+            @delete="deleteRuleset(ruleset)"
           />
         </div>
 
@@ -190,7 +190,7 @@ var SettingsPage = Vue.component('settings-page', {
 
         <div class="ui large centered header">
           Custom rule sets
-          <div v-if="someLocalStorage" class="ui button" @click="showLanguageUploadModal">
+          <div v-if="someLocalStorage" class="ui button" @click="showRulesetUploadModal">
             <i class="upload icon" />
             Upload
           </div>
@@ -198,16 +198,16 @@ var SettingsPage = Vue.component('settings-page', {
 
         <div v-if="someLocalStorage" class="ui centered cards">
 
-          <language-card
-            v-for="language in customLanguages"
-            :key="language.id"
-            :language="language"
+          <ruleset-card
+            v-for="ruleset in customRulesets"
+            :key="ruleset.id"
+            :ruleset="ruleset"
             :isCustom="true"
-            @copy="copyLanguage(language)"
-            @delete="deleteLanguage(language)"
+            @copy="copyRuleset(ruleset)"
+            @delete="deleteRuleset(ruleset)"
           />
 
-          <div class="ui new link card" @click="addNewLanguage">
+          <div class="ui new link card" @click="addNewRuleset">
             <div class="content">
               <div class="header">
                 <i class="plus icon" />
@@ -314,7 +314,7 @@ var SettingsPage = Vue.component('settings-page', {
 
         <div id="menu">
 
-          <language-menu v-model="selectedLanguageId" />
+          <ruleset-dropdown v-model="selectedRulesetId" />
 
           <slider-checkbox
             v-model="options.capitalize"
@@ -324,7 +324,7 @@ var SettingsPage = Vue.component('settings-page', {
         </div>
 
         <convert-boxes
-          :language="fakeLanguageForLivePreview"
+          :ruleset="fakeRulesetForLivePreview"
           :options="options"
           tibetanStorageKey="live-preview"
         />
@@ -335,9 +335,9 @@ var SettingsPage = Vue.component('settings-page', {
   `
 })
 
-Vue.component('language-card', {
+Vue.component('ruleset-card', {
   props: {
-    language: Object,
+    ruleset: Object,
     isCustom: Boolean
   },
   filters: {
@@ -349,17 +349,17 @@ Vue.component('language-card', {
   },
   computed: {
     numberOfSpecificRules () {
-      return Languages.numberOfSpecificRules(this.language);
+      return Rulesets.numberOfSpecificRules(this.ruleset);
     },
     numberOfSpecificExceptions () {
-      return Object.keys(this.language.exceptions).length;
+      return Object.keys(this.ruleset.exceptions).length;
     },
   },
   methods: {
     download () {
-      var json = JSON.stringify(_(this.language).omit('id'));
+      var json = JSON.stringify(_(this.ruleset).omit('id'));
       var blob = new Blob([json], { type: 'text/javascript' });
-      saveAs(blob, this.language.name + '.tt-rule-set');
+      saveAs(blob, this.ruleset.name + '.tt-rule-set');
     }
   },
   mounted () {
@@ -374,7 +374,7 @@ Vue.component('language-card', {
     <div class="ui card" ref="card">
       <div class="content">
         <div class="ui large icon buttons">
-          <link-to-edit-language :language="language" />
+          <link-to-edit-ruleset :ruleset="ruleset" />
           <div class="ui button" title="Copy" @click="$emit('copy')">
             <i class="copy icon"></i>
           </div>
@@ -396,11 +396,11 @@ Vue.component('language-card', {
           </div>
         </div>
         <div class="header">
-          {{language.name}}
+          {{ruleset.name}}
         </div>
       </div>
       <div class="extra content">
-        <span v-if="language.id == 'english-strict'" class="left floated">
+        <span v-if="ruleset.id == 'english-strict'" class="left floated">
           The original setting
         </span>
         <template v-else>

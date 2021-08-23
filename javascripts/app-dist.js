@@ -10,8 +10,11 @@ var initializeStorage = function initializeStorage(callback) {
     if (nbReady >= 2) callback();
   };
 
-  Languages.initialize(callbackIfReady);
-  Exceptions.initialize(callbackIfReady);
+  Rulesets.initialize(callbackIfReady);
+  Storage.get('ignoreGeneralExceptionsStorage', false, function (value) {
+    ignoreGeneralExceptionsStorage = value;
+    Exceptions.initialize(callbackIfReady);
+  });
 };
 
 $(function () {

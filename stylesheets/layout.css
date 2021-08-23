@@ -49,14 +49,14 @@
   #menu > div {
     flex: 0 auto;
   }
-  #menu .languages {
+  #menu .rulesets {
     display: flex;
   }
-    #menu .languages .dropdown {
+    #menu .rulesets .dropdown {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-    #menu .languages .button {
+    #menu .rulesets .button {
       margin-right: 17px;
       border-left: none;
       box-shadow: none !important;

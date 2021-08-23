@@ -18,10 +18,17 @@ var TestsPage = Vue.component('tests-page', {
     var ranTests = testGroups.map(function (testGroup) {
       testGroup.tests.each(function (test) {
         test.runTest = function () {
-          var language = testGroup.language ? Languages.findOriginal(testGroup.language) : Languages.originalDefault();
-          this.transliterated = new TibetanTransliterator(this.tibetan, language, {
+          var ruleset = testGroup.ruleset ? Rulesets.findOriginal(testGroup.ruleset) : Rulesets.originalDefault();
+
+          if (testGroup.rules) {
+            ruleset = Object.clone(ruleset, true);
+
+            _(ruleset.rules).extend(testGroup.rules);
+          }
+
+          this.transliterated = new TibetanTransliterator(ruleset, {
             capitalize: testGroup.capitalize
-          }).transliterate();
+          }).transliterate(this.tibetan);
           return this.transliterated == this.transliteration;
         };
 

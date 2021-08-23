@@ -1,6 +1,6 @@
 Vue.component('convert-boxes', {
   props: {
-    language: Object,
+    ruleset: Object,
     tibetanStorageKey: String,
     options: {
       type: Object,
@@ -57,7 +57,7 @@ Vue.component('convert-boxes', {
         <tibetan-input v-model="tibetan" />
         <transliterated-lines
           :lines="lines"
-          :language="language"
+          :ruleset="ruleset"
           :options="options"
         />
       </div>
@@ -67,15 +67,15 @@ Vue.component('convert-boxes', {
 
 Vue.component('transliterated-lines', {
   props: {
-    language: Object,
+    ruleset: Object,
     options: Object,
     lines: Array
   },
   computed: {
     transliteratedLines: function() {
       return this.lines.map((line) => {
-        return new TibetanTransliterator(line, this.language, this.options)
-          .transliterate();
+        return new TibetanTransliterator(this.ruleset, this.options)
+          .transliterate(line);
       }).join("\n");
     },
   },

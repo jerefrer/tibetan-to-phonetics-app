@@ -9,8 +9,8 @@ var SettingsPage = Vue.component('settings-page', {
     return {
       showDropZone: false,
       showLivePreview: false,
-      languages: Languages.languages,
-      selectedLanguageId: Languages.defaultLanguageId,
+      rulesets: Rulesets.rulesets,
+      selectedRulesetId: Rulesets.defaultRulesetId,
       exceptions: Exceptions.generalExceptionsAsArray(),
       ignoreGeneralExceptionsStorage: ignoreGeneralExceptionsStorage,
       options: {
@@ -25,8 +25,8 @@ var SettingsPage = Vue.component('settings-page', {
     redirectIfInvalidTab(to, next);
   },
   watch: {
-    selectedLanguageId: function selectedLanguageId(value) {
-      Storage.set('selectedLanguageId', value);
+    selectedRulesetId: function selectedRulesetId(value) {
+      Storage.set('selectedRulesetId', value);
     },
     ignoreGeneralExceptionsStorage: function ignoreGeneralExceptionsStorage(value) {
       Storage.set('ignoreGeneralExceptionsStorage', value, function () {
@@ -63,22 +63,22 @@ var SettingsPage = Vue.component('settings-page', {
     currentTab: function currentTab(value) {
       return this.$route.params.tab;
     },
-    defaultLanguages: function defaultLanguages() {
-      return _(this.languages).where({
+    defaultRulesets: function defaultRulesets() {
+      return _(this.rulesets).where({
         isDefault: true
       });
     },
-    customLanguages: function customLanguages() {
-      return _(this.languages).where({
+    customRulesets: function customRulesets() {
+      return _(this.rulesets).where({
         isCustom: true
       });
     },
     someLocalStorage: function someLocalStorage() {
       return localforage._driver;
     },
-    fakeLanguageForLivePreview: function fakeLanguageForLivePreview() {
+    fakeRulesetForLivePreview: function fakeRulesetForLivePreview() {
       return {
-        rules: Languages.find(this.selectedLanguageId).rules,
+        rules: Rulesets.find(this.selectedRulesetId).rules,
         exceptions: this.exceptionsAsObject
       };
     },
@@ -90,22 +90,22 @@ var SettingsPage = Vue.component('settings-page', {
     }
   },
   methods: {
-    addNewLanguage: function addNewLanguage() {
-      Languages.create();
-      this.languages = Languages.languages;
+    addNewRuleset: function addNewRuleset() {
+      Rulesets.create();
+      this.rulesets = Rulesets.rulesets;
     },
-    copyLanguage: function copyLanguage(language) {
-      Languages.copy(language);
-      this.languages = Languages.languages;
+    copyRuleset: function copyRuleset(ruleset) {
+      Rulesets.copy(ruleset);
+      this.rulesets = Rulesets.rulesets;
     },
-    deleteLanguage: function deleteLanguage(language) {
+    deleteRuleset: function deleteRuleset(ruleset) {
       if (confirm('Are you sure?')) {
-        Languages["delete"](language);
-        this.languages = Languages.languages;
+        Rulesets["delete"](ruleset);
+        this.rulesets = Rulesets.rulesets;
       }
     },
-    isNewLanguage: function isNewLanguage(language) {
-      return _(language.id).isNumber();
+    isNewRuleset: function isNewRuleset(ruleset) {
+      return _(ruleset.id).isNumber();
     },
     addNewException: function addNewException() {
       this.exceptions.push({
@@ -119,13 +119,13 @@ var SettingsPage = Vue.component('settings-page', {
         this.exceptions = Exceptions.generalExceptionsAsArray();
       }
     },
-    showLanguageUploadModal: function showLanguageUploadModal() {
+    showRulesetUploadModal: function showRulesetUploadModal() {
       var _this = this;
 
       this.showUploadModal('tt-rule-set', function (result) {
-        var language = JSON.parse(reader.result);
-        Languages["import"](language);
-        _this.languages = Languages.languages;
+        var ruleset = JSON.parse(reader.result);
+        Rulesets["import"](ruleset);
+        _this.rulesets = Rulesets.rulesets;
       });
     },
     showExceptionsUploadModal: function showExceptionsUploadModal() {
@@ -185,11 +185,11 @@ var SettingsPage = Vue.component('settings-page', {
       saveAs(blob, datetime + '.tt-exceptions');
     }
   },
-  template: "\n    <div\n      class=\"ui container settings with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link tabId=\"rules\">Rules</tab-link>\n        <tab-link tabId=\"exceptions\">Exceptions</tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui large centered header\">\n          Default rule sets\n        </div>\n\n        <div class=\"ui centered cards\">\n          <language-card\n            v-for=\"language in defaultLanguages\"\n            :key=\"language.id\"\n            :language=\"language\"\n            @copy=\"copyLanguage(language)\"\n            @delete=\"deleteLanguage(language)\"\n          />\n        </div>\n\n        <div class=\"ui hidden section divider\"></div>\n\n        <div class=\"ui large centered header\">\n          Custom rule sets\n          <div v-if=\"someLocalStorage\" class=\"ui button\" @click=\"showLanguageUploadModal\">\n            <i class=\"upload icon\" />\n            Upload\n          </div>\n        </div>\n\n        <div v-if=\"someLocalStorage\" class=\"ui centered cards\">\n\n          <language-card\n            v-for=\"language in customLanguages\"\n            :key=\"language.id\"\n            :language=\"language\"\n            :isCustom=\"true\"\n            @copy=\"copyLanguage(language)\"\n            @delete=\"deleteLanguage(language)\"\n          />\n\n          <div class=\"ui new link card\" @click=\"addNewLanguage\">\n            <div class=\"content\">\n              <div class=\"header\">\n                <i class=\"plus icon\" />\n                New rule set\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n        <div v-else class=\"ui warning message text container\">\n\n          <div class=\"header\">\n            Your browser does not support storing data locally, which is\n            necessary for custom rule sets to work.\n          </div>\n\n          <p>\n            You can still enjoy using the default rule sets, but if you want to\n            create your own or import other people's you will need to update\n            your browser to its latest version or start using a modern browser\n            like Mozilla Firefox or Google Chrome.\n          </p>\n\n        </div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui text container active tab\">\n\n        <div class=\"ui large segment dev-mode\">\n          <div class=\"left\">\n            Dev mode\n          </div>\n          <slider-checkbox\n            v-model=\"ignoreGeneralExceptionsStorage\"\n            text=\"Ignore all modifications made here and use the default exceptions from file\"\n          />\n        </div>\n\n        <div\n          ref=\"div\"\n          id=\"general-exceptions-message\"\n          class=\"ui large secondary segment\"\n        >\n          <div>\n            These are the general exceptions that apply to all rule sets.\n          </div>\n          <div>\n            <div class=\"ui button\" @click=\"showExceptionsUploadModal\">\n              <i class=\"upload icon\"></i>\n              Upload\n            </div>\n            <div class=\"ui button\" @click=\"downloadExceptions\">\n              <i class=\"download icon\"></i>\n              Download\n            </div>\n          </div>\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n            :class=\"{\n              top: index == 0,\n              bottom: index == exceptions.length - 1\n            }\"\n          >\n            <input class=\"tibetan\" v-model=\"exception.key\"   spellcheck=\"false\" />\n            <input class=\"tibetan\" v-model=\"exception.value\" spellcheck=\"false\" />\n          </div>\n          <div class=\"ui attached button new exception\" @click=\"addNewException\">\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"currentTab == 'exceptions'\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n\n        <div id=\"menu\">\n\n          <language-menu v-model=\"selectedLanguageId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :language=\"fakeLanguageForLivePreview\"\n          :options=\"options\"\n          tibetanStorageKey=\"live-preview\"\n        />\n\n      </div>\n\n    </div>\n  "
+  template: "\n    <div\n      class=\"ui container settings with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link tabId=\"rules\">Rules</tab-link>\n        <tab-link tabId=\"exceptions\">Exceptions</tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui large centered header\">\n          Default rule sets\n        </div>\n\n        <div class=\"ui centered cards\">\n          <ruleset-card\n            v-for=\"ruleset in defaultRulesets\"\n            :key=\"ruleset.id\"\n            :ruleset=\"ruleset\"\n            @copy=\"copyRuleset(ruleset)\"\n            @delete=\"deleteRuleset(ruleset)\"\n          />\n        </div>\n\n        <div class=\"ui hidden section divider\"></div>\n\n        <div class=\"ui large centered header\">\n          Custom rule sets\n          <div v-if=\"someLocalStorage\" class=\"ui button\" @click=\"showRulesetUploadModal\">\n            <i class=\"upload icon\" />\n            Upload\n          </div>\n        </div>\n\n        <div v-if=\"someLocalStorage\" class=\"ui centered cards\">\n\n          <ruleset-card\n            v-for=\"ruleset in customRulesets\"\n            :key=\"ruleset.id\"\n            :ruleset=\"ruleset\"\n            :isCustom=\"true\"\n            @copy=\"copyRuleset(ruleset)\"\n            @delete=\"deleteRuleset(ruleset)\"\n          />\n\n          <div class=\"ui new link card\" @click=\"addNewRuleset\">\n            <div class=\"content\">\n              <div class=\"header\">\n                <i class=\"plus icon\" />\n                New rule set\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n        <div v-else class=\"ui warning message text container\">\n\n          <div class=\"header\">\n            Your browser does not support storing data locally, which is\n            necessary for custom rule sets to work.\n          </div>\n\n          <p>\n            You can still enjoy using the default rule sets, but if you want to\n            create your own or import other people's you will need to update\n            your browser to its latest version or start using a modern browser\n            like Mozilla Firefox or Google Chrome.\n          </p>\n\n        </div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui text container active tab\">\n\n        <div class=\"ui large segment dev-mode\">\n          <div class=\"left\">\n            Dev mode\n          </div>\n          <slider-checkbox\n            v-model=\"ignoreGeneralExceptionsStorage\"\n            text=\"Ignore all modifications made here and use the default exceptions from file\"\n          />\n        </div>\n\n        <div\n          ref=\"div\"\n          id=\"general-exceptions-message\"\n          class=\"ui large secondary segment\"\n        >\n          <div>\n            These are the general exceptions that apply to all rule sets.\n          </div>\n          <div>\n            <div class=\"ui button\" @click=\"showExceptionsUploadModal\">\n              <i class=\"upload icon\"></i>\n              Upload\n            </div>\n            <div class=\"ui button\" @click=\"downloadExceptions\">\n              <i class=\"download icon\"></i>\n              Download\n            </div>\n          </div>\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n            :class=\"{\n              top: index == 0,\n              bottom: index == exceptions.length - 1\n            }\"\n          >\n            <input class=\"tibetan\" v-model=\"exception.key\"   spellcheck=\"false\" />\n            <input class=\"tibetan\" v-model=\"exception.value\" spellcheck=\"false\" />\n          </div>\n          <div class=\"ui attached button new exception\" @click=\"addNewException\">\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"currentTab == 'exceptions'\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n\n        <div id=\"menu\">\n\n          <ruleset-dropdown v-model=\"selectedRulesetId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :ruleset=\"fakeRulesetForLivePreview\"\n          :options=\"options\"\n          tibetanStorageKey=\"live-preview\"\n        />\n\n      </div>\n\n    </div>\n  "
 });
-Vue.component('language-card', {
+Vue.component('ruleset-card', {
   props: {
-    language: Object,
+    ruleset: Object,
     isCustom: Boolean
   },
   filters: {
@@ -199,19 +199,19 @@ Vue.component('language-card', {
   },
   computed: {
     numberOfSpecificRules: function numberOfSpecificRules() {
-      return Languages.numberOfSpecificRules(this.language);
+      return Rulesets.numberOfSpecificRules(this.ruleset);
     },
     numberOfSpecificExceptions: function numberOfSpecificExceptions() {
-      return Object.keys(this.language.exceptions).length;
+      return Object.keys(this.ruleset.exceptions).length;
     }
   },
   methods: {
     download: function download() {
-      var json = JSON.stringify(_(this.language).omit('id'));
+      var json = JSON.stringify(_(this.ruleset).omit('id'));
       var blob = new Blob([json], {
         type: 'text/javascript'
       });
-      saveAs(blob, this.language.name + '.tt-rule-set');
+      saveAs(blob, this.ruleset.name + '.tt-rule-set');
     }
   },
   mounted: function mounted() {
@@ -224,5 +224,5 @@ Vue.component('language-card', {
       });
     }, 100);
   },
-  template: "\n    <div class=\"ui card\" ref=\"card\">\n      <div class=\"content\">\n        <div class=\"ui large icon buttons\">\n          <link-to-edit-language :language=\"language\" />\n          <div class=\"ui button\" title=\"Copy\" @click=\"$emit('copy')\">\n            <i class=\"copy icon\"></i>\n          </div>\n          <div\n            v-if=\"isCustom\"\n            class=\"ui button\"\n            title=\"Download\"\n            @click=\"download\"\n          >\n            <i class=\"download icon\"></i>\n          </div>\n          <div\n            v-if=\"isCustom\"\n            class=\"ui button\"\n            title=\"Delete\"\n            @click=\"$emit('delete')\"\n          >\n            <i class=\"times icon\"></i>\n          </div>\n        </div>\n        <div class=\"header\">\n          {{language.name}}\n        </div>\n      </div>\n      <div class=\"extra content\">\n        <span v-if=\"language.id == 'english-strict'\" class=\"left floated\">\n          The original setting\n        </span>\n        <template v-else>\n          <span class=\"left floated\">\n            {{numberOfSpecificRules | pluralize('altered rule')}}\n          </span>\n          <span class=\"right floated\" v-if=\"numberOfSpecificExceptions\">\n            {{numberOfSpecificExceptions | pluralize('specific exception')}}\n          </span>\n        </template>\n      </div>\n    </div>\n  "
+  template: "\n    <div class=\"ui card\" ref=\"card\">\n      <div class=\"content\">\n        <div class=\"ui large icon buttons\">\n          <link-to-edit-ruleset :ruleset=\"ruleset\" />\n          <div class=\"ui button\" title=\"Copy\" @click=\"$emit('copy')\">\n            <i class=\"copy icon\"></i>\n          </div>\n          <div\n            v-if=\"isCustom\"\n            class=\"ui button\"\n            title=\"Download\"\n            @click=\"download\"\n          >\n            <i class=\"download icon\"></i>\n          </div>\n          <div\n            v-if=\"isCustom\"\n            class=\"ui button\"\n            title=\"Delete\"\n            @click=\"$emit('delete')\"\n          >\n            <i class=\"times icon\"></i>\n          </div>\n        </div>\n        <div class=\"header\">\n          {{ruleset.name}}\n        </div>\n      </div>\n      <div class=\"extra content\">\n        <span v-if=\"ruleset.id == 'english-strict'\" class=\"left floated\">\n          The original setting\n        </span>\n        <template v-else>\n          <span class=\"left floated\">\n            {{numberOfSpecificRules | pluralize('altered rule')}}\n          </span>\n          <span class=\"right floated\" v-if=\"numberOfSpecificExceptions\">\n            {{numberOfSpecificExceptions | pluralize('specific exception')}}\n          </span>\n        </template>\n      </div>\n    </div>\n  "
 });

@@ -1,6 +1,6 @@
 testGroups.push({
   name: 'Spanish — Shower of Blessings - Lineage Prayer' ,
-  language: 'spanish',
+  ruleset: 'spanish',
   includeInPercentage: true,
   sentences: true,
   tests: [

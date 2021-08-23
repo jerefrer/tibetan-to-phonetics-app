@@ -11,35 +11,6 @@ Just copy the repository locally.
 Usage
 -----------
 
-### As a library
-
-```js
-new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
-=> 'kangki lotrö' // using default language: 'english-strict'
-
-# Use the 'capitalize' option to capitalize the first letter of every group
-
-new TibetanTransliterator( 'ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', { capitalize: true }).transliterate();
-=> 'Émaho Trötrel chökyi yingkyi zhingkham su'
-
-# Use the 'language' option to choose which set of rules you wish to follow:
-
-new TibetanTransliterator('གང་གི་བློ་གྲོས་', { language: 'english-loose' }).transliterate();
-=> 'gangi lodrö'
-
-new TibetanTransliterator('གང་གི་བློ་གྲོས་', { language: 'french' }).transliterate();
-=> 'kangki lotreu'
-
-# Or set the language once and for all instead of every transliteration:
-
-Languages.change('french');
-new TibetanTransliterator('གང་གི་བློ་གྲོས་').transliterate();
-```
-
-### As a tool
-
-#### `index.html`
-
 ![Demo](./docs/index-small.jpg)
 
 * Choose your prefered transliteration style at the top
@@ -47,7 +18,7 @@ new TibetanTransliterator('གང་གི་བློ་གྲོས་').trans
 * Click *Copy to clipboard* at the top of the right box to copy the
   transliteration
 
-#### `compare.html`
+#### Compare page
 
 ![Compare](./docs/compare-small.jpg)
 
@@ -60,6 +31,42 @@ new TibetanTransliterator('གང་གི་བློ་གྲོས་').trans
 * Clicking on a difference will make the necessary change in the existing
   transliteration so that it will disappear from the right box, allowing you
   to quickly prune those that are irrelevant to you.
+
+### Using as a library
+
+```js
+var defaultRuleset = Rulesets.default(); // using default 'english-strict'
+var transliterator = new TibetanTransliterator(defaultRuleset);
+transliterator.transliterate('གང་གི་བློ་གྲོས་');
+// => 'kangki lotrö'
+transliterator.transliterate('སྒྲིབ་གཉིས་སྤྲིན་བྲལ་');
+// => 'dripnyi trintrel'
+```
+Use the 'capitalize' option to capitalize the first letter of every group.
+Either passing it to the constructor:
+```js
+var transliterator = new TibetanTransliterator(defaultRuleset, { capitalize: true });
+transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
+// => 'Émaho Trötrel chökyi yingkyi zhingkham su'
+```
+Or on a per-call basis:
+```js
+var transliterator = new TibetanTransliterator(defaultRuleset);
+transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
+// => 'émaho trötrel chökyi yingkyi zhingkham su'
+transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', { capitalize: true });
+// => 'Émaho Trötrel chökyi yingkyi zhingkham su'
+```
+Use different rulesets:
+```js
+var englishLooseRuletset = Rulesets.find('english-loose');
+new TibetanTransliterator(englishLooseRuletset).transliterate('གང་གི་བློ་གྲོས་');
+// => 'gangi lodrö'
+
+var frenchRuletset = Rulesets.find('french');
+new TibetanTransliterator(frenchRuletset).transliterate('གང་གི་བློ་གྲོས་');
+// => 'kangki lotreu'
+```
 
 Exceptions
 -----------
@@ -122,18 +129,18 @@ Every single line in `original.js` can thus be copy-pasted in another set file
 to be overridden. You can edit existing rule sets or create new ones.
 
 Style-specific exceptions can be defined and default ones can be overriden.
-Just add your exceptions in `exceptionsPerLanguage['my set']`.
+Just add your exceptions in `exceptionsPerRuleset['my set']`.
 
 To add a new rule set just copy an existing one and replace twice the name of
 the set:
 ```html
 # settings/my-new-set.js
 
-settingsPerLanguage['my new set'] = {
+settingsPerRuleset['my new set'] = {
 ...
 }
 
-exceptionsPerLanguage['my new set'] = {
+exceptionsPerRuleset['my new set'] = {
 ...
 }
 ```

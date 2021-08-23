@@ -7,7 +7,7 @@ var initializeStorage = function(callback) {
     if (nbReady >= 2)
       callback();
   }
-  Languages.initialize(callbackIfReady);
+  Rulesets.initialize(callbackIfReady);
   Storage.get('ignoreGeneralExceptionsStorage', false, (value) => {
     ignoreGeneralExceptionsStorage = value;
     Exceptions.initialize(callbackIfReady);

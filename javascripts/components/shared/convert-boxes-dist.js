@@ -2,7 +2,7 @@
 
 Vue.component('convert-boxes', {
   props: {
-    language: Object,
+    ruleset: Object,
     tibetanStorageKey: String,
     options: {
       type: Object,
@@ -47,11 +47,11 @@ Vue.component('convert-boxes', {
       return $(window).resize();
     });
   },
-  template: "\n    <div class=\"scrollable-area-container\">\n      <clipboard-button v-if=\"tibetan\" />\n      <div class=\"scrollable-area\">\n        <tibetan-input v-model=\"tibetan\" />\n        <transliterated-lines\n          :lines=\"lines\"\n          :language=\"language\"\n          :options=\"options\"\n        />\n      </div>\n    </div>\n  "
+  template: "\n    <div class=\"scrollable-area-container\">\n      <clipboard-button v-if=\"tibetan\" />\n      <div class=\"scrollable-area\">\n        <tibetan-input v-model=\"tibetan\" />\n        <transliterated-lines\n          :lines=\"lines\"\n          :ruleset=\"ruleset\"\n          :options=\"options\"\n        />\n      </div>\n    </div>\n  "
 });
 Vue.component('transliterated-lines', {
   props: {
-    language: Object,
+    ruleset: Object,
     options: Object,
     lines: Array
   },
@@ -60,7 +60,7 @@ Vue.component('transliterated-lines', {
       var _this2 = this;
 
       return this.lines.map(function (line) {
-        return new TibetanTransliterator(line, _this2.language, _this2.options).transliterate();
+        return new TibetanTransliterator(_this2.ruleset, _this2.options).transliterate(line);
       }).join("\n");
     }
   },

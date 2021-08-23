@@ -7,7 +7,7 @@ const routes = [
     component: SettingsPage
   },
   {
-    path: '/settings/:languageId/:tab',
+    path: '/settings/:rulesetId/:tab',
     name: 'edit-setting',
     component: EditSettingPage
   },

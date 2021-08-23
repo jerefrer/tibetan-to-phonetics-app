@@ -1,4 +1,4 @@
-Vue.component('language-menu', {
+Vue.component('ruleset-dropdown', {
   model: {
     prop: 'value'
   },
@@ -6,21 +6,21 @@ Vue.component('language-menu', {
     value: String
   },
   computed: {
-    languages () {
-      return Languages.all()
+    rulesets () {
+      return Rulesets.all()
     },
-    language () {
-      return Languages.find(this.value);
+    ruleset () {
+      return Rulesets.find(this.value);
     }
   },
   mounted: function() {
     $(this.$refs.dropdownDiv).dropdown({
-      values: _(this.languages).map((language) => {
+      values: _(this.rulesets).map((ruleset) => {
         return {
-          value: language.id,
-          html: language.name,
-          name: language.name,
-          selected: this.value == language.id
+          value: ruleset.id,
+          html: ruleset.name,
+          name: ruleset.name,
+          selected: this.value == ruleset.id
         }
       }),
       onChange: () => {
@@ -32,7 +32,7 @@ Vue.component('language-menu', {
     })
   },
   template: `
-    <div class="languages">
+    <div class="rulesets">
       <div class="ui normal selection dropdown" ref="dropdownDiv">
         <input type="hidden" />
         <i class="dropdown icon"></i>
@@ -40,9 +40,9 @@ Vue.component('language-menu', {
         <div class="menu">
         </div>
       </div>
-      <link-to-edit-language
+      <link-to-edit-ruleset
         class="right attached"
-        :language="language"
+        :ruleset="ruleset"
       />
     </div>
   `

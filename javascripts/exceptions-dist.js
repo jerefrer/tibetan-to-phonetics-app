@@ -1,11 +1,9 @@
 "use strict";
 
-var resetGeneralExceptions = false;
-
-var Exceptions = function Exceptions(language, tibetan) {
+var Exceptions = function Exceptions(ruleset, tibetan) {
   return {
-    language: language,
-    exceptions: _(_.clone(language.exceptions)).defaults(Exceptions.generalExceptions),
+    ruleset: ruleset,
+    exceptions: _(_.clone(ruleset.exceptions)).defaults(Exceptions.generalExceptions),
     find: function find(tibetan) {
       var exception;
       var transliteration;
@@ -64,7 +62,7 @@ var Exceptions = function Exceptions(language, tibetan) {
     tr: function tr(word) {
       if (!word) return '';
       var tsheks = word.match(/་/);
-      return new TibetanTransliterator(word, this.language).transliterate().replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
+      return new TibetanTransliterator(this.ruleset).transliterate(word).replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
     }
   };
 };
@@ -84,7 +82,7 @@ var normalizeExceptions = function normalizeExceptions(exceptions) {
 Exceptions.initialize = function (callback) {
   var _this = this;
 
-  if (resetGeneralExceptions) {
+  if (ignoreGeneralExceptionsStorage) {
     this.generalExceptions = normalizeExceptions(originalGeneralExceptions);
     callback();
   } else Storage.get('general-exceptions', normalizeExceptions(originalGeneralExceptions), function (value) {

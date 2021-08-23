@@ -1,8 +1,8 @@
-var Exceptions = function(language, tibetan) {
+var Exceptions = function(ruleset, tibetan) {
   return {
-    language: language,
+    ruleset: ruleset,
     exceptions:
-      _(_.clone(language.exceptions)).defaults(Exceptions.generalExceptions),
+      _(_.clone(ruleset.exceptions)).defaults(Exceptions.generalExceptions),
     find (tibetan) {
       var exception;
       var transliteration;
@@ -65,7 +65,7 @@ var Exceptions = function(language, tibetan) {
     tr (word) {
       if (!word) return '';
       var tsheks = word.match(/་/);
-      return new TibetanTransliterator(word, this.language).transliterate()
+      return new TibetanTransliterator(this.ruleset).transliterate(word)
                  .replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
     }
   }

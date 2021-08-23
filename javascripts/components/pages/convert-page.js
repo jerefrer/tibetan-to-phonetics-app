@@ -5,13 +5,13 @@ var ConvertPage = Vue.component('convert-page', {
       loading: true,
       loadedFields: [],
       numberOfFieldsToLoad: 2,
-      selectedLanguageId: Languages.defaultLanguageId,
+      selectedRulesetId: Rulesets.defaultRulesetId,
       options: { capitalize: true },
     }
   },
   watch: {
-    selectedLanguageId (value) {
-      Storage.set('selectedLanguageId', value);
+    selectedRulesetId (value) {
+      Storage.set('selectedRulesetId', value);
     },
     options: {
       deep: true,
@@ -21,12 +21,12 @@ var ConvertPage = Vue.component('convert-page', {
     }
   },
   computed: {
-    language () {
-      return Languages.find(this.selectedLanguageId);
+    ruleset () {
+      return Rulesets.find(this.selectedRulesetId);
     }
   },
   created () {
-    this.initializeField('selectedLanguageId', Languages.defaultLanguageId);
+    this.initializeField('selectedRulesetId', Rulesets.defaultRulesetId);
     this.initializeField('options', { capitalize: true });
   },
   template: `
@@ -36,7 +36,7 @@ var ConvertPage = Vue.component('convert-page', {
 
         <div id="menu">
 
-          <language-menu v-model="selectedLanguageId" />
+          <ruleset-dropdown v-model="selectedRulesetId" />
 
           <slider-checkbox
             v-model="options.capitalize"
@@ -46,7 +46,7 @@ var ConvertPage = Vue.component('convert-page', {
         </div>
 
         <convert-boxes
-          :language="language"
+          :ruleset="ruleset"
           :options="options"
           tibetanStorageKey="convert-page"
         />

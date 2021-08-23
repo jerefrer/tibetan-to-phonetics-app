@@ -7,15 +7,15 @@ var ConvertPage = Vue.component('convert-page', {
       loading: true,
       loadedFields: [],
       numberOfFieldsToLoad: 2,
-      selectedLanguageId: Languages.defaultLanguageId,
+      selectedRulesetId: Rulesets.defaultRulesetId,
       options: {
         capitalize: true
       }
     };
   },
   watch: {
-    selectedLanguageId: function selectedLanguageId(value) {
-      Storage.set('selectedLanguageId', value);
+    selectedRulesetId: function selectedRulesetId(value) {
+      Storage.set('selectedRulesetId', value);
     },
     options: {
       deep: true,
@@ -25,15 +25,15 @@ var ConvertPage = Vue.component('convert-page', {
     }
   },
   computed: {
-    language: function language() {
-      return Languages.find(this.selectedLanguageId);
+    ruleset: function ruleset() {
+      return Rulesets.find(this.selectedRulesetId);
     }
   },
   created: function created() {
-    this.initializeField('selectedLanguageId', Languages.defaultLanguageId);
+    this.initializeField('selectedRulesetId', Rulesets.defaultRulesetId);
     this.initializeField('options', {
       capitalize: true
     });
   },
-  template: "\n    <transition name=\"fade\" appear>\n\n      <div v-if=\"!loading\" class=\"ui fluid container\">\n\n        <div id=\"menu\">\n\n          <language-menu v-model=\"selectedLanguageId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :language=\"language\"\n          :options=\"options\"\n          tibetanStorageKey=\"convert-page\"\n        />\n\n      </div>\n\n    </transition>\n  "
+  template: "\n    <transition name=\"fade\" appear>\n\n      <div v-if=\"!loading\" class=\"ui fluid container\">\n\n        <div id=\"menu\">\n\n          <ruleset-dropdown v-model=\"selectedRulesetId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :ruleset=\"ruleset\"\n          :options=\"options\"\n          tibetanStorageKey=\"convert-page\"\n        />\n\n      </div>\n\n    </transition>\n  "
 });

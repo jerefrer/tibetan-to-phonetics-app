@@ -22,7 +22,7 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-defaultLanguages.push({
+defaultRulesets.push({
 
   id: 'english-strict',
   name: 'English (strict)',

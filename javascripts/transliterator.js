@@ -1,23 +1,25 @@
 var t, findException;
 var syllablesWithUnknownConsonant = [];
 
-var TibetanTransliterator = function(tibetan, language, options = {}) {
-  var exceptions = new Exceptions(language);
-  t = (key) => language.rules[key];
+var TibetanTransliterator = function(ruleset, options = {}) {
+  var exceptions = new Exceptions(ruleset);
+  t = (key) => ruleset.rules[key];
   findException = (text) => exceptions.find(text);
   return {
-    tibetan: tibetan,
-    capitalize: options.capitalize,
-    transliterate: function() {
-      this.tibetan = removeUntranscribedPunctuationAndNormalize(this.tibetan);
-      this.tibetan = this.substituteNumbers(this.tibetan);
-      var groups = this.splitBySpacesOrNumbers(this.tibetan);
+    ruleset: ruleset,
+    exceptions: exceptions,
+    options: options,
+    transliterate: function(tibetan, options) {
+      _(this.options).extend(options);
+      tibetan = removeUntranscribedPunctuationAndNormalize(tibetan);
+      tibetan = this.substituteNumbers(tibetan);
+      var groups = this.splitBySpacesOrNumbers(tibetan);
       return groups.map((tibetanGroup, index) => {
         if (tibetanGroup.match(/^\d+$/))
           return tibetanGroup;
         else {
           var group = new Group(tibetanGroup).transliterate();
-          if (this.capitalize) group = group.capitalize();
+          if (this.options.capitalize) group = group.capitalize();
           return group;
         }
       }).join(' ');

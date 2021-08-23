@@ -3,12 +3,12 @@
 var t, findException;
 var syllablesWithUnknownConsonant = [];
 
-var TibetanTransliterator = function TibetanTransliterator(tibetan, language) {
-  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var exceptions = new Exceptions(language);
+var TibetanTransliterator = function TibetanTransliterator(ruleset) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var exceptions = new Exceptions(ruleset);
 
   t = function t(key) {
-    return language.rules[key];
+    return ruleset.rules[key];
   };
 
   findException = function findException(text) {
@@ -16,18 +16,21 @@ var TibetanTransliterator = function TibetanTransliterator(tibetan, language) {
   };
 
   return {
-    tibetan: tibetan,
-    capitalize: options.capitalize,
-    transliterate: function transliterate() {
+    ruleset: ruleset,
+    exceptions: exceptions,
+    options: options,
+    transliterate: function transliterate(tibetan, options) {
       var _this = this;
 
-      this.tibetan = removeUntranscribedPunctuationAndNormalize(this.tibetan);
-      this.tibetan = this.substituteNumbers(this.tibetan);
-      var groups = this.splitBySpacesOrNumbers(this.tibetan);
+      _(this.options).extend(options);
+
+      tibetan = removeUntranscribedPunctuationAndNormalize(tibetan);
+      tibetan = this.substituteNumbers(tibetan);
+      var groups = this.splitBySpacesOrNumbers(tibetan);
       return groups.map(function (tibetanGroup, index) {
         if (tibetanGroup.match(/^\d+$/)) return tibetanGroup;else {
           var group = new Group(tibetanGroup).transliterate();
-          if (_this.capitalize) group = group.capitalize();
+          if (_this.options.capitalize) group = group.capitalize();
           return group;
         }
       }).join(' ');
@@ -82,14 +85,14 @@ var Group = function Group(tibetan) {
         } else {
           if (this.isLastSyllableAndStartsWithBa(syllable)) this.group += this.BaAsWaWhenSecondSyllable(syllable);else {
             var firstTransliteration = new Syllable(syllable).transliterate();
-            if (this.handleSecondSyllable(firstTransliteration)) ;else this.group += firstTransliteration;
+            if (this.handleSecondSyllable(firstTransliteration, syllable)) ;else this.group += firstTransliteration;
           }
         }
       }
 
       return this.group.trim();
     },
-    handleSecondSyllable: function handleSecondSyllable(firstTransliteration) {
+    handleSecondSyllable: function handleSecondSyllable(firstTransliteration, firstTibetan) {
       var secondSyllable = this.syllables.shift();
 
       if (secondSyllable) {
@@ -110,6 +113,15 @@ var Group = function Group(tibetan) {
         }
 
         if (firstTransliteration) {
+          if (this.AngOrAm(firstTibetan)) {
+            this.group += firstTransliteration + ' '; // Because *-am is two syllables, we add back the second syllable
+            // to the array and return so that it gets processed as the first
+            // syllable of the next pair.
+
+            this.syllables.unshift(secondSyllable);
+            return true;
+          }
+
           firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
           firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
           firstTransliteration = this.addDoubleSIfNecesary(firstTransliteration, secondTransliteration);
@@ -137,6 +149,9 @@ var Group = function Group(tibetan) {
     },
     BaAsWaWhenSecondSyllable: function BaAsWaWhenSecondSyllable(syllable) {
       if (syllable == 'བ') return t('wa') + t('a');else if (syllable == 'བར') return t('wa') + t('a') + t('raSuffix');else if (syllable == 'བས') return t('wa') + t('drengbu');else if (syllable == 'བའི') return t('wa') + t('aKikuI');else if (syllable == 'བོ') return t('wa') + t('o');else if (syllable == 'བོས') return t('wa') + t('ö');else if (syllable == 'བོའི') return t('wa') + t('ö');else if (syllable == 'བུས') return t('wa') + t('ü');
+    },
+    AngOrAm: function AngOrAm(tibetan) {
+      return tibetan.match(/.+འ[ངམ]$/);
     },
     connectWithDashIfNecessary: function connectWithDashIfNecessary(firstSyllable, secondSyllable) {
       var twoVowels = this.endsWithVowel(firstSyllable) && this.startsWithVowel(secondSyllable);
