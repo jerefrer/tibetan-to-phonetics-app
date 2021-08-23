@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Library - Arguments - No "ruleset" argument falls back to default',
+  name: 'Calling the library - No "ruleset" argument falls back to default',
   tests: [
     {
       eval: `
@@ -12,7 +12,7 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Library - Arguments - String "ruleset" argument finds the appropriate ruleset',
+  name: 'Calling the library - String "ruleset" argument finds the appropriate ruleset',
   tests: [
     {
       eval: `
@@ -25,7 +25,7 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Library - Arguments - String "ruleset" argument raises error if no matching ruleset',
+  name: 'Calling the library - String "ruleset" argument raises error if no matching ruleset',
   tests: [
     {
       eval: `
@@ -38,7 +38,7 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Library - Arguments - Existing "ruleset" object',
+  name: 'Calling the library - Object - Existing "ruleset" object works',
   tests: [
     {
       eval: `
@@ -52,7 +52,7 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Library - Arguments - Valid fake object "ruleset"',
+  name: 'Calling the library - Object - Valid fake object for "ruleset" argument works',
   tests: [
     {
       eval: `
@@ -69,7 +69,7 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Library - Arguments - Invalid fake object "ruleset" raises error',
+  name: 'Calling the library - Object - Invalid fake object "ruleset" raises error',
   tests: [
     {
       eval: `
