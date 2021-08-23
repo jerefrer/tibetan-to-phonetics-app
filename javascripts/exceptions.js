@@ -65,7 +65,7 @@ var Exceptions = function(ruleset, tibetan) {
     tr (word) {
       if (!word) return '';
       var tsheks = word.match(/་/);
-      return new TibetanTransliterator(this.ruleset).transliterate(word)
+      return new TibetanTransliterator({ ruleset: this.ruleset }).transliterate(word)
                  .replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
     }
   }

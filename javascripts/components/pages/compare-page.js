@@ -174,9 +174,10 @@ Vue.component('compared-lines', {
       var numberOfLines = Math.max(this.lines.length, this.expectedLines.length);
       return _(numberOfLines).times((index) => {
         var tibetan = this.lines[index] || '';
-        var transliterated =
-          new TibetanTransliterator(ruleset, this.options)
-          .transliterate(tibetan)
+        var transliterated = new TibetanTransliterator({
+          ruleset: ruleset,
+          capitalize: this.options.capitalize
+        }).transliterate(tibetan)
         return {
           expected: this.expectedLines[index],
           actual: transliterated

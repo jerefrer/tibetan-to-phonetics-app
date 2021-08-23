@@ -35,36 +35,48 @@ Usage
 ### Using as a library
 
 ```js
-var defaultRuleset = Rulesets.default(); // using default 'english-strict'
-var transliterator = new TibetanTransliterator(defaultRuleset);
+var defaultRuleset = Rulesets.default();
+var transliterator = new TibetanTransliterator(); // using default 'english-strict'
 transliterator.transliterate('གང་གི་བློ་གྲོས་');
 // => 'kangki lotrö'
 transliterator.transliterate('སྒྲིབ་གཉིས་སྤྲིན་བྲལ་');
 // => 'dripnyi trintrel'
 ```
-Use the 'capitalize' option to capitalize the first letter of every group.
-Either passing it to the constructor:
+Use the 'capitalize' option to capitalize the first letter of every group,
+either passing it to the constructor:
 ```js
-var transliterator = new TibetanTransliterator(defaultRuleset, { capitalize: true });
+var transliterator = new TibetanTransliterator({ capitalize: true });
 transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
 // => 'Émaho Trötrel chökyi yingkyi zhingkham su'
 ```
 Or on a per-call basis:
 ```js
-var transliterator = new TibetanTransliterator(defaultRuleset);
+var transliterator = new TibetanTransliterator();
 transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
 // => 'émaho trötrel chökyi yingkyi zhingkham su'
 transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', { capitalize: true });
 // => 'Émaho Trötrel chökyi yingkyi zhingkham su'
 ```
-Use different rulesets:
+Use different rulesets, either by passing the name of an existing set:
 ```js
 var englishLooseRuletset = Rulesets.find('english-loose');
-new TibetanTransliterator(englishLooseRuletset).transliterate('གང་གི་བློ་གྲོས་');
+new TibetanTransliterator({ ruleset: 'english-loose' }).transliterate('གང་གི་བློ་གྲོས་');
 // => 'gangi lodrö'
 
+```
+Or the set itself:
+```js
 var frenchRuletset = Rulesets.find('french');
-new TibetanTransliterator(frenchRuletset).transliterate('གང་གི་བློ་གྲོས་');
+new TibetanTransliterator({ ruleset: frenchRuletset }).transliterate('གང་གི་བློ་གྲོས་');
+// => 'kangki lotreu'
+```
+Or any object that quacks like a ruleset, meaning it returns objects for 'rules' and 'exceptions':
+```js
+var fakeRuleSet = {
+  rules: { 'ö': 'eu' },
+  exceptions: {}
+};
+new TibetanTransliterator({ ruleset: fakeRuleSet }).transliterate('གང་གི་བློ་གྲོས་');
 // => 'kangki lotreu'
 ```
 

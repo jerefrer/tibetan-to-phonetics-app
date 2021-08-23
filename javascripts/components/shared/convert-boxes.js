@@ -74,8 +74,10 @@ Vue.component('transliterated-lines', {
   computed: {
     transliteratedLines: function() {
       return this.lines.map((line) => {
-        return new TibetanTransliterator(this.ruleset, this.options)
-          .transliterate(line);
+        return new TibetanTransliterator({
+          ruleset: this.ruleset,
+          capitalize: this.options.capitalize
+        }).transliterate(line);
       }).join("\n");
     },
   },

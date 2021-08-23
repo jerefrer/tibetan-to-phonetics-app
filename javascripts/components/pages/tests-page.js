@@ -1,7 +1,8 @@
 var processTime;
 var startedAt;
 
-// We don't want to use the Storage'd exceptions but only the default ones.
+// We don't want to use the Storage'd rulesets & exceptions but only the default ones.
+Rulesets.rulesets = defaultRulesets.map((ruleset) => Rulesets.initializeRuleset(ruleset));
 Exceptions.generalExceptions = normalizeExceptions(originalGeneralExceptions);
 
 $(function() {
@@ -23,19 +24,33 @@ var TestsPage = Vue.component('tests-page', {
     var ranTests = testGroups.map(function(testGroup) {
       testGroup.tests.each(function(test) {
         test.runTest = function() {
-          var ruleset =
-            testGroup.ruleset
-            ? Rulesets.findOriginal(testGroup.ruleset)
-            : Rulesets.originalDefault();
-          if (testGroup.rules) {
-            ruleset = Object.clone(ruleset, true);
-            _(ruleset.rules).extend(testGroup.rules);
+          if (test.eval) {
+            try {
+              test.value = eval(test.eval);
+              return test.value == test.expected;
+            } catch(error) {
+              if (test.expectedError)
+                return error.message.match(test.expectedError);
+              else
+                return false;
+            };
+          } else {
+            var ruleset =
+              testGroup.ruleset
+              ? Rulesets.findOriginal(testGroup.ruleset)
+              : Rulesets.originalDefault();
+            if (testGroup.rules) {
+              ruleset = Object.clone(ruleset, true);
+              _(ruleset.rules).extend(testGroup.rules);
+            }
+            this.transliterated = new TibetanTransliterator(
+              {
+                ruleset: ruleset,
+                capitalize: testGroup.capitalize
+              }
+            ).transliterate(this.tibetan);
+            return this.transliterated == this.transliteration;
           }
-          this.transliterated = new TibetanTransliterator(
-            ruleset,
-            { capitalize: testGroup.capitalize}
-          ).transliterate(this.tibetan);
-          return this.transliterated == this.transliteration;
         }
         test.pass = test.runTest();
         if (test.pass) passedCount++;
@@ -172,13 +187,23 @@ Vue.component('test-result', {
         <i v-if=" test.pass" class="check green icon"></i>
         <i v-if="!test.pass" class="times red icon"></i>
       </span>
-      <span class="tibetan">{{test.tibetan}}</span>
-      <test-diff
-        v-if="expected != actual"
-        :expected="expected"
-        :actual="actual"
-        :style="{ marginLeft: sentence ? '20px' : 'inherit' }"
-      ></test-diff>
+      <template v-if="!test.pass && !test.error">
+        <test-diff
+          v-if="test.value"
+          :expected="test.expected"
+          :actual="test.value"
+        ></test-diff>
+      </template>
+      <span v-else-if="!test.pass && test.error" style="color: '#db2828'">{{test.error}}</span>
+      <template v-else>
+        <span class="tibetan">{{test.tibetan}}</span>
+        <test-diff
+          v-if="expected != actual"
+          :expected="expected"
+          :actual="actual"
+          :style="{ marginLeft: sentence ? '20px' : 'inherit' }"
+        ></test-diff>
+      </template>
     </span>
   `
 })

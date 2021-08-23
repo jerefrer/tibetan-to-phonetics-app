@@ -1,10 +1,13 @@
 "use strict";
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 var t, findException;
 var syllablesWithUnknownConsonant = [];
 
-var TibetanTransliterator = function TibetanTransliterator(ruleset) {
-  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+var TibetanTransliterator = function TibetanTransliterator() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var ruleset = assignValidRulesetOrThrowException(options.ruleset);
   var exceptions = new Exceptions(ruleset);
 
   t = function t(key) {
@@ -22,15 +25,13 @@ var TibetanTransliterator = function TibetanTransliterator(ruleset) {
     transliterate: function transliterate(tibetan, options) {
       var _this = this;
 
-      _(this.options).extend(options);
-
       tibetan = removeUntranscribedPunctuationAndNormalize(tibetan);
       tibetan = this.substituteNumbers(tibetan);
       var groups = this.splitBySpacesOrNumbers(tibetan);
       return groups.map(function (tibetanGroup, index) {
         if (tibetanGroup.match(/^\d+$/)) return tibetanGroup;else {
           var group = new Group(tibetanGroup).transliterate();
-          if (_this.options.capitalize) group = group.capitalize();
+          if (options && options.capitalize || _this.options.capitalize) group = group.capitalize();
           return group;
         }
       }).join(' ');
@@ -460,4 +461,21 @@ var Syllable = function Syllable(syllable) {
       return this.subscribed == 'ླ';
     }
   });
+};
+
+var assignValidRulesetOrThrowException = function assignValidRulesetOrThrowException(ruleset) {
+  if (_typeof(ruleset) == 'object') {
+    if (_typeof(ruleset.rules) == 'object' && _typeof(ruleset.exceptions) == 'object') {
+      _(ruleset.rules).defaults(originalRules);
+
+      return ruleset;
+    } else throwBadArgumentsError("You passed an object but it doesn't return " + "objects for 'rules' and 'exceptions'.");
+  } else if (typeof ruleset == 'string') {
+    var existingRuleset = Rulesets.find(ruleset);
+    if (existingRuleset) return existingRuleset;else throwBadArgumentsError("There is no existing ruleset matching id '" + ruleset + "'");
+  } else if (ruleset) throwBadArgumentsError("You passed " + _typeof(ruleset));else return Rulesets["default"]();
+};
+
+var throwBadArgumentsError = function throwBadArgumentsError(passedMessage) {
+  throw new TypeError("Invalid value for 'ruleset' option\n+" + "------------------------------------\n" + passedMessage + "\n" + "------------------------------------\n" + "The 'ruleset' option accepts either:\n" + "- the name of a existing ruleset\n" + "- a ruleset object itself\n" + "- any object that quacks like a ruleset, meaning it returns objects " + "for 'rules' and 'exceptions'\n");
 };

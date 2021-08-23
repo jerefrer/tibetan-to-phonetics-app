@@ -62,7 +62,9 @@ var Exceptions = function Exceptions(ruleset, tibetan) {
     tr: function tr(word) {
       if (!word) return '';
       var tsheks = word.match(/་/);
-      return new TibetanTransliterator(this.ruleset).transliterate(word).replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
+      return new TibetanTransliterator({
+        ruleset: this.ruleset
+      }).transliterate(word).replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
     }
   };
 };

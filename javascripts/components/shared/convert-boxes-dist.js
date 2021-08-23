@@ -60,7 +60,10 @@ Vue.component('transliterated-lines', {
       var _this2 = this;
 
       return this.lines.map(function (line) {
-        return new TibetanTransliterator(_this2.ruleset, _this2.options).transliterate(line);
+        return new TibetanTransliterator({
+          ruleset: _this2.ruleset,
+          capitalize: _this2.options.capitalize
+        }).transliterate(line);
       }).join("\n");
     }
   },

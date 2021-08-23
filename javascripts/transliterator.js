@@ -1,7 +1,8 @@
 var t, findException;
 var syllablesWithUnknownConsonant = [];
 
-var TibetanTransliterator = function(ruleset, options = {}) {
+var TibetanTransliterator = function(options = {}) {
+  var ruleset = assignValidRulesetOrThrowException(options.ruleset);
   var exceptions = new Exceptions(ruleset);
   t = (key) => ruleset.rules[key];
   findException = (text) => exceptions.find(text);
@@ -10,7 +11,6 @@ var TibetanTransliterator = function(ruleset, options = {}) {
     exceptions: exceptions,
     options: options,
     transliterate: function(tibetan, options) {
-      _(this.options).extend(options);
       tibetan = removeUntranscribedPunctuationAndNormalize(tibetan);
       tibetan = this.substituteNumbers(tibetan);
       var groups = this.splitBySpacesOrNumbers(tibetan);
@@ -19,7 +19,8 @@ var TibetanTransliterator = function(ruleset, options = {}) {
           return tibetanGroup;
         else {
           var group = new Group(tibetanGroup).transliterate();
-          if (this.options.capitalize) group = group.capitalize();
+          if (options && options.capitalize || this.options.capitalize)
+            group = group.capitalize();
           return group;
         }
       }).join(' ');
@@ -367,4 +368,42 @@ var Syllable = function(syllable) {
       return this.subscribed == 'ླ';
     }
   });
+}
+
+const assignValidRulesetOrThrowException = function (ruleset) {
+  if (typeof(ruleset) == 'object') {
+    if (
+      typeof(ruleset.rules) == 'object' &&
+      typeof(ruleset.exceptions) == 'object'
+    ) {
+      _(ruleset.rules).defaults(originalRules);
+      return ruleset;
+    } else
+      throwBadArgumentsError("You passed an object but it doesn't return " +
+        "objects for 'rules' and 'exceptions'.");
+  }
+  else if (typeof(ruleset) == 'string') {
+    var existingRuleset = Rulesets.find(ruleset);
+    if (existingRuleset)
+      return existingRuleset;
+    else
+      throwBadArgumentsError("There is no existing ruleset matching id '" + ruleset + "'");
+  } else if (ruleset)
+    throwBadArgumentsError("You passed " + typeof(ruleset));
+  else
+    return Rulesets.default();
+}
+
+const throwBadArgumentsError = function(passedMessage) {
+  throw new TypeError(
+    "Invalid value for 'ruleset' option\n+" +
+    "------------------------------------\n" +
+    passedMessage + "\n" +
+    "------------------------------------\n" +
+    "The 'ruleset' option accepts either:\n" +
+    "- the name of a existing ruleset\n" +
+    "- a ruleset object itself\n" +
+    "- any object that quacks like a ruleset, meaning it returns objects " +
+    "for 'rules' and 'exceptions'\n"
+  )
 }
