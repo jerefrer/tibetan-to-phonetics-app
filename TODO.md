@@ -14,11 +14,7 @@
 
 ## Tests
 * Add tests for the programmatic usages with all different options.
-* Add tests for all the latest special cases:
-  * aFollowedByN
-  * oFollowedByN
-  * gFollowedByN
-  * removeUntranscribedPunctuation
+* Add tests for:
   * spaces before/after, exception or not
 
 ## Questions to Tibetan savants
