@@ -72,6 +72,45 @@ Vue.component('exceptions-instructions', {
             </p>
           </li>
           <li>
+            If using Latin characters, then between each syllable you need to
+            add an underscore to help the system determine how many syllables
+            the word is made of, even if it does not exactly match how the word
+            is composed. For instance if you want to have
+            <span class="tibetan">སངས་རྒྱས་</span> transliterated as "sangye",
+            you would do:
+            <table class="ui celled compact table">
+              <tr>
+                <td>སངས་རྒྱས</td>
+                <td>san_gye</td>
+              </tr>
+            </table>
+            but not
+            <table class="ui celled compact table">
+              <tr>
+                <td>སངས་རྒྱས</td>
+                <td>sang_gye</td>
+              </tr>
+            </table>
+          </li>
+          <li>
+            If a line is defined with a left value that is included in another
+            longer left value, then the longer one will be used.
+            For instance if these two rules are defined:
+            <table class="ui celled compact table">
+              <tr>
+                <td>སངས་</td>
+                <td>SAN</td>
+              </tr>
+              <tr>
+                <td>སངས་རྒྱས</td>
+                <td>san_GYE</td>
+              </tr>
+            </table>
+            Then <span class="tibetan">སངས་རྒྱས་</span> would be transliterated
+            as "sanGYE", ignoring the first
+            rule.
+          </li>
+          <li>
             <p>
               Add a space after your text on the right side if you want it to
               always be displayed alone without ever being merged with the
@@ -80,8 +119,8 @@ Vue.component('exceptions-instructions', {
             <p>
               For instance by defining <span class="tibetan">"hའུང "</span>
               with a space at the end on the right side , then you're making
-              sure that <span class="tibetan">ཧཱུྃ་ཨཱཿ'</span> will result in
-              "hung ah" and not "hungah".
+              sure that <span class="tibetan">ཧཱུྃ་ཨཱཿ</span> &nbsp;&nbsp; will
+              result in "hung ah" and not "hungah".
             </p>
           </li>
           <li>
