@@ -104,8 +104,14 @@ Exceptions.generalExceptionsAsArray = function() {
   });
 }
 
-Exceptions.updateGeneralExceptions = function(exceptions) {
+Exceptions.updateGeneralExceptions = function(exceptions, callback) {
   var normalizedExceptions = normalizeExceptions(exceptions);
   this.generalExceptions = normalizedExceptions;
-  Storage.set('general-exceptions', normalizedExceptions);
+  Storage.set('general-exceptions', normalizedExceptions, (value) => {
+    if (callback) callback(value);
+  });
+}
+
+Exceptions.resetGeneralExceptions = function(callback) {
+  this.updateGeneralExceptions(originalGeneralExceptions, callback);
 }

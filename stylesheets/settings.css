@@ -51,6 +51,22 @@
   vertical-align: middle;
 }
 
+.ui.labeled.icon.button.wipe-out-button {
+  padding-left: 5.07142857em !important;
+  text-align: left !important;
+}
+.ui.labeled.icon.button.wipe-out-button p,
+.ui.labeled.icon.button.wipe-out-button ul {
+  margin: 0.5em 0 0;
+  font-size: 0.8em;
+  line-height: 1em;
+  text-align: left !important;
+}
+.ui.labeled.icon.button.wipe-out-button ul {
+  padding: 0 1.1em;
+  list-style-type: square;
+}
+
 .dev-mode.segment {
   display: flex;
   padding: 0;

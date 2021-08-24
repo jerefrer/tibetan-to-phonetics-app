@@ -310,3 +310,9 @@
 .night .secondary.segment {
   color: rgba(255, 255, 255, 0.6) !important;
 }
+
+.night .ui.labeled.icon.button.wipe-out-button p,
+.night .ui.labeled.icon.button.wipe-out-button ul {
+  font-weight: normal;
+  opacity: 0.6;
+}

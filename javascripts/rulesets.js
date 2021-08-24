@@ -54,6 +54,10 @@ var Rulesets = {
         Storage.set('selectedRulesetId', defaultRulesetId);
     })
   },
+  reset(callback) {
+    this.rulesets = this.initializedDefaultRulesets();
+    this.updateStore(callback);
+  },
   maxId () {
     return (
       this.rulesets
@@ -62,20 +66,19 @@ var Rulesets = {
       { id: 0 }
     ).id;
   },
-  updateStore() {
-    localforage.setItem('rulesets', this.rulesets);
+  updateStore(callback) {
+    Storage.set('rulesets', this.rulesets, (value) => {
+      if (callback) callback(value);
+    });
+  },
+  initializedDefaultRulesets () {
+    return defaultRulesets.map((ruleset) => this.initializeRuleset(ruleset));
   },
   initialize (callback) {
-    localforage.getItem('rulesets').then((value) => {
-      this.rulesets =
-        value ||
-        defaultRulesets.map((ruleset) => this.initializeRuleset(ruleset));
+    Storage.get('rulesets', this.initializedDefaultRulesets(), (value) => {
+      this.rulesets = value;
       callback();
-    }).catch((error) => {
-      this.rulesets =
-        defaultRulesets.map((ruleset) => this.initializeRuleset(ruleset));
-      callback();
-    });
+    })
   },
   initializeRuleset (ruleset) {
     ruleset.isDefault = true;

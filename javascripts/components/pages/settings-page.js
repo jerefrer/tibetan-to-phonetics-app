@@ -99,10 +99,12 @@ var SettingsPage = Vue.component('settings-page', {
         value: ''
       })
     },
+    reloadExceptions () {
+      this.exceptions = Exceptions.generalExceptionsAsArray();
+    },
     revertExceptionsToOriginal () {
       if (confirm('Are you sure?')) {
-        Exceptions.updateGeneralExceptions(originalGeneralExceptions);
-        this.exceptions = Exceptions.generalExceptionsAsArray();
+        Exceptions.resetGeneralExceptions(this.reloadExceptions);
       }
     },
     showRulesetUploadModal () {
@@ -116,8 +118,7 @@ var SettingsPage = Vue.component('settings-page', {
       this.showUploadModal('tt-exceptions', (result) => {
         var exceptions = JSON.parse(result);
         _(exceptions).defaults(this.exceptionsAsObject);
-        Exceptions.updateGeneralExceptions(exceptions);
-        this.exceptions = Exceptions.generalExceptionsAsArray();
+        Exceptions.updateGeneralExceptions(exceptions, this.reloadExceptions);
       });
     },
     showUploadModal (fileExtension, callback) {
@@ -157,6 +158,25 @@ var SettingsPage = Vue.component('settings-page', {
       var blob = new Blob([json], { type: 'text/javascript' });
       var datetime = new Date().toJSON().replace(/[T:]/g, '-').substr(0, 19);
       saveAs(blob, datetime + '.tt-exceptions');
+    },
+    resetStorage () {
+      if (confirm('Are you sure?')) {
+        Storage.delete('convert-page');
+        Storage.delete('selectedRulesetId');
+        Storage.delete('options');
+        Storage.delete('compareTransliteration');
+        Storage.delete('compareTibetan');
+        Storage.delete('general-exceptions');
+        Exceptions.resetGeneralExceptions(this.reloadExceptions);
+        Rulesets.reset((value) => {
+          this.rulesets = value;
+          var button = $(this.$refs.wipeOutButton);
+          var buttonTextContainer = button.find('.content');
+          var previousHtml = buttonTextContainer.html();
+          buttonTextContainer.html('Clear all stored data<p>Wipe out complete!</p>');
+          setTimeout(() => buttonTextContainer.html(previousHtml), 3000);
+        });
+      }
     }
   },
   template: `
@@ -235,6 +255,30 @@ var SettingsPage = Vue.component('settings-page', {
           </p>
 
         </div>
+
+        <div class="ui hidden divider"></div>
+        <div class="ui section divider"></div>
+        <div class="ui hidden divider"></div>
+
+        <div class="ui center aligned container">
+          <div
+            ref="wipeOutButton"
+            class="ui large labeled icon button wipe-out-button"
+            @click="resetStorage"
+          >
+            <i class="large icon recycle" />
+            <div class="content">
+              Clear all stored data
+              <ul>
+                <li>All custom rulesets</li>
+                <li>All modifications made in the general exceptions</li>
+                <li>The last typed values of both convert and compare pages</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="ui hidden divider"></div>
 
       </div>
 
