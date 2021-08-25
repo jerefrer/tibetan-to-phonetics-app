@@ -15,4 +15,17 @@ const routes = [
   { path: '*', redirect: '/' }
 ]
 
-const router = new VueRouter({ routes, linkExactActiveClass: 'active' })
+const router = new VueRouter({
+  routes,
+  linkExactActiveClass: 'active',
+  scrollBehavior (to, from, savedPosition) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (savedPosition)
+          resolve(savedPosition);
+        else
+          resolve({ x: 0, y: 0 });
+      }, 500)
+    })
+  }
+})
