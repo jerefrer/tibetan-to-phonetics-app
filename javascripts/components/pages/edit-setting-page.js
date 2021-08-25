@@ -249,10 +249,10 @@ var EditSettingPage = Vue.component('edit-setting-page', {
 
         <es-group :groups="groups" :rules="rules" name="Suffixes" />
 
-        <div class="ui equal width grid">
-          <es-group :groups="groups" :rules="rules" name="Special cases" />
-          <es-group :groups="groups" :rules="rules" name="Formatting" />
-          <div class="column"></div>
+        <div class="ui grid">
+          <es-group class="four wide column" :groups="groups" :rules="rules" name="Special cases" />
+          <es-group class="six wide column"  :groups="groups" :rules="rules" name="Formatting" />
+          <options-group class="six wide column" :rules="rules" />
         </div>
 
       </div>
@@ -404,6 +404,52 @@ Vue.component('es-group', {
         <div class="ui label" v-if="rule.comment">
           <span>
             {{rule.comment}}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+  `
+})
+
+Vue.component('options-group', {
+  props: {
+    name: String,
+    groups: Object,
+    rules: Object
+  },
+  computed: {
+    isEditable () {
+      return Rulesets.find(this.$route.params.rulesetId).isEditable;
+    }
+  },
+  methods: {
+    isBooleanDifferentFromDefault (key) {
+      return !!originalRules[key] != !!this.rules[key];
+    }
+  },
+  template: `
+    <div class="column group">
+
+      <div class="ui small header">
+        Options
+      </div>
+
+      <div
+        class="ui labeled input rule right labeled"
+        :class="{ 'different': isBooleanDifferentFromDefault('doubleS') }"
+      >
+
+        <div class="ui auto label">
+          Double S
+        </div>
+
+        <slider-checkbox v-model="rules['doubleS']" :readonly="!isEditable" />
+
+        <div class="ui label">
+          <span>
+            Have the "s" letter doubled, for instance in "zhelssé" or "lamssel"
           </span>
         </div>
 

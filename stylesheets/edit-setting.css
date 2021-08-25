@@ -27,6 +27,9 @@
       text-align: center;
     }
 
+    .edit-setting .group .rule .label:first-child:not(.tibetan) {
+      line-height: 36px;
+    }
     .edit-setting .group .rule .label:first-child.large {
       width: 60px;
     }
@@ -37,6 +40,17 @@
     .edit-setting .group .rule input {
       width: 55px;
       text-align: center;
+    }
+    .edit-setting .group .rule .slider.checkbox {
+      padding: 21px 25px 15px 10px;
+      background: #222;
+    }
+    .edit-setting .group .rule .slider.checkbox[readonly] {
+      pointer-events: none;
+    }
+    .edit-setting .group .rule .slider.checkbox + .label {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
 
     .edit-setting .group .rule.different .label {
