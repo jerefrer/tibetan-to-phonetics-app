@@ -187,14 +187,16 @@ Vue.component('test-result', {
         <i v-if=" test.pass" class="check green icon"></i>
         <i v-if="!test.pass" class="times red icon"></i>
       </span>
-      <template v-if="!test.pass && !test.error">
-        <test-diff
-          v-if="test.value"
-          :expected="test.expected"
-          :actual="test.value"
-        ></test-diff>
+      <template v-if="test.eval && !test.pass">
+        <span v-if="test.error" style="color: '#db2828'">{{test.error}}</span>
+        <template v-else>
+          <test-diff
+            v-if="test.value"
+            :expected="test.expected"
+            :actual="test.value"
+          ></test-diff>
+        </template>
       </template>
-      <span v-else-if="!test.pass && test.error" style="color: '#db2828'">{{test.error}}</span>
       <template v-else>
         <span class="tibetan">{{test.tibetan}}</span>
         <test-diff
