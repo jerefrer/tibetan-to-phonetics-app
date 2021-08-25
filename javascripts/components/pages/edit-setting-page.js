@@ -388,6 +388,7 @@ Vue.component('es-group', {
           <div
             v-if="isDifferentFromDefault(rule) && isEditable"
             class="ui icon blue button revert"
+            :class="{'with-comment': rule.comment, 'large-label': rule.large}"
             @click="revert(rule)"
           >
             <i class="undo icon" />

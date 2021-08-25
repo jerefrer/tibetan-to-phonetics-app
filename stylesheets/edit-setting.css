@@ -30,6 +30,9 @@
     .edit-setting .group .rule .label:first-child.large {
       width: 60px;
     }
+    .edit-setting .group .rule .label:first-child.auto {
+      width: auto;
+    }
 
     .edit-setting .group .rule input {
       width: 55px;
@@ -46,7 +49,7 @@
     .edit-setting .group .rule.different .revert.button {
       position: absolute;
       top: 0;
-      right: 0;
+      left: 86px;
       margin: 0;
       padding: 5px 4px;
       font-size: 9px;
@@ -54,6 +57,12 @@
       color: rgba(255, 255, 255, 0.9);
       border-top-left-radius: 0;
       border-bottom-right-radius: 0;
+    }
+    .edit-setting .group .rule.different .revert.button.large-label {
+      left: 96px;
+    }
+    .edit-setting .group .rule.different .revert.button.with-comment {
+      border-top-right-radius: 0;
     }
     .edit-setting .group .rule.different .revert.button:hover {
       background-color: #1678c2;

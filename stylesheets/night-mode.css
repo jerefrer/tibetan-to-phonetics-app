@@ -61,6 +61,9 @@
 .night.ui.slider.checkbox input:focus:checked~label:before {
   background-color: #545454!important
 }
+.night .ui[class*="right labeled"].input>input:focus {
+  border-right-color: #333 !important;
+}
 
 .night .card {
   background: #222 !important;
@@ -180,12 +183,12 @@
 }
 
 .night .settings .button:not(#back-button),
-.night .edit-setting .button:not(#back-button) {
+.night .edit-setting .button:not(#back-button):not(.revert) {
   background: #333 !important;
   color: rgba(255,255,255,0.9) !important;
 }
   .night .settings .button:not(#back-button):hover,
-  .night .edit-setting .button:not(#back-button):hover {
+  .night .edit-setting .button:not(#back-button):not(.revert):hover {
     background: #444 !important;
     color: rgba(255,255,255,0.6) !important;
   }
