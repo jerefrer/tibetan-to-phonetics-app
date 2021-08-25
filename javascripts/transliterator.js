@@ -153,7 +153,7 @@ var Group = function(tibetan, options = {}) {
     addDoubleSIfNecesary: function(firstSyllable, secondSyllable) {
       if (
         t('doubleS') &&
-        !firstSyllable.last().match(/[gk]/) &&
+        this.endsWithVowel(firstSyllable) &&
         secondSyllable.match(/^s[^h]/)
       )
         return firstSyllable + 's';

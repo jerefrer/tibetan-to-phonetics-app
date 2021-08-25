@@ -44,6 +44,6 @@ testGroups.push({
     { tibetan: 'བདག་ཅག་དེང་འདིར་བྱ་བ་རྩོམ་པ་ལ། །', transliteration: "datchak tengdir tch'awa tsompa la" },
     { tibetan: 'བགེགས་དང་ཉེ་བར་འཚེ་བ་ཀུན་ཞི་ནས། །', transliteration: "guektang nyéwar ts'éwa kunshi né" },
     { tibetan: 'འདོད་དོན་དཔལ་འཕེལ་བསམ་དོན་ཡིད་བཞིན་འགྲུབ། །', transliteration: "deuteun pelp'el samteun yishin droup" },
-    { tibetan: 'བཀྲ་ཤིས་བདེ་ལེགས་ཕུན་སུམ་ཚོགས་པར་ཤོག', transliteration: "trachi délek p'unssoum ts'okpar cho" }
+    { tibetan: 'བཀྲ་ཤིས་བདེ་ལེགས་ཕུན་སུམ་ཚོགས་པར་ཤོག', transliteration: "trachi délek p'unsoum ts'okpar cho" }
   ]
 })
