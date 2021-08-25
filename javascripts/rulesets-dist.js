@@ -62,6 +62,10 @@ var Rulesets = {
       if (value == ruleset.id) Storage.set('selectedRulesetId', defaultRulesetId);
     });
   },
+  reset: function reset(callback) {
+    this.rulesets = this.initializedDefaultRulesets();
+    this.updateStore(callback);
+  },
   maxId: function maxId() {
     return (this.rulesets.filter(function (ruleset) {
       return _(ruleset.id).isNumber();
@@ -69,21 +73,23 @@ var Rulesets = {
       id: 0
     }).id;
   },
-  updateStore: function updateStore() {
-    localforage.setItem('rulesets', this.rulesets);
+  updateStore: function updateStore(callback) {
+    Storage.set('rulesets', this.rulesets, function (value) {
+      if (callback) callback(value);
+    });
   },
-  initialize: function initialize(callback) {
+  initializedDefaultRulesets: function initializedDefaultRulesets() {
     var _this = this;
 
-    localforage.getItem('rulesets').then(function (value) {
-      _this.rulesets = value || defaultRulesets.map(function (ruleset) {
-        return _this.initializeRuleset(ruleset);
-      });
-      callback();
-    })["catch"](function (error) {
-      _this.rulesets = defaultRulesets.map(function (ruleset) {
-        return _this.initializeRuleset(ruleset);
-      });
+    return defaultRulesets.map(function (ruleset) {
+      return _this.initializeRuleset(ruleset);
+    });
+  },
+  initialize: function initialize(callback) {
+    var _this2 = this;
+
+    Storage.get('rulesets', this.initializedDefaultRulesets(), function (value) {
+      _this2.rulesets = value;
       callback();
     });
   },

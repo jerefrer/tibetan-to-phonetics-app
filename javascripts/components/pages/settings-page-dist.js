@@ -113,10 +113,12 @@ var SettingsPage = Vue.component('settings-page', {
         value: ''
       });
     },
+    reloadExceptions: function reloadExceptions() {
+      this.exceptions = Exceptions.generalExceptionsAsArray();
+    },
     revertExceptionsToOriginal: function revertExceptionsToOriginal() {
       if (confirm('Are you sure?')) {
-        Exceptions.updateGeneralExceptions(originalGeneralExceptions);
-        this.exceptions = Exceptions.generalExceptionsAsArray();
+        Exceptions.resetGeneralExceptions(this.reloadExceptions);
       }
     },
     showRulesetUploadModal: function showRulesetUploadModal() {
@@ -136,8 +138,7 @@ var SettingsPage = Vue.component('settings-page', {
 
         _(exceptions).defaults(_this2.exceptionsAsObject);
 
-        Exceptions.updateGeneralExceptions(exceptions);
-        _this2.exceptions = Exceptions.generalExceptionsAsArray();
+        Exceptions.updateGeneralExceptions(exceptions, _this2.reloadExceptions);
       });
     },
     showUploadModal: function showUploadModal(fileExtension, callback) {
@@ -183,9 +184,32 @@ var SettingsPage = Vue.component('settings-page', {
       });
       var datetime = new Date().toJSON().replace(/[T:]/g, '-').substr(0, 19);
       saveAs(blob, datetime + '.tt-exceptions');
+    },
+    resetStorage: function resetStorage() {
+      var _this3 = this;
+
+      if (confirm('Are you sure?')) {
+        Storage["delete"]('convert-page');
+        Storage["delete"]('selectedRulesetId');
+        Storage["delete"]('options');
+        Storage["delete"]('compareTransliteration');
+        Storage["delete"]('compareTibetan');
+        Storage["delete"]('general-exceptions');
+        Exceptions.resetGeneralExceptions(this.reloadExceptions);
+        Rulesets.reset(function (value) {
+          _this3.rulesets = value;
+          var button = $(_this3.$refs.wipeOutButton);
+          var buttonTextContainer = button.find('.content');
+          var previousHtml = buttonTextContainer.html();
+          buttonTextContainer.html('Clear all stored data<p>Wipe out complete!</p>');
+          setTimeout(function () {
+            return buttonTextContainer.html(previousHtml);
+          }, 3000);
+        });
+      }
     }
   },
-  template: "\n    <div\n      class=\"ui container settings with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <back-button />\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link tabId=\"rules\">Rules</tab-link>\n        <tab-link tabId=\"exceptions\">Exceptions</tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui large centered header\">\n          Default rule sets\n        </div>\n\n        <div class=\"ui centered cards\">\n          <ruleset-card\n            v-for=\"ruleset in defaultRulesets\"\n            :key=\"ruleset.id\"\n            :ruleset=\"ruleset\"\n            @copy=\"copyRuleset(ruleset)\"\n            @delete=\"deleteRuleset(ruleset)\"\n          />\n        </div>\n\n        <div class=\"ui hidden section divider\"></div>\n\n        <div class=\"ui large centered header\">\n          Custom rule sets\n          <div v-if=\"someLocalStorage\" class=\"ui button\" @click=\"showRulesetUploadModal\">\n            <i class=\"upload icon\" />\n            Upload\n          </div>\n        </div>\n\n        <div v-if=\"someLocalStorage\" class=\"ui centered cards\">\n\n          <ruleset-card\n            v-for=\"ruleset in customRulesets\"\n            :key=\"ruleset.id\"\n            :ruleset=\"ruleset\"\n            :isCustom=\"true\"\n            @copy=\"copyRuleset(ruleset)\"\n            @delete=\"deleteRuleset(ruleset)\"\n          />\n\n          <div class=\"ui new link card\" @click=\"addNewRuleset\">\n            <div class=\"content\">\n              <div class=\"header\">\n                <i class=\"plus icon\" />\n                New rule set\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n        <div v-else class=\"ui warning message text container\">\n\n          <div class=\"header\">\n            Your browser does not support storing data locally, which is\n            necessary for custom rule sets to work.\n          </div>\n\n          <p>\n            You can still enjoy using the default rule sets, but if you want to\n            create your own or import other people's you will need to update\n            your browser to its latest version or start using a modern browser\n            like Mozilla Firefox or Google Chrome.\n          </p>\n\n        </div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui text container active tab\">\n\n        <div class=\"ui large segment dev-mode\">\n          <div class=\"left\">\n            Dev mode\n          </div>\n          <slider-checkbox\n            v-model=\"ignoreGeneralExceptionsStorage\"\n            text=\"Ignore all modifications made here and use the default exceptions from file\"\n          />\n        </div>\n\n        <div\n          ref=\"div\"\n          id=\"general-exceptions-message\"\n          class=\"ui large secondary segment\"\n        >\n          <div>\n            These are the general exceptions that apply to all rule sets.\n          </div>\n          <div>\n            <div class=\"ui button\" @click=\"showExceptionsUploadModal\">\n              <i class=\"upload icon\"></i>\n              Upload\n            </div>\n            <div class=\"ui button\" @click=\"downloadExceptions\">\n              <i class=\"download icon\"></i>\n              Download\n            </div>\n          </div>\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n            :class=\"{\n              top: index == 0,\n              bottom: index == exceptions.length - 1\n            }\"\n          >\n            <input class=\"tibetan\" v-model=\"exception.key\"   spellcheck=\"false\" />\n            <input class=\"tibetan\" v-model=\"exception.value\" spellcheck=\"false\" />\n          </div>\n          <div class=\"ui attached button new exception\" @click=\"addNewException\">\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"currentTab == 'exceptions'\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n\n        <div id=\"menu\">\n\n          <ruleset-dropdown v-model=\"selectedRulesetId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :ruleset=\"fakeRulesetForLivePreview\"\n          :options=\"options\"\n          tibetanStorageKey=\"live-preview\"\n        />\n\n      </div>\n\n    </div>\n  "
+  template: "\n    <div\n      class=\"ui container settings with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <back-button />\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link tabId=\"rules\">Rules</tab-link>\n        <tab-link tabId=\"exceptions\">Exceptions</tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui large centered header\">\n          Default rule sets\n        </div>\n\n        <div class=\"ui centered cards\">\n          <ruleset-card\n            v-for=\"ruleset in defaultRulesets\"\n            :key=\"ruleset.id\"\n            :ruleset=\"ruleset\"\n            @copy=\"copyRuleset(ruleset)\"\n            @delete=\"deleteRuleset(ruleset)\"\n          />\n        </div>\n\n        <div class=\"ui hidden section divider\"></div>\n\n        <div class=\"ui large centered header\">\n          Custom rule sets\n          <div v-if=\"someLocalStorage\" class=\"ui button\" @click=\"showRulesetUploadModal\">\n            <i class=\"upload icon\" />\n            Upload\n          </div>\n        </div>\n\n        <div v-if=\"someLocalStorage\" class=\"ui centered cards\">\n\n          <ruleset-card\n            v-for=\"ruleset in customRulesets\"\n            :key=\"ruleset.id\"\n            :ruleset=\"ruleset\"\n            :isCustom=\"true\"\n            @copy=\"copyRuleset(ruleset)\"\n            @delete=\"deleteRuleset(ruleset)\"\n          />\n\n          <div class=\"ui new link card\" @click=\"addNewRuleset\">\n            <div class=\"content\">\n              <div class=\"header\">\n                <i class=\"plus icon\" />\n                New rule set\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n        <div v-else class=\"ui warning message text container\">\n\n          <div class=\"header\">\n            Your browser does not support storing data locally, which is\n            necessary for custom rule sets to work.\n          </div>\n\n          <p>\n            You can still enjoy using the default rule sets, but if you want to\n            create your own or import other people's you will need to update\n            your browser to its latest version or start using a modern browser\n            like Mozilla Firefox or Google Chrome.\n          </p>\n\n        </div>\n\n        <div class=\"ui hidden divider\"></div>\n        <div class=\"ui section divider\"></div>\n        <div class=\"ui hidden divider\"></div>\n\n        <div class=\"ui center aligned container\">\n          <div\n            ref=\"wipeOutButton\"\n            class=\"ui large labeled icon button wipe-out-button\"\n            @click=\"resetStorage\"\n          >\n            <i class=\"large icon recycle\" />\n            <div class=\"content\">\n              Clear all stored data\n              <ul>\n                <li>All custom rulesets</li>\n                <li>All modifications made in the general exceptions</li>\n                <li>The last typed values of both convert and compare pages</li>\n              </ul>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"ui hidden divider\"></div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui text container active tab\">\n\n        <div class=\"ui large segment dev-mode\">\n          <div class=\"left\">\n            Dev mode\n          </div>\n          <slider-checkbox\n            v-model=\"ignoreGeneralExceptionsStorage\"\n            text=\"Ignore all modifications made here and use the default exceptions from file\"\n          />\n        </div>\n\n        <div\n          ref=\"div\"\n          id=\"general-exceptions-message\"\n          class=\"ui large secondary segment\"\n        >\n          <div>\n            These are the general exceptions that apply to all rule sets.\n          </div>\n          <div>\n            <div class=\"ui button\" @click=\"showExceptionsUploadModal\">\n              <i class=\"upload icon\"></i>\n              Upload\n            </div>\n            <div class=\"ui button\" @click=\"downloadExceptions\">\n              <i class=\"download icon\"></i>\n              Download\n            </div>\n          </div>\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n            :class=\"{\n              top: index == 0,\n              bottom: index == exceptions.length - 1\n            }\"\n          >\n            <input class=\"tibetan\" v-model=\"exception.key\"   spellcheck=\"false\" />\n            <input class=\"tibetan\" v-model=\"exception.value\" spellcheck=\"false\" />\n          </div>\n          <div class=\"ui attached button new exception\" @click=\"addNewException\">\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"currentTab == 'exceptions'\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n\n        <div id=\"menu\">\n\n          <ruleset-dropdown v-model=\"selectedRulesetId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :ruleset=\"fakeRulesetForLivePreview\"\n          :options=\"options\"\n          tibetanStorageKey=\"live-preview\"\n        />\n\n      </div>\n\n    </div>\n  "
 });
 Vue.component('ruleset-card', {
   props: {
@@ -215,10 +239,10 @@ Vue.component('ruleset-card', {
     }
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     setTimeout(function () {
-      $('[title]', _this3.$refs.card).popup({
+      $('[title]', _this4.$refs.card).popup({
         position: 'top center',
         variation: 'inverted'
       });
