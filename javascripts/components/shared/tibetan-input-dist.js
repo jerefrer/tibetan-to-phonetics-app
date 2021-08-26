@@ -1,22 +1,13 @@
 "use strict";
 
-var valll;
 Vue.component('tibetan-input', {
   props: ['value'],
   methods: {
     checkInput: function checkInput(value) {
-      if (value.trim()) {
-        var anyWesternCharacter = new RegExp(/[a-zéèêêàââñïîôöûü0-9\#\.\"\'\[\]\{\}\(\)\,\;\:\!\?\%ù\*\$\=\+\-"]/ig);
-
-        if (value.match(anyWesternCharacter)) {
-          $('#tibetan').val(value.replace(anyWesternCharacter, '').trim());
-          var dimmerDiv = $('#please-input-tibetan');
-          dimmerDiv.dimmer('show');
-          setTimeout(function () {
-            dimmerDiv.dimmer('hide');
-          }, 2000);
-        } else this.$emit('input', value);
-      } else this.$emit('input', value);
+      var anyNonTibetanCharacter = /(?:[\0-\t\x0B-\x1F!-\x9F\xA1-\u0EFF\u0FDB-\u201F\u2021-\u25CB\u25CD-\u534C\u534E\u534F\u5351-\uD7FF\uE000-\uF020\uF043-\uF161\uF589-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/gi;
+      var sanitized = value.replace(anyNonTibetanCharacter, '');
+      $('#tibetan').val(sanitized);
+      this.$emit('input', sanitized);
     },
     selectTextarea: function selectTextarea() {
       $('#tibetan').focus();
