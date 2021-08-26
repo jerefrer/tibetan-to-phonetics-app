@@ -22,13 +22,6 @@ Vue.component('convert-boxes', {
       return this.tibetan ? this.tibetan.split("\n") : [];
     }
   },
-  methods: {
-    updateBoxesHeight() {
-      // setTimeout(function() {
-      //   $('#transliteration').css('height', $('textarea.tibetan').css('height'));
-      // }, 0)
-    }
-  },
   created () {
     Storage.get(this.tibetanStorageKey, `
       ཧཱུྃ༔
