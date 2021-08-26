@@ -99,6 +99,10 @@
   #general-exceptions-message .button:last-child {
     margin-right: 0;
   }
+  #general-exceptions-message em {
+    font-style: normal;
+    font-weight: bold;
+  }
 
 .exceptions .exception {
   display: flex;

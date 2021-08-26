@@ -300,7 +300,7 @@ var SettingsPage = Vue.component('settings-page', {
           class="ui large secondary segment"
         >
           <div>
-            These are the general exceptions that apply to all rule sets.
+            These are the general exceptions that <em>apply to all rule sets</em>.
           </div>
           <div>
             <div class="ui button" @click="showExceptionsUploadModal">
