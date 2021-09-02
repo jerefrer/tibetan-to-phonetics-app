@@ -63,6 +63,9 @@ initializeStorage(() => {
           class="ui left vertical sidebar labeled icon menu"
           :class="{inverted: colorMode == 'night'}"
         >
+          <div class="item logo">
+            <img src="favicon.png" />
+          </div>
           <router-link class="item" to="/">
             <i class="arrow right icon"></i>
             Convert

@@ -48,6 +48,16 @@
   left: 17.5px;
 }
 
+.sidebar .logo {
+  filter: invert(1);
+  margin-right: -2px;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+  .sidebar .logo img {
+    width: 60px !important;
+    opacity: 0.65;
+  }
+
 #app {
   min-height: 100%;
   padding: 30px 70px;

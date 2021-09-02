@@ -2,6 +2,15 @@
   background: #001211 !important;
 }
 
+.inverted.sidebar .logo {
+  filter: none;
+  margin-right: 0;
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+  .inverted.sidebar .logo img {
+    opacity: 0.5;
+  }
+
 .night .header {
   color: white !important;
 }
