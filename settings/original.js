@@ -48,7 +48,7 @@ var originalRules = {
   'nga': 'ng',             // ང
   'ca': 'ch',              // ཅ
   'cha': "ch'",            // ཆ
-  'ja': "ch'",             // ཇ
+  'ja': 'ch',              // ཇ
   'nya': 'ny',             // ཉ
   'ta': 't',               // ཏ
   'tha': 'th',             // ཐ
@@ -56,7 +56,7 @@ var originalRules = {
   'na': 'n',               // ན
   'pa': 'p',               // པ
   'pha': "p'",             // ཕ
-  'ba': "p'",              // བ
+  'ba': 'p',               // བ
   'ma': 'm',               // མ
   'tsa': 'ts',             // ཙ
   'tsha': "ts'",           // ཚ
@@ -92,7 +92,7 @@ var originalRules = {
   'gaModYata': 'gy',       // སྒྱ / ga with yata and prefix/superscribed
   'paYata': 'ch',          // པྱ
   'phaYata': "ch'",        // ཕྱ
-  'baYata': "ch'",         // བྱ
+  'baYata': 'ch',          // བྱ
   'baModYata': 'j',        // སྦྱ / ba with yata and prefix/superscribed
   'daoWaYata': 'y',        // དབྱ
 
