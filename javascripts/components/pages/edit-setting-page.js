@@ -449,7 +449,7 @@ Vue.component('options-group', {
 
         <div class="ui label">
           <span>
-            Have the "s" letter doubled, for instance in "zhelssé" or "lamssel"
+            Have the "s" letter doubled between vowels (i.e. in "sossor" or "tsassum")
           </span>
         </div>
 
