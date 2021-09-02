@@ -126,6 +126,7 @@ var Group = function(tibetan, options = {}) {
       else if (syllable == 'བར')  return t('wa') + t('a') + t('raSuffix');
       else if (syllable == 'བས')  return t('wa') + t('drengbu');
       else if (syllable == 'བའི') return t('wa') + t('aKikuI');
+      else if (syllable == 'བའོ') return t('wa') + t('a') + t('endLinkChar') + t('o');
       else if (syllable == 'བོ')  return t('wa') + t('o');
       else if (syllable == 'བོས') return t('wa') + t('ö');
       else if (syllable == 'བོའི') return t('wa') + t('ö');
