@@ -347,12 +347,12 @@ var Syllable = function(syllable) {
       return this.syllable.match(/འི$/);
     },
     endingO: function() {
-      return this.endingCharIfMatches(t('o'), /འོ$/);
+      return this.ifMatchesAppendEndingChar(/འོ$/, t('o'));
     },
     endingU: function() {
-      return this.endingCharIfMatches(t('u'), /འུ$/);
+      return this.ifMatchesAppendEndingChar(/འུ$/, t('u'));
     },
-    endingCharIfMatches: function(char, regex) {
+    ifMatchesAppendEndingChar: function(regex, char) {
       return (this.syllable.length > 2 && this.syllable.match(regex)) ? t('endLinkChar') + char : '';
     },
     rata: function() {
