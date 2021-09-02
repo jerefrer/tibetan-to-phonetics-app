@@ -4,7 +4,7 @@ Vue.component('tab-link', {
   },
   computed: {
     currentTabId () {
-      this.$route.params.tab
+      return this.$route.params.tab
     }
   },
   template: `
