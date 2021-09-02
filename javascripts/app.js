@@ -74,7 +74,10 @@ initializeStorage(() => {
             <i class="fa fa-not-equal icon"></i>
             Compare
           </router-link>
-          <router-link class="item" to="/settings/rules">
+          <router-link
+            class="item" to="/settings/rules"
+            :class="{active: $route.name && $route.name.match(/setting/)}"
+          >
             <i class="cogs icon"></i>
             Settings
           </router-link>
