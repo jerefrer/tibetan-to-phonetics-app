@@ -7,7 +7,7 @@ const routes = [
     component: SettingsPage
   },
   {
-    path: '/settings/exceptions',
+    path: '/exceptions',
     name: 'general-exceptions',
     component: SettingsPage
   },
