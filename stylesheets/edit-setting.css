@@ -37,6 +37,10 @@
       width: auto;
     }
 
+    .edit-setting .group .rule .label.tibetan span {
+      opacity: 0.6;
+    }
+
     .edit-setting .group .rule input {
       width: 55px;
       text-align: center;

@@ -147,13 +147,13 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         ],
 
         'Suffixes': [
-          ['kaSuffix', 'k', 'དག'],
-          ['ngaSuffix', 'ng', 'དང'],
-          ['naSuffix', 'n', 'དན'],
-          ['baSuffix', 'p', 'དབ'],
-          ['maSuffix', 'm', 'དམ'],
-          ['raSuffix', 'r', 'དར'],
-          ['laSuffix', 'l', 'དལ'],
+          ['kaSuffix', 'k', '<span>ད</span>ག'],
+          ['ngaSuffix', 'ng', '<span>ད</span>ང'],
+          ['naSuffix', 'n', '<span>ད</span>ན'],
+          ['baSuffix', 'p', '<span>ད</span>བ'],
+          ['maSuffix', 'm', '<span>ད</span>མ'],
+          ['raSuffix', 'r', '<span>ད</span>ར'],
+          ['laSuffix', 'l', '<span>ད</span>ལ'],
         ],
 
         'Formatting': [
@@ -384,7 +384,7 @@ Vue.component('es-group', {
           class="ui tibetan label"
           :class="{large: rule.large}"
         >
-          {{rule.example}}
+          <div v-html="rule.example"></div>
           <div
             v-if="isDifferentFromDefault(rule) && isEditable"
             class="ui icon blue button revert"
