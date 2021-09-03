@@ -2,7 +2,7 @@
 
 Vue.component('convert-boxes', {
   props: {
-    ruleset: Object,
+    setting: Object,
     tibetanStorageKey: String,
     options: {
       type: Object,
@@ -26,12 +26,6 @@ Vue.component('convert-boxes', {
       return this.tibetan ? this.tibetan.split("\n") : [];
     }
   },
-  methods: {
-    updateBoxesHeight: function updateBoxesHeight() {// setTimeout(function() {
-      //   $('#transliteration').css('height', $('textarea.tibetan').css('height'));
-      // }, 0)
-    }
-  },
   created: function created() {
     var _this = this;
 
@@ -47,11 +41,11 @@ Vue.component('convert-boxes', {
       return $(window).resize();
     });
   },
-  template: "\n    <div class=\"scrollable-area-container\">\n      <clipboard-button v-if=\"tibetan\" />\n      <div class=\"scrollable-area\">\n        <tibetan-input v-model=\"tibetan\" />\n        <transliterated-lines\n          class=\"clipboard-target\"\n          :lines=\"lines\"\n          :ruleset=\"ruleset\"\n          :options=\"options\"\n        />\n      </div>\n    </div>\n  "
+  template: "\n    <div class=\"scrollable-area-container\">\n      <clipboard-button v-if=\"tibetan\" />\n      <div class=\"scrollable-area\">\n        <tibetan-input v-model=\"tibetan\" />\n        <transliterated-lines\n          class=\"clipboard-target\"\n          :lines=\"lines\"\n          :setting=\"setting\"\n          :options=\"options\"\n        />\n      </div>\n    </div>\n  "
 });
 Vue.component('transliterated-lines', {
   props: {
-    ruleset: Object,
+    setting: Object,
     options: Object,
     lines: Array
   },
@@ -61,7 +55,7 @@ Vue.component('transliterated-lines', {
 
       return this.lines.map(function (line) {
         return new TibetanTransliterator({
-          ruleset: _this2.ruleset,
+          setting: _this2.setting,
           capitalize: _this2.options.capitalize
         }).transliterate(line);
       }).join("\n");

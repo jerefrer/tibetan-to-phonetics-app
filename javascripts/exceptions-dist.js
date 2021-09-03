@@ -1,9 +1,9 @@
 "use strict";
 
-var Exceptions = function Exceptions(ruleset, tibetan) {
+var Exceptions = function Exceptions(setting, tibetan) {
   return {
-    ruleset: ruleset,
-    exceptions: _(_.clone(ruleset.exceptions)).defaults(Exceptions.generalExceptions),
+    setting: setting,
+    exceptions: _(_.clone(setting.exceptions)).defaults(Exceptions.generalExceptions),
     find: function find(tibetan) {
       var exception;
       var transliteration;
@@ -63,7 +63,7 @@ var Exceptions = function Exceptions(ruleset, tibetan) {
       if (!word) return '';
       var tsheks = word.match(/་/);
       return new TibetanTransliterator({
-        ruleset: this.ruleset
+        setting: this.setting
       }).transliterate(word).replace(/ /g, '') + ''.pad(tsheks ? tsheks.length : 0, '_');
     }
   };

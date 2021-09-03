@@ -6,7 +6,7 @@ Vue.component('tab-link', {
   },
   computed: {
     currentTabId: function currentTabId() {
-      this.$route.params.tab;
+      return this.$route.params.tab;
     }
   },
   template: "\n    <router-link\n      :to=\"{ params: { tab: tabId } }\"\n      class=\"item\"\n      :class=\"{active: currentTabId == tabId}\"\n    >\n      <slot />\n    </router-link>\n  "

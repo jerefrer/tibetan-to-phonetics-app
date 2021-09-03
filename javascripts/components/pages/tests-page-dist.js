@@ -1,10 +1,10 @@
 "use strict";
 
 var processTime;
-var startedAt; // We don't want to use the Storage'd rulesets & exceptions but only the default ones.
+var startedAt; // We don't want to use the Storage'd settings & exceptions but only the default ones.
 
-Rulesets.rulesets = defaultRulesets.map(function (ruleset) {
-  return Rulesets.initializeRuleset(ruleset);
+Settings.settings = defaultSettings.map(function (setting) {
+  return Settings.initializeSetting(setting);
 });
 Exceptions.generalExceptions = normalizeExceptions(originalGeneralExceptions);
 $(function () {
@@ -31,16 +31,16 @@ var TestsPage = Vue.component('tests-page', {
 
             ;
           } else {
-            var ruleset = testGroup.ruleset ? Rulesets.findOriginal(testGroup.ruleset) : Rulesets.originalDefault();
+            var setting = testGroup.setting ? Settings.findOriginal(testGroup.setting) : Settings.originalDefault();
 
             if (testGroup.rules) {
-              ruleset = Object.clone(ruleset, true);
+              setting = Object.clone(setting, true);
 
-              _(ruleset.rules).extend(testGroup.rules);
+              _(setting.rules).extend(testGroup.rules);
             }
 
             this.transliterated = new TibetanTransliterator({
-              ruleset: ruleset,
+              setting: setting,
               capitalize: testGroup.capitalize
             }).transliterate(this.tibetan);
             return this.transliterated == this.transliteration;

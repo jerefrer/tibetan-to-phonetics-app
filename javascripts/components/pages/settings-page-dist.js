@@ -1,16 +1,14 @@
 "use strict";
 
-var redirectIfInvalidTab = function redirectIfInvalidTab(to, next) {
-  if (_(['rules', 'exceptions']).includes(to.params.tab)) next();else next('/settings');
-};
-
 var SettingsPage = Vue.component('settings-page', {
   data: function data() {
     return {
       showDropZone: false,
       showLivePreview: false,
-      rulesets: Rulesets.rulesets,
-      selectedRulesetId: Rulesets.defaultRulesetId,
+      clickedNew: false,
+      settingIdToCopy: Settings.defaultSettingId,
+      settings: Settings.settings,
+      selectedSettingId: Settings.defaultSettingId,
       exceptions: Exceptions.generalExceptionsAsArray(),
       ignoreGeneralExceptionsStorage: ignoreGeneralExceptionsStorage,
       options: {
@@ -18,15 +16,9 @@ var SettingsPage = Vue.component('settings-page', {
       }
     };
   },
-  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
-    redirectIfInvalidTab(to, next);
-  },
-  beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-    redirectIfInvalidTab(to, next);
-  },
   watch: {
-    selectedRulesetId: function selectedRulesetId(value) {
-      Storage.set('selectedRulesetId', value);
+    selectedSettingId: function selectedSettingId(value) {
+      Storage.set('selectedSettingId', value);
     },
     ignoreGeneralExceptionsStorage: function ignoreGeneralExceptionsStorage(value) {
       Storage.set('ignoreGeneralExceptionsStorage', value, function () {
@@ -60,25 +52,28 @@ var SettingsPage = Vue.component('settings-page', {
     }(function () {
       return isDevMode;
     }),
-    currentTab: function currentTab(value) {
-      return this.$route.params.tab;
+    isSettingsPage: function isSettingsPage(value) {
+      return this.$route.name == 'settings';
     },
-    defaultRulesets: function defaultRulesets() {
-      return _(this.rulesets).where({
+    isExceptionsPage: function isExceptionsPage(value) {
+      return this.$route.name == 'general-exceptions';
+    },
+    defaultSettings: function defaultSettings() {
+      return _(this.settings).where({
         isDefault: true
       });
     },
-    customRulesets: function customRulesets() {
-      return _(this.rulesets).where({
+    customSettings: function customSettings() {
+      return _(this.settings).where({
         isCustom: true
       });
     },
     someLocalStorage: function someLocalStorage() {
       return localforage._driver;
     },
-    fakeRulesetForLivePreview: function fakeRulesetForLivePreview() {
+    fakeSettingForLivePreview: function fakeSettingForLivePreview() {
       return {
-        rules: Rulesets.find(this.selectedRulesetId).rules,
+        rules: Settings.find(this.selectedSettingId).rules,
         exceptions: this.exceptionsAsObject
       };
     },
@@ -90,22 +85,20 @@ var SettingsPage = Vue.component('settings-page', {
     }
   },
   methods: {
-    addNewRuleset: function addNewRuleset() {
-      Rulesets.create();
-      this.rulesets = Rulesets.rulesets;
+    copySetting: function copySetting() {
+      var setting = Settings.find(this.settingIdToCopy);
+      Settings.copy(setting);
+      this.settings = Settings.settings;
+      this.clickedNew = false;
     },
-    copyRuleset: function copyRuleset(ruleset) {
-      Rulesets.copy(ruleset);
-      this.rulesets = Rulesets.rulesets;
-    },
-    deleteRuleset: function deleteRuleset(ruleset) {
+    deleteSetting: function deleteSetting(setting) {
       if (confirm('Are you sure?')) {
-        Rulesets["delete"](ruleset);
-        this.rulesets = Rulesets.rulesets;
+        Settings["delete"](setting);
+        this.settings = Settings.settings;
       }
     },
-    isNewRuleset: function isNewRuleset(ruleset) {
-      return _(ruleset.id).isNumber();
+    isNewSetting: function isNewSetting(setting) {
+      return _(setting.id).isNumber();
     },
     addNewException: function addNewException() {
       this.exceptions.push({
@@ -121,13 +114,13 @@ var SettingsPage = Vue.component('settings-page', {
         Exceptions.resetGeneralExceptions(this.reloadExceptions);
       }
     },
-    showRulesetUploadModal: function showRulesetUploadModal() {
+    showSettingUploadModal: function showSettingUploadModal() {
       var _this = this;
 
-      this.showUploadModal('tt-rule-set', function (result) {
-        var ruleset = JSON.parse(reader.result);
-        Rulesets["import"](ruleset);
-        _this.rulesets = Rulesets.rulesets;
+      this.showUploadModal('tt-setting', function (result) {
+        var setting = JSON.parse(reader.result);
+        Settings["import"](setting);
+        _this.settings = Settings.settings;
       });
     },
     showExceptionsUploadModal: function showExceptionsUploadModal() {
@@ -190,14 +183,14 @@ var SettingsPage = Vue.component('settings-page', {
 
       if (confirm('Are you sure?')) {
         Storage["delete"]('convert-page');
-        Storage["delete"]('selectedRulesetId');
+        Storage["delete"]('selectedSettingId');
         Storage["delete"]('options');
         Storage["delete"]('compareTransliteration');
         Storage["delete"]('compareTibetan');
         Storage["delete"]('general-exceptions');
         Exceptions.resetGeneralExceptions(this.reloadExceptions);
-        Rulesets.reset(function (value) {
-          _this3.rulesets = value;
+        Settings.reset(function (value) {
+          _this3.settings = value;
           var button = $(_this3.$refs.wipeOutButton);
           var buttonTextContainer = button.find('.content');
           var previousHtml = buttonTextContainer.html();
@@ -209,11 +202,11 @@ var SettingsPage = Vue.component('settings-page', {
       }
     }
   },
-  template: "\n    <div\n      class=\"ui container settings with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <back-button />\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <tab-link tabId=\"rules\">Rules</tab-link>\n        <tab-link tabId=\"exceptions\">Exceptions</tab-link>\n      </div>\n\n      <div v-if=\"currentTab == 'rules'\" class=\"ui active tab\">\n\n        <div class=\"ui large centered header\">\n          Default rule sets\n        </div>\n\n        <div class=\"ui centered cards\">\n          <ruleset-card\n            v-for=\"ruleset in defaultRulesets\"\n            :key=\"ruleset.id\"\n            :ruleset=\"ruleset\"\n            @copy=\"copyRuleset(ruleset)\"\n            @delete=\"deleteRuleset(ruleset)\"\n          />\n        </div>\n\n        <div class=\"ui hidden section divider\"></div>\n\n        <div class=\"ui large centered header\">\n          Custom rule sets\n          <div v-if=\"someLocalStorage\" class=\"ui button\" @click=\"showRulesetUploadModal\">\n            <i class=\"upload icon\" />\n            Upload\n          </div>\n        </div>\n\n        <div v-if=\"someLocalStorage\" class=\"ui centered cards\">\n\n          <ruleset-card\n            v-for=\"ruleset in customRulesets\"\n            :key=\"ruleset.id\"\n            :ruleset=\"ruleset\"\n            :isCustom=\"true\"\n            @copy=\"copyRuleset(ruleset)\"\n            @delete=\"deleteRuleset(ruleset)\"\n          />\n\n          <div class=\"ui new link card\" @click=\"addNewRuleset\">\n            <div class=\"content\">\n              <div class=\"header\">\n                <i class=\"plus icon\" />\n                New rule set\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n        <div v-else class=\"ui warning message text container\">\n\n          <div class=\"header\">\n            Your browser does not support storing data locally, which is\n            necessary for custom rule sets to work.\n          </div>\n\n          <p>\n            You can still enjoy using the default rule sets, but if you want to\n            create your own or import other people's you will need to update\n            your browser to its latest version or start using a modern browser\n            like Mozilla Firefox or Google Chrome.\n          </p>\n\n        </div>\n\n        <div class=\"ui hidden divider\"></div>\n        <div class=\"ui section divider\"></div>\n        <div class=\"ui hidden divider\"></div>\n\n        <div class=\"ui center aligned container\">\n          <div\n            ref=\"wipeOutButton\"\n            class=\"ui large labeled icon button wipe-out-button\"\n            @click=\"resetStorage\"\n          >\n            <i class=\"large icon recycle\" />\n            <div class=\"content\">\n              Clear all stored data\n              <ul>\n                <li>All custom rulesets</li>\n                <li>All modifications made in the general exceptions</li>\n                <li>The last typed values of both convert and compare pages</li>\n              </ul>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"ui hidden divider\"></div>\n\n      </div>\n\n      <div v-if=\"currentTab == 'exceptions'\" class=\"ui text container active tab\">\n\n        <div class=\"ui large segment dev-mode\">\n          <div class=\"left\">\n            Dev mode\n          </div>\n          <slider-checkbox\n            v-model=\"ignoreGeneralExceptionsStorage\"\n            text=\"Ignore all modifications made here and use the default exceptions from file\"\n          />\n        </div>\n\n        <div\n          ref=\"div\"\n          id=\"general-exceptions-message\"\n          class=\"ui large secondary segment\"\n        >\n          <div>\n            These are the general exceptions that apply to all rule sets.\n          </div>\n          <div>\n            <div class=\"ui button\" @click=\"showExceptionsUploadModal\">\n              <i class=\"upload icon\"></i>\n              Upload\n            </div>\n            <div class=\"ui button\" @click=\"downloadExceptions\">\n              <i class=\"download icon\"></i>\n              Download\n            </div>\n          </div>\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n            :class=\"{\n              top: index == 0,\n              bottom: index == exceptions.length - 1\n            }\"\n          >\n            <input class=\"tibetan\" v-model=\"exception.key\"   spellcheck=\"false\" />\n            <input class=\"tibetan\" v-model=\"exception.value\" spellcheck=\"false\" />\n          </div>\n          <div class=\"ui attached button new exception\" @click=\"addNewException\">\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"currentTab == 'exceptions'\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n\n        <div id=\"menu\">\n\n          <ruleset-dropdown v-model=\"selectedRulesetId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :ruleset=\"fakeRulesetForLivePreview\"\n          :options=\"options\"\n          tibetanStorageKey=\"live-preview\"\n        />\n\n      </div>\n\n    </div>\n  "
+  template: "\n    <div\n      class=\"ui container settings with-live-preview\"\n      :class=\"{'with-live-preview-active': showLivePreview}\"\n    >\n\n      <back-button />\n\n      <div class=\"ui huge secondary pointing menu tab-menu\">\n        <router-link class=\"item\" :to=\"{name: 'settings'}\">\n          Settings\n        </router-link>\n        <router-link class=\"item\" :to=\"{name: 'general-exceptions'}\">\n          Exceptions\n        </router-link>\n      </div>\n\n      <div v-if=\"isSettingsPage\" class=\"ui active tab\">\n\n        <div class=\"ui large centered header\">\n          Default settings\n        </div>\n\n        <div class=\"ui centered cards\">\n          <setting-card\n            v-for=\"setting in defaultSettings\"\n            :key=\"setting.id\"\n            :setting=\"setting\"\n            @delete=\"deleteSetting(setting)\"\n          />\n        </div>\n\n        <div class=\"ui hidden section divider\"></div>\n\n        <div class=\"ui large centered header\">\n          Custom settings\n          <div v-if=\"someLocalStorage\" class=\"ui button\" @click=\"showSettingUploadModal\">\n            <i class=\"upload icon\" />\n            Upload\n          </div>\n        </div>\n\n        <div v-if=\"someLocalStorage\" class=\"ui centered cards\">\n\n          <setting-card\n            v-for=\"setting in customSettings\"\n            :key=\"setting.id\"\n            :setting=\"setting\"\n            :isCustom=\"true\"\n            @copy=\"copySetting(setting)\"\n            @delete=\"deleteSetting(setting)\"\n          />\n\n          <div\n            class=\"ui new card\"\n            :class=\"{link: !clickedNew}\"\n            @click=\"!clickedNew && (clickedNew = true)\"\n          >\n            <div class=\"content\">\n              <div class=\"header\">\n                <template v-if=\"clickedNew\">\n                  Copy from:\n                </template>\n                <template v-else>\n                  <i class=\"plus icon\" />\n                  New setting\n                </template>\n              </div>\n              <div v-if=\"clickedNew\">\n                <settings-dropdown\n                  v-model=\"settingIdToCopy\"\n                  :withLinkToSetting=\"false\"\n                />\n                <div class=\"ui button\" @click.stop=\"clickedNew = false\">\n                  Cancel\n                </div>\n                <div class=\"ui primary button\" @click.stop=\"copySetting\">\n                  Go\n                </div>\n              </div>\n            </div>\n          </div>\n\n        </div>\n\n        <div v-else class=\"ui warning message text container\">\n\n          <div class=\"header\">\n            Your browser does not support storing data locally, which is\n            necessary for custom settings to work.\n          </div>\n\n          <p>\n            You can still enjoy using the default settings, but if you want to\n            create your own or import other people's you will need to update\n            your browser to its latest version or start using a modern browser\n            like Mozilla Firefox or Google Chrome.\n          </p>\n\n        </div>\n\n        <div class=\"ui hidden divider\"></div>\n        <div class=\"ui section divider\"></div>\n        <div class=\"ui hidden divider\"></div>\n\n        <div class=\"ui center aligned container\">\n          <div\n            ref=\"wipeOutButton\"\n            class=\"ui large labeled icon button wipe-out-button\"\n            @click=\"resetStorage\"\n          >\n            <i class=\"large icon recycle\" />\n            <div class=\"content\">\n              Clear all stored data\n              <ul>\n                <li>All custom settings</li>\n                <li>All modifications made in the general exceptions</li>\n                <li>The last typed values in both convert and compare pages</li>\n              </ul>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"ui hidden divider\"></div>\n\n      </div>\n\n      <div v-if=\"isExceptionsPage\" class=\"ui text container active tab\">\n\n        <div class=\"ui large segment dev-mode\">\n          <div class=\"left\">\n            Dev mode\n          </div>\n          <slider-checkbox\n            v-model=\"ignoreGeneralExceptionsStorage\"\n            text=\"Ignore all modifications made here and use the default exceptions from file\"\n          />\n        </div>\n\n        <div\n          ref=\"div\"\n          id=\"general-exceptions-message\"\n          class=\"ui large secondary segment\"\n        >\n          <div>\n            These are the general exceptions that <em>apply to all settings</em>.\n          </div>\n          <div>\n            <div class=\"ui button\" @click=\"showExceptionsUploadModal\">\n              <i class=\"upload icon\"></i>\n              Upload\n            </div>\n            <div class=\"ui button\" @click=\"downloadExceptions\">\n              <i class=\"download icon\"></i>\n              Download\n            </div>\n          </div>\n        </div>\n\n        <exceptions-instructions />\n\n        <div class=\"exceptions\">\n          <div\n            v-for=\"(exception, index) in exceptions\"\n            class=\"ui exception input\"\n            :class=\"{\n              top: index == 0,\n              bottom: index == exceptions.length - 1\n            }\"\n          >\n            <input class=\"tibetan\" v-model=\"exception.key\"   spellcheck=\"false\" />\n            <input class=\"tibetan\" v-model=\"exception.value\" spellcheck=\"false\" />\n          </div>\n          <div class=\"ui attached button new exception\" @click=\"addNewException\">\n            <i class=\"plus icon\" />\n            Add a new exception\n          </div>\n        </div>\n\n        <div\n          class=\"ui bottom attached button reset-exceptions\"\n          @click=\"revertExceptionsToOriginal\"\n        >\n          <i class=\"undo icon\" />\n          Reset all to default (all modifications will be lost)\n        </div>\n\n      </div>\n\n      <div\n        v-if=\"isExceptionsPage\"\n        class=\"live-preview\"\n        :class=\"{active: showLivePreview}\"\n      >\n\n        <button\n          class=\"ui top attached icon button\"\n          @click=\"showLivePreview=!showLivePreview\"\n        >\n          <i class=\"up arrow icon\" />\n          Live preview\n        </button>\n\n        <div id=\"menu\">\n\n          <settings-dropdown v-model=\"selectedSettingId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :setting=\"fakeSettingForLivePreview\"\n          :options=\"options\"\n          tibetanStorageKey=\"live-preview\"\n        />\n\n      </div>\n\n    </div>\n  "
 });
-Vue.component('ruleset-card', {
+Vue.component('setting-card', {
   props: {
-    ruleset: Object,
+    setting: Object,
     isCustom: Boolean
   },
   filters: {
@@ -223,19 +216,19 @@ Vue.component('ruleset-card', {
   },
   computed: {
     numberOfSpecificRules: function numberOfSpecificRules() {
-      return Rulesets.numberOfSpecificRules(this.ruleset);
+      return Settings.numberOfSpecificRules(this.setting);
     },
     numberOfSpecificExceptions: function numberOfSpecificExceptions() {
-      return Object.keys(this.ruleset.exceptions).length;
+      return Object.keys(this.setting.exceptions).length;
     }
   },
   methods: {
     download: function download() {
-      var json = JSON.stringify(_(this.ruleset).omit('id'));
+      var json = JSON.stringify(_(this.setting).omit('id'));
       var blob = new Blob([json], {
         type: 'text/javascript'
       });
-      saveAs(blob, this.ruleset.name + '.tt-rule-set');
+      saveAs(blob, this.setting.name + '.tt-setting');
     }
   },
   mounted: function mounted() {
@@ -248,5 +241,5 @@ Vue.component('ruleset-card', {
       });
     }, 100);
   },
-  template: "\n    <div class=\"ui card\" ref=\"card\">\n      <div class=\"content\">\n        <div class=\"ui large icon buttons\">\n          <link-to-edit-ruleset :ruleset=\"ruleset\" />\n          <div class=\"ui button\" title=\"Copy\" @click=\"$emit('copy')\">\n            <i class=\"copy icon\"></i>\n          </div>\n          <div\n            v-if=\"isCustom\"\n            class=\"ui button\"\n            title=\"Download\"\n            @click=\"download\"\n          >\n            <i class=\"download icon\"></i>\n          </div>\n          <div\n            v-if=\"isCustom\"\n            class=\"ui button\"\n            title=\"Delete\"\n            @click=\"$emit('delete')\"\n          >\n            <i class=\"times icon\"></i>\n          </div>\n        </div>\n        <div class=\"header\">\n          {{ruleset.name}}\n        </div>\n      </div>\n      <div class=\"extra content\">\n        <span v-if=\"ruleset.id == 'english-strict'\" class=\"left floated\">\n          The original setting\n        </span>\n        <template v-else>\n          <span class=\"left floated\">\n            {{numberOfSpecificRules | pluralize('altered rule')}}\n          </span>\n          <span class=\"right floated\" v-if=\"numberOfSpecificExceptions\">\n            {{numberOfSpecificExceptions | pluralize('specific exception')}}\n          </span>\n        </template>\n      </div>\n    </div>\n  "
+  template: "\n    <div class=\"ui card\" ref=\"card\">\n      <div class=\"content\">\n        <div class=\"ui large icon buttons\">\n          <link-to-edit-setting :setting=\"setting\" />\n          <div\n            v-if=\"isCustom\"\n            class=\"ui button\"\n            title=\"Download\"\n            @click=\"download\"\n          >\n            <i class=\"download icon\"></i>\n          </div>\n          <div\n            v-if=\"isCustom\"\n            class=\"ui button\"\n            title=\"Delete\"\n            @click=\"$emit('delete')\"\n          >\n            <i class=\"times icon\"></i>\n          </div>\n        </div>\n        <div class=\"header\">\n          {{setting.name}}\n        </div>\n      </div>\n      <div class=\"extra content\">\n        <span v-if=\"setting.id == 'english-strict'\" class=\"left floated\">\n          The original setting\n        </span>\n        <template v-else>\n          <span class=\"left floated\">\n            {{numberOfSpecificRules | pluralize('altered rule')}}\n          </span>\n          <span class=\"right floated\" v-if=\"numberOfSpecificExceptions\">\n            {{numberOfSpecificExceptions | pluralize('specific exception')}}\n          </span>\n        </template>\n      </div>\n    </div>\n  "
 });

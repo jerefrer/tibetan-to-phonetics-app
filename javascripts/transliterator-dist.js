@@ -7,11 +7,11 @@ var syllablesWithUnknownConsonant = [];
 
 var TibetanTransliterator = function TibetanTransliterator() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var ruleset = assignValidRulesetOrThrowException(options.ruleset);
-  var exceptions = new Exceptions(ruleset);
+  var setting = assignValidSettingOrThrowException(options.setting);
+  var exceptions = new Exceptions(setting);
 
   t = function t(key) {
-    return ruleset.rules[key];
+    return setting.rules[key];
   };
 
   findException = function findException(text) {
@@ -19,7 +19,7 @@ var TibetanTransliterator = function TibetanTransliterator() {
   };
 
   return {
-    ruleset: ruleset,
+    setting: setting,
     exceptions: exceptions,
     options: options,
     transliterate: function transliterate(tibetan, options) {
@@ -143,7 +143,7 @@ var Group = function Group(tibetan) {
       if (this.groupNumberOfSyllables > 1 && this.syllables.length == 0) return this.BaAsWaWhenSecondSyllable(syllable);
     },
     BaAsWaWhenSecondSyllable: function BaAsWaWhenSecondSyllable(syllable) {
-      if (syllable == 'བ') return t('wa') + t('a');else if (syllable == 'བར') return t('wa') + t('a') + t('raSuffix');else if (syllable == 'བས') return t('wa') + t('drengbu');else if (syllable == 'བའི') return t('wa') + t('aKikuI');else if (syllable == 'བོ') return t('wa') + t('o');else if (syllable == 'བོས') return t('wa') + t('ö');else if (syllable == 'བོའི') return t('wa') + t('ö');else if (syllable == 'བུས') return t('wa') + t('ü');
+      if (syllable == 'བ') return t('wa') + t('a');else if (syllable == 'བར') return t('wa') + t('a') + t('raSuffix');else if (syllable == 'བས') return t('wa') + t('drengbu');else if (syllable == 'བའི') return t('wa') + t('aKikuI');else if (syllable == 'བའོ') return t('wa') + t('a') + t('endLinkChar') + t('o');else if (syllable == 'བོ') return t('wa') + t('o');else if (syllable == 'བོས') return t('wa') + t('ö');else if (syllable == 'བོའི') return t('wa') + t('ö');else if (syllable == 'བུས') return t('wa') + t('ü');
     },
     AngOrAm: function AngOrAm(tibetan) {
       return tibetan.match(/.+འ[ངམ]$/);
@@ -437,12 +437,12 @@ var Syllable = function Syllable(syllable) {
       return this.syllable.match(/འི$/);
     },
     endingO: function endingO() {
-      return this.endingCharIfMatches(t('o'), /འོ$/);
+      return this.ifMatchesAppendEndingChar(/འོ$/, t('o'));
     },
     endingU: function endingU() {
-      return this.endingCharIfMatches(t('u'), /འུ$/);
+      return this.ifMatchesAppendEndingChar(/འུ$/, t('u'));
     },
-    endingCharIfMatches: function endingCharIfMatches(_char, regex) {
+    ifMatchesAppendEndingChar: function ifMatchesAppendEndingChar(regex, _char) {
       return this.syllable.length > 2 && this.syllable.match(regex) ? t('endLinkChar') + _char : '';
     },
     rata: function rata() {
@@ -457,19 +457,19 @@ var Syllable = function Syllable(syllable) {
   });
 };
 
-var assignValidRulesetOrThrowException = function assignValidRulesetOrThrowException(ruleset) {
-  if (_typeof(ruleset) == 'object') {
-    if (_typeof(ruleset.rules) == 'object' && _typeof(ruleset.exceptions) == 'object') {
-      _(ruleset.rules).defaults(originalRules);
+var assignValidSettingOrThrowException = function assignValidSettingOrThrowException(setting) {
+  if (_typeof(setting) == 'object') {
+    if (_typeof(setting.rules) == 'object' && _typeof(setting.exceptions) == 'object') {
+      _(setting.rules).defaults(originalRules);
 
-      return ruleset;
+      return setting;
     } else throwBadArgumentsError("You passed an object but it doesn't return " + "objects for 'rules' and 'exceptions'.");
-  } else if (typeof ruleset == 'string') {
-    var existingRuleset = Rulesets.find(ruleset);
-    if (existingRuleset) return existingRuleset;else throwBadArgumentsError("There is no existing ruleset matching id '" + ruleset + "'");
-  } else if (ruleset) throwBadArgumentsError("You passed " + _typeof(ruleset));else return Rulesets["default"]();
+  } else if (typeof setting == 'string') {
+    var existingSetting = Settings.find(setting);
+    if (existingSetting) return existingSetting;else throwBadArgumentsError("There is no existing setting matching id '" + setting + "'");
+  } else if (setting) throwBadArgumentsError("You passed " + _typeof(setting));else return Settings["default"]();
 };
 
 var throwBadArgumentsError = function throwBadArgumentsError(passedMessage) {
-  throw new TypeError("Invalid value for 'ruleset' option\n+" + "------------------------------------\n" + passedMessage + "\n" + "------------------------------------\n" + "The 'ruleset' option accepts either:\n" + "- the name of a existing ruleset\n" + "- a ruleset object itself\n" + "- any object that quacks like a ruleset, meaning it returns objects " + "for 'rules' and 'exceptions'\n");
+  throw new TypeError("Invalid value for 'setting' option\n+" + "------------------------------------\n" + passedMessage + "\n" + "------------------------------------\n" + "The 'setting' option accepts either:\n" + "- the name of a existing setting\n" + "- a setting object itself\n" + "- any object that quacks like a setting, meaning it returns objects " + "for 'rules' and 'exceptions'\n");
 };

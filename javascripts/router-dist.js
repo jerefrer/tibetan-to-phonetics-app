@@ -7,16 +7,17 @@ var routes = [{
   path: '/compare',
   component: ComparePage
 }, {
-  path: '/settings/:tab',
+  path: '/settings',
   name: 'settings',
   component: SettingsPage
 }, {
-  path: '/settings/:rulesetId/:tab',
+  path: '/settings/exceptions',
+  name: 'general-exceptions',
+  component: SettingsPage
+}, {
+  path: '/settings/:settingId/:tab',
   name: 'edit-setting',
   component: EditSettingPage
-}, {
-  path: '/settings',
-  redirect: '/settings/rules'
 }, {
   path: '*',
   redirect: '/'

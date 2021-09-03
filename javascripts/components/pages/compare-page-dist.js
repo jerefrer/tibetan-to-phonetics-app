@@ -7,7 +7,7 @@ var ComparePage = Vue.component('compare-page', {
       loading: false,
       loadedFields: [],
       numberOfFieldsToLoad: 4,
-      selectedRulesetId: Rulesets.defaultRulesetId,
+      selectedSettingId: Settings.defaultSettingId,
       options: {
         capitalize: true
       },
@@ -16,8 +16,8 @@ var ComparePage = Vue.component('compare-page', {
     };
   },
   watch: {
-    selectedRulesetId: function selectedRulesetId(value) {
-      Storage.set('selectedRulesetId', value);
+    selectedSettingId: function selectedSettingId(value) {
+      Storage.set('selectedSettingId', value);
     },
     options: {
       deep: true,
@@ -45,7 +45,7 @@ var ComparePage = Vue.component('compare-page', {
     }
   },
   created: function created() {
-    this.initializeField('selectedRulesetId', Rulesets.defaultRulesetId);
+    this.initializeField('selectedSettingId', Settings.defaultSettingId);
     this.initializeField('options', {
       capitalize: true
     });
@@ -72,7 +72,7 @@ var ComparePage = Vue.component('compare-page', {
       }, 0);
     });
   },
-  template: "\n    <transition name=\"fade\" appear>\n\n      <div v-if=\"!loading\" class=\"ui container compare\">\n\n        <div id=\"menu\">\n          <ruleset-dropdown v-model=\"selectedRulesetId\" />\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n        </div>\n\n        <div class=\"scrollable-area-container\">\n\n          <div class=\"scrollable-area\">\n\n            <tibetan-input v-model=\"tibetan\" />\n\n            <transliteration-input v-model=\"transliteration\" />\n\n            <compared-lines\n              :lines=\"lines\"\n              :expectedTransliteration=\"transliteration\"\n              :rulesetId=\"selectedRulesetId\"\n              :options=\"options\"\n              @click-part=\"correctSource($event)\"\n            />\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </transition>\n  "
+  template: "\n    <transition name=\"fade\" appear>\n\n      <div v-if=\"!loading\" class=\"ui container compare\">\n\n        <div id=\"menu\">\n          <settings-dropdown v-model=\"selectedSettingId\" />\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n        </div>\n\n        <div class=\"scrollable-area-container\">\n\n          <div class=\"scrollable-area\">\n\n            <tibetan-input v-model=\"tibetan\" />\n\n            <transliteration-input v-model=\"transliteration\" />\n\n            <compared-lines\n              :lines=\"lines\"\n              :expectedTransliteration=\"transliteration\"\n              :settingId=\"selectedSettingId\"\n              :options=\"options\"\n              @click-part=\"correctSource($event)\"\n            />\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </transition>\n  "
 });
 Vue.component('transliteration-input', {
   props: ['value'],
@@ -81,7 +81,7 @@ Vue.component('transliteration-input', {
 Vue.component('compared-lines', {
   props: {
     expectedTransliteration: String,
-    rulesetId: String,
+    settingId: String,
     lines: Array,
     options: Object
   },
@@ -97,12 +97,12 @@ Vue.component('compared-lines', {
     transliteratedLines: function transliteratedLines() {
       var _this = this;
 
-      var ruleset = Rulesets.find(this.rulesetId);
+      var setting = Settings.find(this.settingId);
       var numberOfLines = Math.max(this.lines.length, this.expectedLines.length);
       return _(numberOfLines).times(function (index) {
         var tibetan = _this.lines[index] || '';
         var transliterated = new TibetanTransliterator({
-          ruleset: ruleset,
+          setting: setting,
           capitalize: _this.options.capitalize
         }).transliterate(tibetan);
         return {
