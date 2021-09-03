@@ -10,6 +10,8 @@ var SettingsPage = Vue.component('settings-page', {
     return {
       showDropZone: false,
       showLivePreview: false,
+      clickedNew: false,
+      rulesetIdToCopy: Rulesets.defaultRulesetId,
       rulesets: Rulesets.rulesets,
       selectedRulesetId: Rulesets.defaultRulesetId,
       exceptions: Exceptions.generalExceptionsAsArray(),
@@ -76,13 +78,11 @@ var SettingsPage = Vue.component('settings-page', {
     }
   },
   methods: {
-    addNewRuleset () {
-      Rulesets.create();
-      this.rulesets = Rulesets.rulesets;
-    },
-    copyRuleset (ruleset) {
+    copyRuleset () {
+      var ruleset = Rulesets.find(this.rulesetIdToCopy);
       Rulesets.copy(ruleset);
       this.rulesets = Rulesets.rulesets;
+      this.clickedNew = false;
     },
     deleteRuleset(ruleset) {
       if (confirm('Are you sure?')) {
@@ -203,7 +203,6 @@ var SettingsPage = Vue.component('settings-page', {
             v-for="ruleset in defaultRulesets"
             :key="ruleset.id"
             :ruleset="ruleset"
-            @copy="copyRuleset(ruleset)"
             @delete="deleteRuleset(ruleset)"
           />
         </div>
@@ -229,11 +228,32 @@ var SettingsPage = Vue.component('settings-page', {
             @delete="deleteRuleset(ruleset)"
           />
 
-          <div class="ui new link card" @click="addNewRuleset">
+          <div
+            class="ui new card"
+            :class="{link: !clickedNew}"
+            @click="!clickedNew && (clickedNew = true)"
+          >
             <div class="content">
               <div class="header">
-                <i class="plus icon" />
-                New rule set
+                <template v-if="clickedNew">
+                  Copy from:
+                </template>
+                <template v-else>
+                  <i class="plus icon" />
+                  New ruleset
+                </template>
+              </div>
+              <div v-if="clickedNew">
+                <ruleset-dropdown
+                  v-model="rulesetIdToCopy"
+                  :withLinkToRuleset="false"
+                />
+                <div class="ui button" @click.stop="clickedNew = false">
+                  Cancel
+                </div>
+                <div class="ui primary button" @click.stop="copyRuleset">
+                  Go
+                </div>
               </div>
             </div>
           </div>
@@ -421,9 +441,6 @@ Vue.component('ruleset-card', {
       <div class="content">
         <div class="ui large icon buttons">
           <link-to-edit-ruleset :ruleset="ruleset" />
-          <div class="ui button" title="Copy" @click="$emit('copy')">
-            <i class="copy icon"></i>
-          </div>
           <div
             v-if="isCustom"
             class="ui button"

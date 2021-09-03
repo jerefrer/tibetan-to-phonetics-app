@@ -3,7 +3,11 @@ Vue.component('ruleset-dropdown', {
     prop: 'value'
   },
   props: {
-    value: String
+    value: String,
+    withLinkToRuleset: {
+      type: Boolean,
+      default: () => true
+    }
   },
   computed: {
     rulesets () {
@@ -41,6 +45,7 @@ Vue.component('ruleset-dropdown', {
         </div>
       </div>
       <link-to-edit-ruleset
+        v-if="withLinkToRuleset"
         class="right attached"
         :ruleset="ruleset"
       />
