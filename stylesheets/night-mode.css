@@ -40,13 +40,13 @@
   color: rgba(255,255,255,0.9);
 }
 
-.night #menu .rulesets .button {
+.night #menu .settings .button {
   color: rgba(255,255,255,0.5);
   background: #333;
   border: 1px solid #333;
   border-left: none;
 }
-.night #menu .rulesets .button:hover {
+.night #menu .settings .button:hover {
   background: #444;
   color: rgba(255,255,255,0.6);
 }

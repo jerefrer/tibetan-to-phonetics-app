@@ -1,6 +1,6 @@
 testGroups.push({
   name: 'French — Trashi Gyepa',
-  ruleset: 'french',
+  setting: 'french',
   includeInPercentage: true,
   sentences: true,
   tests: [

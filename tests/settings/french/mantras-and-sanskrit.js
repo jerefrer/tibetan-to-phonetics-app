@@ -1,6 +1,6 @@
 testGroups.push({
   name: 'Exceptions - Mantras and Sanskrit in French',
-  ruleset: 'french',
+  setting: 'french',
   tests: [
     { tibetan: 'ཧཱུཾ', transliteration: 'houng' },
     { tibetan: 'ཧཱུྃ', transliteration: 'houng' },

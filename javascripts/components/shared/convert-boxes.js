@@ -1,6 +1,6 @@
 Vue.component('convert-boxes', {
   props: {
-    ruleset: Object,
+    setting: Object,
     tibetanStorageKey: String,
     options: {
       type: Object,
@@ -51,7 +51,7 @@ Vue.component('convert-boxes', {
         <transliterated-lines
           class="clipboard-target"
           :lines="lines"
-          :ruleset="ruleset"
+          :setting="setting"
           :options="options"
         />
       </div>
@@ -61,7 +61,7 @@ Vue.component('convert-boxes', {
 
 Vue.component('transliterated-lines', {
   props: {
-    ruleset: Object,
+    setting: Object,
     options: Object,
     lines: Array
   },
@@ -69,7 +69,7 @@ Vue.component('transliterated-lines', {
     transliteratedLines: function() {
       return this.lines.map((line) => {
         return new TibetanTransliterator({
-          ruleset: this.ruleset,
+          setting: this.setting,
           capitalize: this.options.capitalize
         }).transliterate(line);
       }).join("\n");

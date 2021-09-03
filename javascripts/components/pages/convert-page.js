@@ -5,13 +5,13 @@ var ConvertPage = Vue.component('convert-page', {
       loading: true,
       loadedFields: [],
       numberOfFieldsToLoad: 2,
-      selectedRulesetId: Rulesets.defaultRulesetId,
+      selectedSettingId: Settings.defaultSettingId,
       options: { capitalize: true },
     }
   },
   watch: {
-    selectedRulesetId (value) {
-      Storage.set('selectedRulesetId', value);
+    selectedSettingId (value) {
+      Storage.set('selectedSettingId', value);
     },
     options: {
       deep: true,
@@ -21,12 +21,12 @@ var ConvertPage = Vue.component('convert-page', {
     }
   },
   computed: {
-    ruleset () {
-      return Rulesets.find(this.selectedRulesetId);
+    setting () {
+      return Settings.find(this.selectedSettingId);
     }
   },
   created () {
-    this.initializeField('selectedRulesetId', Rulesets.defaultRulesetId);
+    this.initializeField('selectedSettingId', Settings.defaultSettingId);
     this.initializeField('options', { capitalize: true });
   },
   template: `
@@ -36,7 +36,7 @@ var ConvertPage = Vue.component('convert-page', {
 
         <div id="menu">
 
-          <ruleset-dropdown v-model="selectedRulesetId" />
+          <settings-dropdown v-model="selectedSettingId" />
 
           <slider-checkbox
             v-model="options.capitalize"
@@ -46,7 +46,7 @@ var ConvertPage = Vue.component('convert-page', {
         </div>
 
         <convert-boxes
-          :ruleset="ruleset"
+          :setting="setting"
           :options="options"
           tibetanStorageKey="convert-page"
         />

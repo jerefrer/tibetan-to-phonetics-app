@@ -1,9 +1,9 @@
-let redirectIfInvalidRulesetIdOrTab = function (to, next) {
-  if (Rulesets.find(to.params.rulesetId))
+let redirectIfInvalidSettingIdOrTab = function (to, next) {
+  if (Settings.find(to.params.settingId))
     if (_(['rules', 'exceptions']).includes(to.params.tab))
       next()
     else
-      next ('/settings/' + to.params.rulesetId + '/rules')
+      next ('/settings/' + to.params.settingId + '/rules')
   else
     next('/settings');
 }
@@ -18,25 +18,25 @@ var EditSettingPage = Vue.component('edit-setting-page', {
     }
   },
   beforeRouteEnter (to, from, next) {
-    redirectIfInvalidRulesetIdOrTab(to, next);
+    redirectIfInvalidSettingIdOrTab(to, next);
   },
   beforeRouteUpdate (to, from, next) {
-    redirectIfInvalidRulesetIdOrTab(to, next);
+    redirectIfInvalidSettingIdOrTab(to, next);
   },
   watch: {
     name(value) {
-      this.updateRuleset();
+      this.updateSetting();
     },
     rules: {
       deep: true,
       handler (value) {
-        this.updateRuleset();
+        this.updateSetting();
       }
     },
     exceptions: {
       deep: true,
       handler (value) {
-        this.updateRuleset();
+        this.updateSetting();
       }
     }
   },
@@ -44,8 +44,8 @@ var EditSettingPage = Vue.component('edit-setting-page', {
     currentTab () {
       return this.$route.params.tab;
     },
-    ruleset () {
-      return Rulesets.find(this.$route.params.rulesetId);
+    setting () {
+      return Settings.find(this.$route.params.settingId);
     },
     exceptionsAsObject () {
       return _(this.exceptions).inject((hash, exception) => {
@@ -54,7 +54,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         return hash;
       }, {});
     },
-    fakeRulesetForLivePreview () {
+    fakeSettingForLivePreview () {
       return {
         rules: this.rules,
         exceptions: this.exceptionsAsObject
@@ -176,11 +176,11 @@ var EditSettingPage = Vue.component('edit-setting-page', {
   },
   methods: {
     transliterated (text) {
-      return new TibetanTransliterator(this.ruleset).transliterate(text);
+      return new TibetanTransliterator(this.setting).transliterate(text);
     },
-    updateRuleset() {
-      Rulesets.update(
-        this.$route.params.rulesetId,
+    updateSetting() {
+      Settings.update(
+        this.$route.params.settingId,
         this.name,
         this.rules,
         this.exceptionsAsObject
@@ -194,16 +194,16 @@ var EditSettingPage = Vue.component('edit-setting-page', {
     },
     revertExceptionsToOriginal () {
       if (confirm('Are you sure?')) {
-        var defaultRuleset = defaultRulesets.findWhere({id: this.ruleset.id})
-        Ruleset.updateExceptions(this.ruleset.id, defaultRuleset.exceptions);
-        this.exceptions = this.ruleset.exceptions;
+        var defaultSetting = defaultSettings.findWhere({id: this.setting.id})
+        Setting.updateExceptions(this.setting.id, defaultSetting.exceptions);
+        this.exceptions = this.setting.exceptions;
       }
     }
   },
   mounted () {
-    this.name = this.ruleset.name;
-    this.rules = this.ruleset.rules;
-    this.exceptions = _(this.ruleset.exceptions).map(function(value, key) {
+    this.name = this.setting.name;
+    this.rules = this.setting.rules;
+    this.exceptions = _(this.setting.exceptions).map(function(value, key) {
       return { key: key, value: value }
     });
   },
@@ -217,14 +217,14 @@ var EditSettingPage = Vue.component('edit-setting-page', {
 
       <div class="ui header">
         <div class="ui fluid input">
-          <input v-model="name" :readonly="!ruleset.isEditable" />
+          <input v-model="name" :readonly="!setting.isEditable" />
         </div>
       </div>
 
       <div class="ui huge secondary pointing menu tab-menu">
         <tab-link tabId="rules">Rules</tab-link>
         <tab-link
-          v-if="ruleset.isEditable || exceptions.length"
+          v-if="setting.isEditable || exceptions.length"
           tabId="exceptions"
         >
           Exceptions
@@ -283,20 +283,20 @@ var EditSettingPage = Vue.component('edit-setting-page', {
               class="tibetan"
               spellcheck="false"
               v-model="exception.key"
-              :readonly="!ruleset.isEditable"
+              :readonly="!setting.isEditable"
             />
             <input
               class="tibetan"
               spellcheck="false"
               v-model="exception.value"
-              :readonly="!ruleset.isEditable"
+              :readonly="!setting.isEditable"
             />
           </div>
           <div
-            v-if="ruleset.isEditable"
+            v-if="setting.isEditable"
             class="ui button new exception"
             :class="{
-              'bottom': !ruleset.isDefault || !ruleset.isEditable,
+              'bottom': !setting.isDefault || !setting.isEditable,
               'attached': exceptions.length
             }"
             @click="addNewException"
@@ -307,7 +307,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         </div>
 
         <div
-          v-if="ruleset.isDefault && ruleset.isEditable"
+          v-if="setting.isDefault && setting.isEditable"
           class="ui bottom attached button reset-exceptions"
           @click="revertExceptionsToOriginal"
         >
@@ -318,7 +318,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       </div>
 
       <div
-        v-if="ruleset.isEditable"
+        v-if="setting.isEditable"
         class="live-preview"
         :class="{active: showLivePreview}"
       >
@@ -330,7 +330,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           Live preview
         </button>
         <convert-boxes
-          :ruleset="fakeRulesetForLivePreview"
+          :setting="fakeSettingForLivePreview"
           tibetanStorageKey="live-preview"
         />
       </div>
@@ -350,7 +350,7 @@ Vue.component('es-group', {
       return this.groups[this.name];
     },
     isEditable () {
-      return Rulesets.find(this.$route.params.rulesetId).isEditable;
+      return Settings.find(this.$route.params.settingId).isEditable;
     }
   },
   methods: {
@@ -421,7 +421,7 @@ Vue.component('options-group', {
   },
   computed: {
     isEditable () {
-      return Rulesets.find(this.$route.params.rulesetId).isEditable;
+      return Settings.find(this.$route.params.settingId).isEditable;
     }
   },
   methods: {

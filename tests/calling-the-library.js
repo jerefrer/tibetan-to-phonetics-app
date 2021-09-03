@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Calling the library - No "ruleset" argument falls back to default',
+  name: 'Calling the library - No "setting" argument falls back to default',
   tests: [
     {
       eval: `
@@ -12,11 +12,11 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Calling the library - String "ruleset" argument finds the appropriate ruleset',
+  name: 'Calling the library - String "setting" argument finds the appropriate setting',
   tests: [
     {
       eval: `
-        var transliterator = new TibetanTransliterator({ ruleset: 'english-loose' });
+        var transliterator = new TibetanTransliterator({ setting: 'english-loose' });
         transliterator.transliterate('གང་གི་བློ་གྲོས་');
       `,
       expected: 'gangi lodrö'
@@ -25,25 +25,25 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Calling the library - String "ruleset" argument raises error if no matching ruleset',
+  name: 'Calling the library - String "setting" argument raises error if no matching setting',
   tests: [
     {
       eval: `
-        var transliterator = new TibetanTransliterator({ ruleset: 'japanese' });
+        var transliterator = new TibetanTransliterator({ setting: 'japanese' });
         transliterator.transliterate('གང་གི་བློ་གྲོས་');
       `,
-      expectedError: "no existing ruleset matching id 'japanese'"
+      expectedError: "no existing setting matching id 'japanese'"
     }
   ]
 })
 
 testGroups.push({
-  name: 'Calling the library - Object - Existing "ruleset" object works',
+  name: 'Calling the library - Object - Existing "setting" object works',
   tests: [
     {
       eval: `
-        var frenchRuleset = Rulesets.find('french');
-        var transliterator = new TibetanTransliterator({ ruleset: frenchRuleset });
+        var frenchSetting = Settings.find('french');
+        var transliterator = new TibetanTransliterator({ setting: frenchSetting });
         transliterator.transliterate('གང་གི་བློ་གྲོས་');
       `,
       expected: 'kangki lotreu'
@@ -52,7 +52,7 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Calling the library - Object - Valid fake object for "ruleset" argument works',
+  name: 'Calling the library - Object - Valid fake object for "setting" argument works',
   tests: [
     {
       eval: `
@@ -60,7 +60,7 @@ testGroups.push({
           rules: { 'ö': 'eu' },
           exceptions: {}
         };
-        var transliterator = new TibetanTransliterator({ ruleset: fakeRuleSet });
+        var transliterator = new TibetanTransliterator({ setting: fakeRuleSet });
         transliterator.transliterate('གང་གི་བློ་གྲོས་');
       `,
       expected: 'kangki lotreu'
@@ -69,12 +69,12 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Calling the library - Object - Invalid fake object "ruleset" raises error',
+  name: 'Calling the library - Object - Invalid fake object "setting" raises error',
   tests: [
     {
       eval: `
         var fakeRuleSet = {};
-        var transliterator = new TibetanTransliterator({ ruleset: fakeRuleSet });
+        var transliterator = new TibetanTransliterator({ setting: fakeRuleSet });
         transliterator.transliterate('གང་གི་བློ་གྲོས་');
       `,
       expectedError: "You passed an object but it doesn't return objects for 'rules' and 'exceptions'."

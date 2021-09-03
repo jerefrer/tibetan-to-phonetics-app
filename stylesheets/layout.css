@@ -74,14 +74,14 @@
   #menu > div {
     flex: 0 auto;
   }
-  #menu .rulesets {
+  #menu .settings {
     display: flex;
   }
-    #menu .rulesets .dropdown {
+    #menu .settings .dropdown {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-    #menu .rulesets .button {
+    #menu .settings .button {
       margin-right: 17px;
       border-left: none;
       box-shadow: none !important;

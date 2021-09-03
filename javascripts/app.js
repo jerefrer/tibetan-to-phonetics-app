@@ -7,7 +7,7 @@ var initializeStorage = function(callback) {
     if (nbReady >= 2)
       callback();
   }
-  Rulesets.initialize(callbackIfReady);
+  Settings.initialize(callbackIfReady);
   Storage.get('ignoreGeneralExceptionsStorage', false, (value) => {
     ignoreGeneralExceptionsStorage = value;
     Exceptions.initialize(callbackIfReady);
@@ -75,7 +75,7 @@ initializeStorage(() => {
             Compare
           </router-link>
           <router-link
-            class="item" to="/settings/rules"
+            class="item" to="/settings"
             :class="{active: $route.name && $route.name.match(/setting/)}"
           >
             <i class="cogs icon"></i>

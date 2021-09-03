@@ -1,6 +1,6 @@
 testGroups.push({
   name: 'French settings',
-  ruleset: 'french',
+  setting: 'french',
   includeInPercentage: true,
   tests: [
 

@@ -1,6 +1,6 @@
 testGroups.push({
   name: 'Loose style',
-  ruleset: 'english-loose',
+  setting: 'english-loose',
   includeInPercentage: true,
   tests: [
 

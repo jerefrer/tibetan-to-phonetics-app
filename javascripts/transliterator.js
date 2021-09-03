@@ -2,12 +2,12 @@ var t, findException;
 var syllablesWithUnknownConsonant = [];
 
 var TibetanTransliterator = function(options = {}) {
-  var ruleset = assignValidRulesetOrThrowException(options.ruleset);
-  var exceptions = new Exceptions(ruleset);
-  t = (key) => ruleset.rules[key];
+  var setting = assignValidSettingOrThrowException(options.setting);
+  var exceptions = new Exceptions(setting);
+  t = (key) => setting.rules[key];
   findException = (text) => exceptions.find(text);
   return {
-    ruleset: ruleset,
+    setting: setting,
     exceptions: exceptions,
     options: options,
     transliterate: function(tibetan, options) {
@@ -367,40 +367,40 @@ var Syllable = function(syllable) {
   });
 }
 
-const assignValidRulesetOrThrowException = function (ruleset) {
-  if (typeof(ruleset) == 'object') {
+const assignValidSettingOrThrowException = function (setting) {
+  if (typeof(setting) == 'object') {
     if (
-      typeof(ruleset.rules) == 'object' &&
-      typeof(ruleset.exceptions) == 'object'
+      typeof(setting.rules) == 'object' &&
+      typeof(setting.exceptions) == 'object'
     ) {
-      _(ruleset.rules).defaults(originalRules);
-      return ruleset;
+      _(setting.rules).defaults(originalRules);
+      return setting;
     } else
       throwBadArgumentsError("You passed an object but it doesn't return " +
         "objects for 'rules' and 'exceptions'.");
   }
-  else if (typeof(ruleset) == 'string') {
-    var existingRuleset = Rulesets.find(ruleset);
-    if (existingRuleset)
-      return existingRuleset;
+  else if (typeof(setting) == 'string') {
+    var existingSetting = Settings.find(setting);
+    if (existingSetting)
+      return existingSetting;
     else
-      throwBadArgumentsError("There is no existing ruleset matching id '" + ruleset + "'");
-  } else if (ruleset)
-    throwBadArgumentsError("You passed " + typeof(ruleset));
+      throwBadArgumentsError("There is no existing setting matching id '" + setting + "'");
+  } else if (setting)
+    throwBadArgumentsError("You passed " + typeof(setting));
   else
-    return Rulesets.default();
+    return Settings.default();
 }
 
 const throwBadArgumentsError = function(passedMessage) {
   throw new TypeError(
-    "Invalid value for 'ruleset' option\n+" +
+    "Invalid value for 'setting' option\n+" +
     "------------------------------------\n" +
     passedMessage + "\n" +
     "------------------------------------\n" +
-    "The 'ruleset' option accepts either:\n" +
-    "- the name of a existing ruleset\n" +
-    "- a ruleset object itself\n" +
-    "- any object that quacks like a ruleset, meaning it returns objects " +
+    "The 'setting' option accepts either:\n" +
+    "- the name of a existing setting\n" +
+    "- a setting object itself\n" +
+    "- any object that quacks like a setting, meaning it returns objects " +
     "for 'rules' and 'exceptions'\n"
   )
 }

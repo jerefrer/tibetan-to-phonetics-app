@@ -1,6 +1,6 @@
 testGroups.push({
   name: 'French — Prayer of the Three Kayas',
-  ruleset: 'french',
+  setting: 'french',
   includeInPercentage: true,
   sentences: true,
   tests: [

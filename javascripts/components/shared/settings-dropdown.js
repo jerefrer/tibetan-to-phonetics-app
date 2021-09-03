@@ -1,30 +1,30 @@
-Vue.component('ruleset-dropdown', {
+Vue.component('settings-dropdown', {
   model: {
     prop: 'value'
   },
   props: {
     value: String,
-    withLinkToRuleset: {
+    withLinkToSetting: {
       type: Boolean,
       default: () => true
     }
   },
   computed: {
-    rulesets () {
-      return Rulesets.all()
+    settings () {
+      return Settings.all()
     },
-    ruleset () {
-      return Rulesets.find(this.value);
+    setting () {
+      return Settings.find(this.value);
     }
   },
   mounted: function() {
     $(this.$refs.dropdownDiv).dropdown({
-      values: _(this.rulesets).map((ruleset) => {
+      values: _(this.settings).map((setting) => {
         return {
-          value: ruleset.id,
-          html: ruleset.name,
-          name: ruleset.name,
-          selected: this.value == ruleset.id
+          value: setting.id,
+          html: setting.name,
+          name: setting.name,
+          selected: this.value == setting.id
         }
       }),
       onChange: () => {
@@ -36,7 +36,7 @@ Vue.component('ruleset-dropdown', {
     })
   },
   template: `
-    <div class="rulesets">
+    <div class="settings">
       <div class="ui normal selection dropdown" ref="dropdownDiv">
         <input type="hidden" />
         <i class="dropdown icon"></i>
@@ -44,10 +44,10 @@ Vue.component('ruleset-dropdown', {
         <div class="menu">
         </div>
       </div>
-      <link-to-edit-ruleset
-        v-if="withLinkToRuleset"
+      <link-to-edit-setting
+        v-if="withLinkToSetting"
         class="right attached"
-        :ruleset="ruleset"
+        :setting="setting"
       />
     </div>
   `

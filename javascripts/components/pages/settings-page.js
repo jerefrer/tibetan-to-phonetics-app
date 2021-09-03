@@ -1,33 +1,20 @@
-let redirectIfInvalidTab = function (to, next) {
-  if (_(['rules', 'exceptions']).includes(to.params.tab))
-    next()
-  else
-    next('/settings');
-}
-
 var SettingsPage = Vue.component('settings-page', {
   data () {
     return {
       showDropZone: false,
       showLivePreview: false,
       clickedNew: false,
-      rulesetIdToCopy: Rulesets.defaultRulesetId,
-      rulesets: Rulesets.rulesets,
-      selectedRulesetId: Rulesets.defaultRulesetId,
+      settingIdToCopy: Settings.defaultSettingId,
+      settings: Settings.settings,
+      selectedSettingId: Settings.defaultSettingId,
       exceptions: Exceptions.generalExceptionsAsArray(),
       ignoreGeneralExceptionsStorage: ignoreGeneralExceptionsStorage,
       options: { capitalize: true },
     }
   },
-  beforeRouteEnter (to, from, next) {
-    redirectIfInvalidTab(to, next);
-  },
-  beforeRouteUpdate (to, from, next) {
-    redirectIfInvalidTab(to, next);
-  },
   watch: {
-    selectedRulesetId (value) {
-      Storage.set('selectedRulesetId', value);
+    selectedSettingId (value) {
+      Storage.set('selectedSettingId', value);
     },
     ignoreGeneralExceptionsStorage (value) {
       Storage.set('ignoreGeneralExceptionsStorage', value, () => {
@@ -51,21 +38,24 @@ var SettingsPage = Vue.component('settings-page', {
     isDevMode () {
       return isDevMode
     },
-    currentTab (value) {
-      return this.$route.params.tab;
+    isSettingsPage (value) {
+      return this.$route.name == 'settings';
     },
-    defaultRulesets () {
-      return _(this.rulesets).where({isDefault: true});
+    isExceptionsPage (value) {
+      return this.$route.name == 'general-exceptions';
     },
-    customRulesets () {
-      return _(this.rulesets).where({isCustom: true});
+    defaultSettings () {
+      return _(this.settings).where({isDefault: true});
+    },
+    customSettings () {
+      return _(this.settings).where({isCustom: true});
     },
     someLocalStorage () {
       return localforage._driver;
     },
-    fakeRulesetForLivePreview () {
+    fakeSettingForLivePreview () {
       return {
-        rules: Rulesets.find(this.selectedRulesetId).rules,
+        rules: Settings.find(this.selectedSettingId).rules,
         exceptions: this.exceptionsAsObject
       }
     },
@@ -78,20 +68,20 @@ var SettingsPage = Vue.component('settings-page', {
     }
   },
   methods: {
-    copyRuleset () {
-      var ruleset = Rulesets.find(this.rulesetIdToCopy);
-      Rulesets.copy(ruleset);
-      this.rulesets = Rulesets.rulesets;
+    copySetting () {
+      var setting = Settings.find(this.settingIdToCopy);
+      Settings.copy(setting);
+      this.settings = Settings.settings;
       this.clickedNew = false;
     },
-    deleteRuleset(ruleset) {
+    deleteSetting(setting) {
       if (confirm('Are you sure?')) {
-        Rulesets.delete(ruleset);
-        this.rulesets = Rulesets.rulesets;
+        Settings.delete(setting);
+        this.settings = Settings.settings;
       }
     },
-    isNewRuleset (ruleset) {
-      return _(ruleset.id).isNumber();
+    isNewSetting (setting) {
+      return _(setting.id).isNumber();
     },
     addNewException () {
       this.exceptions.push({
@@ -107,11 +97,11 @@ var SettingsPage = Vue.component('settings-page', {
         Exceptions.resetGeneralExceptions(this.reloadExceptions);
       }
     },
-    showRulesetUploadModal () {
-      this.showUploadModal('tt-rule-set', (result) => {
-        var ruleset = JSON.parse(reader.result);
-        Rulesets.import(ruleset);
-        this.rulesets = Rulesets.rulesets;
+    showSettingUploadModal () {
+      this.showUploadModal('tt-setting', (result) => {
+        var setting = JSON.parse(reader.result);
+        Settings.import(setting);
+        this.settings = Settings.settings;
       });
     },
     showExceptionsUploadModal () {
@@ -162,14 +152,14 @@ var SettingsPage = Vue.component('settings-page', {
     resetStorage () {
       if (confirm('Are you sure?')) {
         Storage.delete('convert-page');
-        Storage.delete('selectedRulesetId');
+        Storage.delete('selectedSettingId');
         Storage.delete('options');
         Storage.delete('compareTransliteration');
         Storage.delete('compareTibetan');
         Storage.delete('general-exceptions');
         Exceptions.resetGeneralExceptions(this.reloadExceptions);
-        Rulesets.reset((value) => {
-          this.rulesets = value;
+        Settings.reset((value) => {
+          this.settings = value;
           var button = $(this.$refs.wipeOutButton);
           var buttonTextContainer = button.find('.content');
           var previousHtml = buttonTextContainer.html();
@@ -188,30 +178,34 @@ var SettingsPage = Vue.component('settings-page', {
       <back-button />
 
       <div class="ui huge secondary pointing menu tab-menu">
-        <tab-link tabId="rules">Rules</tab-link>
-        <tab-link tabId="exceptions">Exceptions</tab-link>
+        <router-link class="item" :to="{name: 'settings'}">
+          Settings
+        </router-link>
+        <router-link class="item" :to="{name: 'general-exceptions'}">
+          Exceptions
+        </router-link>
       </div>
 
-      <div v-if="currentTab == 'rules'" class="ui active tab">
+      <div v-if="isSettingsPage" class="ui active tab">
 
         <div class="ui large centered header">
-          Default rule sets
+          Default settings
         </div>
 
         <div class="ui centered cards">
-          <ruleset-card
-            v-for="ruleset in defaultRulesets"
-            :key="ruleset.id"
-            :ruleset="ruleset"
-            @delete="deleteRuleset(ruleset)"
+          <setting-card
+            v-for="setting in defaultSettings"
+            :key="setting.id"
+            :setting="setting"
+            @delete="deleteSetting(setting)"
           />
         </div>
 
         <div class="ui hidden section divider"></div>
 
         <div class="ui large centered header">
-          Custom rule sets
-          <div v-if="someLocalStorage" class="ui button" @click="showRulesetUploadModal">
+          Custom settings
+          <div v-if="someLocalStorage" class="ui button" @click="showSettingUploadModal">
             <i class="upload icon" />
             Upload
           </div>
@@ -219,13 +213,13 @@ var SettingsPage = Vue.component('settings-page', {
 
         <div v-if="someLocalStorage" class="ui centered cards">
 
-          <ruleset-card
-            v-for="ruleset in customRulesets"
-            :key="ruleset.id"
-            :ruleset="ruleset"
+          <setting-card
+            v-for="setting in customSettings"
+            :key="setting.id"
+            :setting="setting"
             :isCustom="true"
-            @copy="copyRuleset(ruleset)"
-            @delete="deleteRuleset(ruleset)"
+            @copy="copySetting(setting)"
+            @delete="deleteSetting(setting)"
           />
 
           <div
@@ -240,18 +234,18 @@ var SettingsPage = Vue.component('settings-page', {
                 </template>
                 <template v-else>
                   <i class="plus icon" />
-                  New ruleset
+                  New setting
                 </template>
               </div>
               <div v-if="clickedNew">
-                <ruleset-dropdown
-                  v-model="rulesetIdToCopy"
-                  :withLinkToRuleset="false"
+                <settings-dropdown
+                  v-model="settingIdToCopy"
+                  :withLinkToSetting="false"
                 />
                 <div class="ui button" @click.stop="clickedNew = false">
                   Cancel
                 </div>
-                <div class="ui primary button" @click.stop="copyRuleset">
+                <div class="ui primary button" @click.stop="copySetting">
                   Go
                 </div>
               </div>
@@ -264,11 +258,11 @@ var SettingsPage = Vue.component('settings-page', {
 
           <div class="header">
             Your browser does not support storing data locally, which is
-            necessary for custom rule sets to work.
+            necessary for custom settings to work.
           </div>
 
           <p>
-            You can still enjoy using the default rule sets, but if you want to
+            You can still enjoy using the default settings, but if you want to
             create your own or import other people's you will need to update
             your browser to its latest version or start using a modern browser
             like Mozilla Firefox or Google Chrome.
@@ -290,7 +284,7 @@ var SettingsPage = Vue.component('settings-page', {
             <div class="content">
               Clear all stored data
               <ul>
-                <li>All custom rulesets</li>
+                <li>All custom settings</li>
                 <li>All modifications made in the general exceptions</li>
                 <li>The last typed values of both convert and compare pages</li>
               </ul>
@@ -302,7 +296,7 @@ var SettingsPage = Vue.component('settings-page', {
 
       </div>
 
-      <div v-if="currentTab == 'exceptions'" class="ui text container active tab">
+      <div v-if="isExceptionsPage" class="ui text container active tab">
 
         <div class="ui large segment dev-mode">
           <div class="left">
@@ -320,7 +314,7 @@ var SettingsPage = Vue.component('settings-page', {
           class="ui large secondary segment"
         >
           <div>
-            These are the general exceptions that <em>apply to all rule sets</em>.
+            These are the general exceptions that <em>apply to all settings</em>.
           </div>
           <div>
             <div class="ui button" @click="showExceptionsUploadModal">
@@ -365,7 +359,7 @@ var SettingsPage = Vue.component('settings-page', {
       </div>
 
       <div
-        v-if="currentTab == 'exceptions'"
+        v-if="isExceptionsPage"
         class="live-preview"
         :class="{active: showLivePreview}"
       >
@@ -380,7 +374,7 @@ var SettingsPage = Vue.component('settings-page', {
 
         <div id="menu">
 
-          <ruleset-dropdown v-model="selectedRulesetId" />
+          <settings-dropdown v-model="selectedSettingId" />
 
           <slider-checkbox
             v-model="options.capitalize"
@@ -390,7 +384,7 @@ var SettingsPage = Vue.component('settings-page', {
         </div>
 
         <convert-boxes
-          :ruleset="fakeRulesetForLivePreview"
+          :setting="fakeSettingForLivePreview"
           :options="options"
           tibetanStorageKey="live-preview"
         />
@@ -401,9 +395,9 @@ var SettingsPage = Vue.component('settings-page', {
   `
 })
 
-Vue.component('ruleset-card', {
+Vue.component('setting-card', {
   props: {
-    ruleset: Object,
+    setting: Object,
     isCustom: Boolean
   },
   filters: {
@@ -415,17 +409,17 @@ Vue.component('ruleset-card', {
   },
   computed: {
     numberOfSpecificRules () {
-      return Rulesets.numberOfSpecificRules(this.ruleset);
+      return Settings.numberOfSpecificRules(this.setting);
     },
     numberOfSpecificExceptions () {
-      return Object.keys(this.ruleset.exceptions).length;
+      return Object.keys(this.setting.exceptions).length;
     },
   },
   methods: {
     download () {
-      var json = JSON.stringify(_(this.ruleset).omit('id'));
+      var json = JSON.stringify(_(this.setting).omit('id'));
       var blob = new Blob([json], { type: 'text/javascript' });
-      saveAs(blob, this.ruleset.name + '.tt-rule-set');
+      saveAs(blob, this.setting.name + '.tt-setting');
     }
   },
   mounted () {
@@ -440,7 +434,7 @@ Vue.component('ruleset-card', {
     <div class="ui card" ref="card">
       <div class="content">
         <div class="ui large icon buttons">
-          <link-to-edit-ruleset :ruleset="ruleset" />
+          <link-to-edit-setting :setting="setting" />
           <div
             v-if="isCustom"
             class="ui button"
@@ -459,11 +453,11 @@ Vue.component('ruleset-card', {
           </div>
         </div>
         <div class="header">
-          {{ruleset.name}}
+          {{setting.name}}
         </div>
       </div>
       <div class="extra content">
-        <span v-if="ruleset.id == 'english-strict'" class="left floated">
+        <span v-if="setting.id == 'english-strict'" class="left floated">
           The original setting
         </span>
         <template v-else>
