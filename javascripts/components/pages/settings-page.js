@@ -286,7 +286,7 @@ var SettingsPage = Vue.component('settings-page', {
               <ul>
                 <li>All custom settings</li>
                 <li>All modifications made in the general exceptions</li>
-                <li>The last typed values of both convert and compare pages</li>
+                <li>The last typed values in both convert and compare pages</li>
               </ul>
             </div>
           </div>
