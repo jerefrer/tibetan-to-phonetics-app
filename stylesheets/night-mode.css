@@ -213,6 +213,11 @@
     color: rgba(255,255,255,0.8);
   }
 
+
+.night .edit-setting .group .rule .slider.checkbox {
+  background: #222;
+  border-color: #333;
+}
 .night .edit-setting .group .rule.different .label {
   background: #03487c !important;
 }
