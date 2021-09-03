@@ -71,7 +71,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           ['u', 'u',  'ཨུ'],
           ['ü', 'ü',  'ཨུད'],
           ['ö', 'ö',  'ཨོད'],
-          ['aKikuI', "a'i",  'པའི'],
+          ['aKikuI', "a'i",  '<span>པ</span>འི'],
           ['drengbuMaNaRa', 'e',  'མཁྱེན་', 'drengbu and suffix ma, na, ra', true],
           ['drengbuGaBaLaNga', 'e', 'འཕྲེང་', 'drengbu and suffix ga, ba, la, nga', true],
           ['aNa', 'e',  'རྒྱན་', 'no vowel and suffix na', true],
