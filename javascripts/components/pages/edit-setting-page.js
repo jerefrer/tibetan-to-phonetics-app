@@ -157,7 +157,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         ],
 
         'Formatting': [
-          ['endLinkChar', '-',  'པེའུ', "separator, as in be'u or pa'o"],
+          ['endLinkChar', '-',  'པེའུ', "separator, as in be-u or pa-o"],
         ],
 
       }).inject((hash, groupRules, groupName) => {
