@@ -318,7 +318,6 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       </div>
 
       <div
-        v-if="setting.isEditable"
         class="live-preview"
         :class="{active: showLivePreview}"
       >
