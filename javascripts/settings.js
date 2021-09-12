@@ -74,7 +74,10 @@ var Settings = {
   initializedDefaultSettings () {
     return defaultSettings.map((setting) => this.initializeSetting(setting));
   },
-  initialize (callback) {
+  initializeFromDefaults() {
+    this.settings = this.initializedDefaultSettings();
+  },
+  initializeFromStorage (callback) {
     Storage.get('settings', this.initializedDefaultSettings(), (value) => {
       this.settings = value;
       callback();

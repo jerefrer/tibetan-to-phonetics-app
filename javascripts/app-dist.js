@@ -10,10 +10,14 @@ var initializeStorage = function initializeStorage(callback) {
     if (nbReady >= 2) callback();
   };
 
-  Settings.initialize(callbackIfReady);
+  Settings.initializeFromStorage(callbackIfReady);
   Storage.get('ignoreGeneralExceptionsStorage', false, function (value) {
     ignoreGeneralExceptionsStorage = value;
-    Exceptions.initialize(callbackIfReady);
+
+    if (ignoreGeneralExceptionsStorage) {
+      Exceptions.initializeFromDefaults();
+      callbackIfReady();
+    } else Exceptions.initializeFromStorage(callbackIfReady);
   });
 };
 

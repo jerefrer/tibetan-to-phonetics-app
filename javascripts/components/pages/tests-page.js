@@ -2,7 +2,7 @@ var processTime;
 var startedAt;
 
 // We don't want to use the Storage'd settings & exceptions but only the default ones.
-Settings.settings = defaultSettings.map((setting) => Settings.initializeSetting(setting));
+Settings.initializeFromDefaults();
 Exceptions.generalExceptions = normalizeExceptions(originalGeneralExceptions);
 
 $(function() {

@@ -85,7 +85,10 @@ var Settings = {
       return _this.initializeSetting(setting);
     });
   },
-  initialize: function initialize(callback) {
+  initializeFromDefaults: function initializeFromDefaults() {
+    this.settings = this.initializedDefaultSettings();
+  },
+  initializeFromStorage: function initializeFromStorage(callback) {
     var _this2 = this;
 
     Storage.get('settings', this.initializedDefaultSettings(), function (value) {
