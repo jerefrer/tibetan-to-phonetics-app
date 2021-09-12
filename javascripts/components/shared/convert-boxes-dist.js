@@ -54,6 +54,7 @@ Vue.component('transliterated-lines', {
       var _this2 = this;
 
       rulesUsedForThisText = {};
+      exceptionsUsedForThisText = {};
       var transliteratedLines = this.lines.map(function (line) {
         return new TibetanTransliterator({
           setting: _this2.setting,
@@ -61,6 +62,7 @@ Vue.component('transliterated-lines', {
         }).transliterate(line);
       }).join("\n");
       this.$store.commit('updateRulesUsedForThisText', rulesUsedForThisText);
+      this.$store.commit('updateExceptionsUsedForThisText', exceptionsUsedForThisText);
       return transliteratedLines;
     }
   },

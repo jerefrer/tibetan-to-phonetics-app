@@ -9,6 +9,8 @@ var SettingsPage = Vue.component('settings-page', {
       selectedSettingId: Settings.defaultSettingId,
       exceptions: Exceptions.generalExceptionsAsArray(),
       ignoreGeneralExceptionsStorage: ignoreGeneralExceptionsStorage,
+      showActiveExceptionsOnly: false,
+      exceptionsAddedJustNow: {},
       options: { capitalize: true },
     }
   },
@@ -29,7 +31,7 @@ var SettingsPage = Vue.component('settings-page', {
     },
     exceptions: {
       deep: true,
-      handler (exceptionsAsArray) {
+      handler (exceptionsAsArray, previousValue) {
         Exceptions.updateGeneralExceptions(this.exceptionsAsObject);
       }
     }
@@ -58,6 +60,15 @@ var SettingsPage = Vue.component('settings-page', {
         rules: Settings.find(this.selectedSettingId).rules,
         exceptions: this.exceptionsAsObject
       }
+    },
+    activeExceptions () {
+      if (this.showActiveExceptionsOnly)
+        return _(this.exceptions).filter((exception) =>
+          this.$store.state.exceptionsUsedForThisText[exception.key] ||
+          this.exceptionsAddedJustNow[exception.key]
+        )
+      else
+        return this.exceptions;
     },
     exceptionsAsObject () {
       return _(this.exceptions).inject((hash, exception) => {
@@ -88,6 +99,10 @@ var SettingsPage = Vue.component('settings-page', {
         key: '',
         value: ''
       })
+      this.markExceptionAsActive('');
+    },
+    markExceptionAsActive (key) {
+      this.exceptionsAddedJustNow[key] = true;
     },
     reloadExceptions () {
       this.exceptions = Exceptions.generalExceptionsAsArray();
@@ -330,15 +345,15 @@ var SettingsPage = Vue.component('settings-page', {
 
         <div class="exceptions">
           <div
-            v-for="(exception, index) in exceptions"
+            v-for="(exception, index) in activeExceptions"
             class="ui exception input"
             :class="{
               top: index == 0,
               bottom: index == exceptions.length - 1
             }"
           >
-            <input class="tibetan" v-model="exception.key"   spellcheck="false" />
-            <input class="tibetan" v-model="exception.value" spellcheck="false" />
+            <input class="tibetan" v-model="exception.key"   spellcheck="false" @input="markExceptionAsActive(exception.key)" />
+            <input class="tibetan" v-model="exception.value" spellcheck="false" @input="markExceptionAsActive(exception.key)" />
           </div>
           <div class="ui attached button new exception" @click="addNewException">
             <i class="plus icon" />
@@ -377,6 +392,11 @@ var SettingsPage = Vue.component('settings-page', {
           <slider-checkbox
             v-model="options.capitalize"
             text="Capital letter at the beginning of each group"
+          />
+
+          <slider-checkbox
+            v-model="showActiveExceptionsOnly"
+            text="Show only the exceptions used in transliterating your text or being worked on"
           />
 
         </div>

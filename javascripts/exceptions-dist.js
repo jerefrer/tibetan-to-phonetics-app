@@ -17,14 +17,14 @@ var Exceptions = function Exceptions(setting, tibetan) {
 
         if (tibetanWithModifier) {
           var tibetanWithoutModifier = tibetanWithModifier[1];
-          exception = this.exceptions[tibetanWithoutModifier];
+          exception = this.tryException(tibetanWithoutModifier);
           if (exception) modifier = modifiers[i];
         }
 
         i++;
       }
 
-      if (!exception) exception = this.exceptions[tibetan];
+      if (!exception) exception = this.tryException(tibetan);
 
       if (exception) {
         if (modifier) {
@@ -44,6 +44,14 @@ var Exceptions = function Exceptions(setting, tibetan) {
           numberOfShifts: tsheks ? tsheks.length : 0,
           transliterated: transliteration.trim().replace(/_/g, '')
         };
+      }
+    },
+    tryException: function tryException(key) {
+      var exception = this.exceptions[key];
+
+      if (exception) {
+        exceptionsUsedForThisText[key] = true;
+        return exception;
       }
     },
     removeDuplicateEndingLetters: function removeDuplicateEndingLetters(text) {

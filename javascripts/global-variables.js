@@ -4,3 +4,4 @@ var ignoreGeneralExceptionsStorage = false;
 var defaultSettings = [];
 
 var rulesUsedForThisText = {};
+var exceptionsUsedForThisText = {};

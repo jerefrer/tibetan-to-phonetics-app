@@ -16,6 +16,8 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       exceptions: [],
       showLivePreview: false,
       showActiveRulesOnly: false,
+      showActiveExceptionsOnly: false,
+      exceptionsAddedJustNow: {},
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -47,6 +49,15 @@ var EditSettingPage = Vue.component('edit-setting-page', {
     },
     setting () {
       return Settings.find(this.$route.params.settingId);
+    },
+    activeExceptions () {
+      if (this.showActiveExceptionsOnly)
+        return _(this.exceptions).filter((exception) =>
+          this.$store.state.exceptionsUsedForThisText[exception.key] ||
+          this.exceptionsAddedJustNow[exception.key]
+        )
+      else
+        return this.exceptions;
     },
     exceptionsAsObject () {
       return _(this.exceptions).inject((hash, exception) => {
@@ -196,6 +207,10 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         key: '',
         value: ''
       })
+      this.markExceptionAsActive('');
+    },
+    markExceptionAsActive (key) {
+      this.exceptionsAddedJustNow[key] = true;
     },
     revertExceptionsToOriginal () {
       if (confirm('Are you sure?')) {
@@ -285,7 +300,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
 
         <div class="exceptions">
           <div
-            v-for="(exception, index) in exceptions"
+            v-for="(exception, index) in activeExceptions"
             class="ui exception input"
           >
             <input
@@ -293,12 +308,14 @@ var EditSettingPage = Vue.component('edit-setting-page', {
               spellcheck="false"
               v-model="exception.key"
               :readonly="!setting.isEditable"
+              @input="markExceptionAsActive(exception.key)"
             />
             <input
               class="tibetan"
               spellcheck="false"
               v-model="exception.value"
               :readonly="!setting.isEditable"
+              @input="markExceptionAsActive(exception.key)"
             />
           </div>
           <div
@@ -342,8 +359,15 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         <div id="menu" style="margin-bottom: 0">
 
           <slider-checkbox
+            v-if="currentTab == 'rules'"
             v-model="showActiveRulesOnly"
             text="Show only the rules used in transliterating your text"
+          />
+
+          <slider-checkbox
+            v-if="currentTab == 'exceptions'"
+            v-model="showActiveExceptionsOnly"
+            text="Show only the exceptions used in transliterating your text or being worked on"
           />
 
         </div>

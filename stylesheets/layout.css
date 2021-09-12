@@ -215,6 +215,9 @@ body.pushable>.pusher {
 .live-preview #menu .ui.attached.button {
   background: #ccc;
 }
+.live-preview #menu .checkbox + .checkbox {
+  margin-left: 1.5em;
+}
 
 .ui.popup.inverted,
 .ui.popup.inverted:before,
