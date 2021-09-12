@@ -318,8 +318,11 @@
   border-top: 3px solid #333 !important;
 }
 
-.night .live-preview .button {
+.night .live-preview > .attached.button {
   margin-top: -2px;
+}
+
+.night .live-preview .button {
   color: rgba(255, 255, 255, 0.9);
   background: #151515 !important;
 }

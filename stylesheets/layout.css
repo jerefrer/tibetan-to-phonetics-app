@@ -209,6 +209,9 @@
   margin-top: 30px;
   margin-bottom: -15px;
 }
+.live-preview #menu .ui.attached.button {
+  background: #ccc;
+}
 
 .ui.popup.inverted,
 .ui.popup.inverted:before,
