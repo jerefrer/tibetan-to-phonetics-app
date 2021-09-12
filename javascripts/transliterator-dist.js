@@ -11,6 +11,8 @@ var TibetanTransliterator = function TibetanTransliterator() {
   var exceptions = new Exceptions(setting);
 
   t = function t(key) {
+    var track = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    if (track) rulesUsedForThisText[key] = true;
     return setting.rules[key];
   };
 
@@ -159,7 +161,10 @@ var Group = function Group(tibetan) {
       if (firstSyllable.last() == secondSyllable.first()) return firstSyllable.slice(0, firstSyllable.length - 1);else return firstSyllable;
     },
     addDoubleSIfNecesary: function addDoubleSIfNecesary(firstSyllable, secondSyllable) {
-      if (t('doubleS') && this.endsWithVowel(firstSyllable) && secondSyllable.match(/^s[^h]/)) return firstSyllable + 's';else return firstSyllable;
+      if (t('doubleS', false) && this.endsWithVowel(firstSyllable) && secondSyllable.match(/^s[^h]/)) {
+        rulesUsedForThisText['doubleS'] = true;
+        return firstSyllable + 's';
+      } else return firstSyllable;
     },
     shiftSyllables: function shiftSyllables(numberOfShifts) {
       var that = this;
@@ -210,7 +215,7 @@ var Syllable = function Syllable(syllable) {
 
         case 'ག':
           if (this.superscribed || this.prefix) {
-            if (this.rata()) return t('rata3Mod');else if (this.yata()) return t('gaModYata');else if (t('gaMod') == 'gu') {
+            if (this.rata()) return t('rata3Mod');else if (this.yata()) return t('gaModYata');else if (t('gaMod', false) == 'gu') {
               // Exceptions for french & spanish
               if (this.getVowel() == 'a') return 'g'; // 'gage' and not 'guage'
               else if (this.getVowel() == 'o') return 'g'; // 'gong' and not 'guong'
@@ -437,10 +442,10 @@ var Syllable = function Syllable(syllable) {
       return this.syllable.match(/འི$/);
     },
     endingO: function endingO() {
-      return this.ifMatchesAppendEndingChar(/འོ$/, t('o'));
+      return this.ifMatchesAppendEndingChar(/འོ$/, t('o', false));
     },
     endingU: function endingU() {
-      return this.ifMatchesAppendEndingChar(/འུ$/, t('u'));
+      return this.ifMatchesAppendEndingChar(/འུ$/, t('u', false));
     },
     ifMatchesAppendEndingChar: function ifMatchesAppendEndingChar(regex, _char) {
       return this.syllable.length > 2 && this.syllable.match(regex) ? t('endLinkChar') + _char : '';

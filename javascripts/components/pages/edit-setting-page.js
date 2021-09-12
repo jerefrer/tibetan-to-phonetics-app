@@ -14,7 +14,8 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       name: undefined,
       rules: {},
       exceptions: [],
-      showLivePreview: false
+      showLivePreview: false,
+      showActiveRulesOnly: false,
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -162,14 +163,18 @@ var EditSettingPage = Vue.component('edit-setting-page', {
 
       }).inject((hash, groupRules, groupName) => {
         hash[groupName] = groupRules.map((array) => {
-          return {
-            key: array[0],
-            value: array[1],
-            example: array[2],
-            comment: array[3],
-            large: !!array[4]
-          }
-        }, {})
+          if (
+            !this.showActiveRulesOnly ||
+            this.$store.state.rulesUsedForThisText[array[0]]
+          )
+            return {
+              key: array[0],
+              value: array[1],
+              example: array[2],
+              comment: array[3],
+              large: !!array[4]
+            }
+        }).compact();
         return hash;
       }, {})
     }
@@ -252,7 +257,11 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         <div class="ui grid">
           <es-group class="four wide column" :groups="groups" :rules="rules" name="Special cases" />
           <es-group class="six wide column"  :groups="groups" :rules="rules" name="Formatting" />
-          <options-group class="six wide column" :rules="rules" />
+          <options-group
+            v-if="!showActiveRulesOnly || $store.state.rulesUsedForThisText['doubleS']"
+            class="six wide column"
+            :rules="rules"
+          />
         </div>
 
       </div>
@@ -321,6 +330,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         class="live-preview"
         :class="{active: showLivePreview}"
       >
+
         <button
           class="ui top attached icon button"
           @click="showLivePreview=!showLivePreview"
@@ -328,10 +338,21 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           <i class="up arrow icon" />
           Live preview
         </button>
+
+        <div id="menu" style="margin-bottom: 0">
+
+          <slider-checkbox
+            v-model="showActiveRulesOnly"
+            text="Show only the rules used in transliterating your text"
+          />
+
+        </div>
+
         <convert-boxes
           :setting="fakeSettingForLivePreview"
           tibetanStorageKey="live-preview"
         />
+
       </div>
 
     </div>
@@ -362,6 +383,7 @@ Vue.component('es-group', {
   },
   template: `
     <div
+      v-if="groupRules.length"
       class="column group"
       :class="{consonants: name == 'Regular consonants'}"
     >

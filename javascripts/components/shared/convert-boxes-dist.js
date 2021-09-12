@@ -53,12 +53,15 @@ Vue.component('transliterated-lines', {
     transliteratedLines: function transliteratedLines() {
       var _this2 = this;
 
-      return this.lines.map(function (line) {
+      rulesUsedForThisText = {};
+      var transliteratedLines = this.lines.map(function (line) {
         return new TibetanTransliterator({
           setting: _this2.setting,
           capitalize: _this2.options.capitalize
         }).transliterate(line);
       }).join("\n");
+      this.$store.commit('updateRulesUsedForThisText', rulesUsedForThisText);
+      return transliteratedLines;
     }
   },
   template: "\n    <div class=\"result\">{{transliteratedLines}}</div>\n  "

@@ -29,6 +29,7 @@ initializeStorage(() => {
 
   app = new Vue({
     router,
+    store,
     data () {
       return {
         colorMode: undefined

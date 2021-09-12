@@ -30,6 +30,7 @@ $(function () {
 initializeStorage(function () {
   app = new Vue({
     router: router,
+    store: store,
     data: function data() {
       return {
         colorMode: undefined
