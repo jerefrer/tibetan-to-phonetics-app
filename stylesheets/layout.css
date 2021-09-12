@@ -58,10 +58,13 @@
     opacity: 0.65;
   }
 
+#app,
+body.pushable>.pusher {
+  background: #fcfcfc !important;
+}
 #app {
   min-height: 100%;
   padding: 30px 70px;
-  background: #fcfcfc !important;
 }
 
 #menu {

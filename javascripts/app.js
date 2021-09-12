@@ -21,7 +21,7 @@ var initializeStorage = function(callback) {
 $(function() {
   if (Storage.localStorageSupported()) {
     var colorMode = Storage.localStorageGet('colorMode');
-    $('#app').addClass(colorMode);
+    $('body').addClass(colorMode);
   }
 })
 
@@ -37,6 +37,13 @@ initializeStorage(() => {
     },
     watch: {
       colorMode (value) {
+        if (value == 'day') {
+          $('body').addClass('day');
+          $('body').removeClass('night');
+        } else {
+          $('body').addClass('night');
+          $('body').removeClass('day');
+        }
         localforage.setItem('colorMode', value)
         if (Storage.localStorageSupported())
           Storage.localStorageSet('colorMode', value)
@@ -62,7 +69,7 @@ initializeStorage(() => {
       setTimeout(() => $('#loading-overlay').fadeOut(), 500);
     },
     template: `
-      <div id="app" :class="colorMode">
+      <div id="app">
 
         <div
           class="ui left vertical sidebar labeled icon menu"

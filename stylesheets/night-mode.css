@@ -1,4 +1,5 @@
-#app.night {
+.night #app,
+body.night.pushable>.pusher {
   background: #001211 !important;
 }
 
