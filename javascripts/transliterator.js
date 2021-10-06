@@ -378,7 +378,7 @@ const assignValidSettingOrThrowException = function (setting) {
       typeof(setting.rules) == 'object' &&
       typeof(setting.exceptions) == 'object'
     ) {
-      _(setting.rules).defaults(originalRules);
+      _(setting.rules).defaults(defaultRules);
       return setting;
     } else
       throwBadArgumentsError("You passed an object but it doesn't return " +

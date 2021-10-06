@@ -44,7 +44,7 @@ var Settings = {
       isCustom: true,
       isEditable: true,
       name: name || 'Rule set ' + id,
-      rules: _(fromSetting && fromSetting.rules || {}).defaults(originalRules),
+      rules: _(fromSetting && fromSetting.rules || {}).defaults(defaultRules),
       exceptions: fromSetting && fromSetting.exceptions || {}
     });
     this.updateStore();
@@ -99,13 +99,13 @@ var Settings = {
   initializeSetting: function initializeSetting(setting) {
     setting.isDefault = true;
 
-    _(setting.rules).defaults(originalRules);
+    _(setting.rules).defaults(defaultRules);
 
     return setting;
   },
   numberOfSpecificRules: function numberOfSpecificRules(setting) {
     return _(setting.rules).filter(function (value, key) {
-      return originalRules[key] != value;
+      return defaultRules[key] != value;
     }).length;
   }
 };

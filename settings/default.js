@@ -22,7 +22,7 @@
 | Resulting in 'khyen'.
 -----------------------------------------------------------------------------*/
 
-var originalRules = {
+var defaultRules = {
 
   // End link char (as in pa-o or be-u)
   'endLinkChar': '-',

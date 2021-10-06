@@ -149,10 +149,10 @@ Vue.component('es-group', {
   },
   methods: {
     isDifferentFromDefault: function isDifferentFromDefault(rule) {
-      return originalRules[rule.key] != this.rules[rule.key];
+      return defaultRules[rule.key] != this.rules[rule.key];
     },
     revert: function revert(rule) {
-      this.rules[rule.key] = originalRules[rule.key];
+      this.rules[rule.key] = defaultRules[rule.key];
     }
   },
   template: "\n    <div\n      v-if=\"groupRules.length\"\n      class=\"column group\"\n      :class=\"{consonants: name == 'Regular consonants'}\"\n    >\n\n      <div class=\"ui small header\">\n        {{name}}\n      </div>\n\n      <div\n        v-for=\"rule in groupRules\"\n        class=\"ui labeled input rule\"\n        :class=\"{\n          'right labeled': rule.comment,\n          'different': isDifferentFromDefault(rule)\n        }\"\n      >\n\n        <div\n          class=\"ui tibetan label\"\n          :class=\"{large: rule.large}\"\n        >\n          <div v-html=\"rule.example\"></div>\n          <div\n            v-if=\"isDifferentFromDefault(rule) && isEditable\"\n            class=\"ui icon blue button revert\"\n            :class=\"{'with-comment': rule.comment, 'large-label': rule.large}\"\n            @click=\"revert(rule)\"\n          >\n            <i class=\"undo icon\" />\n          </div>\n        </div>\n\n        <input\n          v-model=\"rules[rule.key]\"\n          spellcheck=\"false\"\n          :readonly=\"!isEditable\"\n        />\n\n        <div class=\"ui label\" v-if=\"rule.comment\">\n          <span>\n            {{rule.comment}}\n          </span>\n        </div>\n\n      </div>\n\n    </div>\n  "
@@ -170,7 +170,7 @@ Vue.component('options-group', {
   },
   methods: {
     isBooleanDifferentFromDefault: function isBooleanDifferentFromDefault(key) {
-      return !!originalRules[key] != !!this.rules[key];
+      return !!defaultRules[key] != !!this.rules[key];
     }
   },
   template: "\n    <div class=\"column group\">\n\n      <div class=\"ui small header\">\n        Options\n      </div>\n\n      <div\n        class=\"ui labeled input rule right labeled\"\n        :class=\"{ 'different': isBooleanDifferentFromDefault('doubleS') }\"\n      >\n\n        <div class=\"ui auto label\">\n          Double S\n        </div>\n\n        <slider-checkbox v-model=\"rules['doubleS']\" :readonly=\"!isEditable\" />\n\n        <div class=\"ui label\">\n          <span>\n            Have the \"s\" letter doubled between vowels (i.e. in \"sossor\" or \"tsassum\")\n          </span>\n        </div>\n\n      </div>\n\n    </div>\n  "

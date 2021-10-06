@@ -465,7 +465,7 @@ var Syllable = function Syllable(syllable) {
 var assignValidSettingOrThrowException = function assignValidSettingOrThrowException(setting) {
   if (_typeof(setting) == 'object') {
     if (_typeof(setting.rules) == 'object' && _typeof(setting.exceptions) == 'object') {
-      _(setting.rules).defaults(originalRules);
+      _(setting.rules).defaults(defaultRules);
 
       return setting;
     } else throwBadArgumentsError("You passed an object but it doesn't return " + "objects for 'rules' and 'exceptions'.");

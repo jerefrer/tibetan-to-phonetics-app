@@ -399,10 +399,10 @@ Vue.component('es-group', {
   },
   methods: {
     isDifferentFromDefault (rule) {
-      return originalRules[rule.key] != this.rules[rule.key];
+      return defaultRules[rule.key] != this.rules[rule.key];
     },
     revert (rule) {
-      this.rules[rule.key] = originalRules[rule.key];
+      this.rules[rule.key] = defaultRules[rule.key];
     }
   },
   template: `
@@ -471,7 +471,7 @@ Vue.component('options-group', {
   },
   methods: {
     isBooleanDifferentFromDefault (key) {
-      return !!originalRules[key] != !!this.rules[key];
+      return !!defaultRules[key] != !!this.rules[key];
     }
   },
   template: `
