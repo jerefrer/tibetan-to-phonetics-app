@@ -13,8 +13,7 @@
 * Optionally use dictionary to group words together? Is that even possible?
 
 ## Tests
-* Add tests for:
-  * spaces before/after, exception or not
+* Add tests for spaces before/after, exception or not
 
 ## Questions to Tibetan savants
 * In 'Translating Buddhism':
@@ -45,13 +44,8 @@
   * What about completion particles, like ཅན་ནོ : cheno or chen-no?
   => Seems to be safer and better to join with a dash every time,
      then one can simplify when proof-reading, instead of the other way around
-
-## Questions about Padmakara's style
 * Are the rules for eéè okay?
-* What's the rule with ཤ and ཞ? (Sha/zha? Both sha? Then how do we differentiate? And in French?)
-* བསླབ་ == l**h**ap?
-* French: ལྷ་: lha? l'a?
-* French: Decide when to use doubleS
+* French: DoubleS only between vowels, or are there other cases?
 
 ## Special cases
 * པའང and པའམ are handled, but can there be things such as གྱེའང་ or བགའོང་?
@@ -59,6 +53,7 @@
 * རྱ
 * དྷ
 * བྷ
+* བསླབ་ == l**h**ap?
 * བ་སྤུ = papu? bapu? wapu?
 * mangs == mang || gné ? (clue: mang' is pronounced nga (Translating Buddhism p.283))
 * སེང་གེ : sengé
@@ -86,7 +81,7 @@
     * is pronouced
     * does not umlaut the vowel 'a'
   * Lhasa
-    * is not pronounced
+    * **is not pronounced** (?)
     * does umlaut the vowel 'a' into 'e'
 
 ## Leads for a "proper" implementation

@@ -25,15 +25,7 @@ through npm and other package managers.</li>
 </ul>
 <h2 id="tests">Tests</h2>
 <ul>
-<li>Add tests for the programmatic usages with all different options.</li>
-<li>Add tests for all the latest special cases:<ul>
-<li>aFollowedByN</li>
-<li>oFollowedByN</li>
-<li>gFollowedByN</li>
-<li>removeUntranscribedPunctuation</li>
-<li>spaces before/after, exception or not</li>
-</ul>
-</li>
+<li>Add tests for spaces before/after, exception or not</li>
 </ul>
 <h2 id="questions-to-tibetan-savants">Questions to Tibetan savants</h2>
 <ul>
@@ -78,14 +70,8 @@ They are, therefore. pronounced gi and gyi. respectively.</li>
  then one can simplify when proof-reading, instead of the other way around</li>
 </ul>
 </li>
-</ul>
-<h2 id="questions-about-padmakaras-style">Questions about Padmakara&#39;s style</h2>
-<ul>
 <li>Are the rules for eéè okay?</li>
-<li>What&#39;s the rule with ཤ and ཞ? (Sha/zha? Both sha? Then how do we differentiate? And in French?)</li>
-<li>བསླབ་ == l<strong>h</strong>ap?</li>
-<li>French: ལྷ་: lha? l&#39;a?</li>
-<li>French: Decide when to use doubleS</li>
+<li>French: DoubleS only between vowels, or are there other cases?</li>
 </ul>
 <h2 id="special-cases">Special cases</h2>
 <ul>
@@ -96,6 +82,7 @@ They are, therefore. pronounced gi and gyi. respectively.</li>
 <li>རྱ</li>
 <li>དྷ</li>
 <li>བྷ</li>
+<li>བསླབ་ == l<strong>h</strong>ap?</li>
 <li>བ་སྤུ = papu? bapu? wapu?</li>
 <li>mangs == mang || gné ? (clue: mang&#39; is pronounced nga (Translating Buddhism p.283))</li>
 <li>སེང་གེ : sengé</li>
@@ -112,6 +99,14 @@ They are, therefore. pronounced gi and gyi. respectively.</li>
 <li>མཆོད་རྟེན་ : chöten? chorten?</li>
 <li>མགོན་པོ་ : gönpo? gompo? gonpo?</li>
 <li>འཕགས་མཆོག་ == pachok? p&#39;achok? p&#39;akchok?</li>
+<li>རྣམ་པར་སྨིན་པའང་བསམ་མི་ཁྱབ། །<ul>
+<li>Should it be &#39;Nampar minpa-ang sami khyap&#39;?<ul>
+<li>which is the case currently and is how it&#39;s done in the Prayer Book 1</li>
+</ul>
+</li>
+<li>Or &#39;Nampar minpa angsam mi khyap&#39;?</li>
+</ul>
+</li>
 </ul>
 <h2 id="differences-between-kham-and-lhasa-dialects">Differences between Kham and Lhasa dialects</h2>
 <ul>
@@ -122,7 +117,7 @@ They are, therefore. pronounced gi and gyi. respectively.</li>
 </ul>
 </li>
 <li>Lhasa<ul>
-<li>is not pronounced</li>
+<li><strong>is not pronounced</strong> (?)</li>
 <li>does umlaut the vowel &#39;a&#39; into &#39;e&#39;</li>
 </ul>
 </li>
@@ -131,7 +126,7 @@ They are, therefore. pronounced gi and gyi. respectively.</li>
 </ul>
 <h2 id="leads-for-a-proper-implementation">Leads for a &quot;proper&quot; implementation</h2>
 <ul>
-<li>There are definitely existing tools and ways to parse, define and transliterate rulesets</li>
+<li>There are definitely existing tools and ways to parse, define and transliterate languages</li>
 <li>See the &quot;morphology&quot; files in GoldenDict that define prefixes, suffixes and so on.</li>
 </ul>
 

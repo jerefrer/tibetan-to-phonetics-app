@@ -13,7 +13,7 @@ Usage
 
 ![Demo](./docs/index-small.jpg)
 
-* Choose your prefered transliteration style at the top
+* Choose your prefered transliteration setting at the top
 * Paste your Tibetan in the left box
 * Click *Copy to clipboard* at the top of the right box to copy the
   transliteration
@@ -22,7 +22,7 @@ Usage
 
 ![Compare](./docs/compare-small.jpg)
 
-* Choose your prefered transliteration style at the top
+* Choose your prefered transliteration setting at the top
 * Paste your Tibetan in the left box
 * Paste your existing transliteration in the middle box
 * See the differences in the right box
@@ -41,7 +41,7 @@ transliterator.transliterate('གང་གི་བློ་གྲོས་');
 transliterator.transliterate('སྒྲིབ་གཉིས་སྤྲིན་བྲལ་');
 // => 'dripnyi trintrel'
 ```
-Use the 'capitalize' option to capitalize the first letter of every group,
+Use the `capitalize` option to capitalize the first letter of every group,
 either passing it to the constructor:
 ```js
 var transliterator = new TibetanTransliterator({ capitalize: true });
@@ -58,110 +58,164 @@ transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲ�
 transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
 // => 'émaho trötrel chökyi yingkyi zhingkham su'
 ```
-Use different rulesets, either by passing the name of an existing set:
+Use different settings, either by passing the name of an existing setting:
 ```js
-var englishLooseRuletset = Rulesets.find('english-loose');
-new TibetanTransliterator({ ruleset: 'english-loose' }).transliterate('གང་གི་བློ་གྲོས་');
+new TibetanTransliterator({ setting: 'english-loose' }).transliterate('གང་གི་བློ་གྲོས་');
 // => 'gangi lodrö'
 
 ```
-Or the set itself:
+Or the setting itself:
 ```js
-var frenchRuletset = Rulesets.find('french');
-new TibetanTransliterator({ ruleset: frenchRuletset }).transliterate('གང་གི་བློ་གྲོས་');
+var frenchRuletset = Settings.find('french');
+new TibetanTransliterator({ setting: frenchRuletset }).transliterate('གང་གི་བློ་གྲོས་');
 // => 'kangki lotreu'
 ```
-Or any object that quacks like a ruleset, meaning it returns objects for 'rules' and 'exceptions':
+Or any object that quacks like a setting, meaning it returns objects for `rules` and `exceptions`:
 ```js
-var fakeRuleSet = {
+var dummyRuleSet = {
   rules: { 'ö': 'eu' },
   exceptions: {}
 };
-new TibetanTransliterator({ ruleset: fakeRuleSet }).transliterate('གང་གི་བློ་གྲོས་');
+new TibetanTransliterator({ setting: dummyRuleSet }).transliterate('གང་གི་བློ་གྲོས་');
 // => 'kangki lotreu'
+```
+
+Settings
+-----------
+
+![Settings](./docs/settings-small.jpg)
+
+![Setting](./docs/edit-setting-small.jpg)
+
+See how are defined the default settings, copy them or create your own.
+
+English (strict) is the setting that defines the default rules. Any rule in
+any other setting that is different from its default value will be highlighted
+in color, and a small button allows to revert back to the default value.
+
+### Editing and creating default settings
+
+The default settings are defined in `settings/`, feel free to modify them to
+your needs, but `default.js` and `english-strict.js` are not meant to be edited
+since they form the basis upon which all other sets are built.
+
+Rules are defined as key-value pairs, the left-hand side being the internal
+code used by the app, the right-hand side what you want it to be substituted
+with in the generated transliteration.
+
+For instance the rule for "kha" (2nd column "ka") in `default.js` is:
+```js
+'kha': 'kh',
+```
+
+If you wish to display "kha" as "ka", you would have this line in any of the
+other setting files:
+```js
+'kha': 'k',
+```
+Which will take precedence over the default value (that will be ignored).
+
+Every single line in `default.js` can thus be copy-pasted in another set file
+to be overridden. You can edit existing rule sets or create new ones.
+
+To add a new rule set just copy an existing one and replace the `id` and
+`name`, making sure your new `id` has not already been taken.
+```html
+# settings/my-new-set.js
+
+defaultSettings.push({
+
+  id: 'my-new-set',
+  name: 'My new set',
+
+  rules: {
+    ...
+  },
+
+  exceptions: {
+    ...
+  }
+
+})
+```
+
+Also don't forget to add the `<script>` include tag in `index.html` next to
+the other ones:
+```html
+<script src="settings/my-new-set.js"></script>
 ```
 
 Exceptions
 -----------
 
+![Exceptions](./docs/general-exceptions-small.jpg)
+
+Define here exceptions that will apply to all settings. Basically the left-hand
+side value will be substituted by the right-hand side value, and every Tibetan
+part in the right-hand side value will be itself transliterated.
+
+### Editing default exceptions
+
 ![Exceptions](./docs/exceptions.jpg)
 
-* Each line defines one exception.
+General exceptions apply to all different settings and are found in
+`settings/exceptions.js`
 
-* If any of the values on the left of the colon is found in the line to be
-  transliterated, then it will be treated as if it was the value on the right
-  of the colon.
+Setting-specific exceptions can also be defined. Just add the specific
+exceptions in the `exceptions` attribute of any setting. If the left-hand side
+value is the same as one of the general exceptions, it will take precedence
+over the general exception.
 
-* Tibetan characters will be transliterated as they would be normally.
-* Latin characters will be inserted as-is within the transliteration.
-
-* If using Latin characters, then between each syllable you need to add an
-  underscore to help the system determine how many syllables the word is made
-  of, even if it does not exactly match how the word is composed.
-  For instance if you want to have སངས་རྒྱས་ always transliterated as 'sangye',
-  you would do:
-  ```
-  'སངས་རྒྱས': 'san_gye'
-  ```
-  but not
-  ```
-  'སངས་རྒྱས': 'sang_gye'
-  ```
-
-* If a line is defined with a left value that is included in another line with
-  a longer left value, then the longer one will be used.
-  For instance if these two rules are defined:
-  ```
-  'སངས་': 'SAN'
-  'སངས་རྒྱས': 'san_GYE'
-  ```
-  Then སངས་རྒྱས་ would be transliterated as 'sanGYE', ignoring the first rule.
-
-Rule sets
+Fonts
 -----------
 
-All rule sets are defined in `settings/`.
-
-The `original.js` set is not meant to be edited and serves as the default upon
-which all other sets are applied to override the default rules.
-
-For instance the rule for 'kha' in `original.js` is:
-```js
-'kha': 'kh',
+The app is designed to use these fonts in order of preference:
+```
+* TibetanChogyalUnicode-170221 if it is installed on the user system
+* TibetanChogyalUnicode-ID     if it is installed on the user system
+* TibetanChogyalUnicode        if it is installed on the user system
+* TibetanMachineUnicode        if none of the previous ones are installed. It is included in the app.
 ```
 
-If you wish to display 'kha' as 'ka', you would have this line in your own
-rule set file:
-```js
-'kha': 'k',
+Since I believe `TibetanChogyalUnicode` is copyrighted but `TibetanMachineUnicode` is free to use, this should ensure that people with `TibetanChogyalUnicode` already installed on their machine will be able to benefit from it, and those who don’t will still have a good enough font displayed even if none are installed on their system.
+You could update all the .css files in stylesheets/ with the latest version of `TibetanChogyalUnicode` if necessary, either by replacing `TibetanChogyalUnicode-170221` by the latest one:
+```
+font-family: TibetanChogyalUnicode-210803, TibetanChogyalUnicode-ID, TibetanChogyalUnicode, TibetanMachineUnicode !important;
+```
+instead of:
+```
+font-family: TibetanChogyalUnicode-170221, TibetanChogyalUnicode-ID, TibetanChogyalUnicode, TibetanMachineUnicode !important;
+```
+or by adding the latest one before `TibetanChogyalUnicode-170221` with a comma in between:
+```
+font-family: TibetanChogyalUnicode-210803, TibetanChogyalUnicode-170221, TibetanChogyalUnicode-ID, TibetanChogyalUnicode, TibetanMachineUnicode !important;
 ```
 
-![Exceptions](./docs/ruleset.jpg)
+Development
+-----------
 
-Every single line in `original.js` can thus be copy-pasted in another set file
-to be overridden. You can edit existing rule sets or create new ones.
+Use `index_dev.html` instead of `index.html`.
 
-Style-specific exceptions can be defined and default ones can be overriden.
-Just add your exceptions in `exceptionsPerRuleset['my set']`.
+This way all javascripts files are loaded from their non-transpiled version
+(i.e. not the -dist.js files). This means you will see the results live even if
+your transpilation system is not running.
 
-To add a new rule set just copy an existing one and replace twice the name of
-the set:
-```html
-# settings/my-new-set.js
+Also you will have an extra option on the `/settings/exceptions` page allowing
+you to ignore browser stored values for the general exceptions, therefore making
+it easier to test the ones you are adding to the `settings/exceptions.js` file.
 
-settingsPerRuleset['my new set'] = {
-...
-}
+Contributing
+------------
 
-exceptionsPerRuleset['my new set'] = {
-...
-}
-```
-Also don't forget to add the `<script>` include tag in `index.html`,
-`compare.html` and `tests.html` next to the other ones:
-```html
-<script src="settings/my-new-set.js"></script>
-```
+You are most welcome to pitch in and improve anything that doesn't feel right,
+define new default settings or add more edge cases.
+
+If it looks a bit messy to you, still don't be discouraged to give it a try,
+you can always run the tests to make sure all the currently covered cases
+continue to yield the expected results.
+
+And if you do tweak the code, please add enough tests so that others after you
+can rely on them too!
 
 Testing
 -----------
@@ -172,7 +226,7 @@ Just open `tests.html`.
 
 Categories can be clicked to reveal their test cases.
 
-To ease debugging, clicking a Tibetan case on the right side will re-run the
+To ease debugging, clicking a test case on the right side will re-run the
 test for just that particular case.
 
 TODO
@@ -185,27 +239,31 @@ Credits
 
 The rules used to deconstruct the syllables into parts (root, prefix, ...)
 are almost entirely based on John Rockwell's *A Primer for Classical Literary
-Tibetan, Volume 1*, so kudos to everyone involved in the production of this
-great book.
+Tibetan, Volume 1*.
+
+Much thanks to everyone involved in the publication of
+this great book.
 
 A zillion thanks also to:
 
 * Joe B. Wilson and everybody involved in publishing *Translating Tibetan from
-  Buddhism* which is equally great.
-* Tony Duff and friends for producing all these beautiful Tibetan fonts.
-* Everybody involved in building an maintaining Vue.js, SemanticUI, FontAwesome,
-  SublimeText, jQuery, Sugar.js, Underscore.js, DevDocs, Zeal and Google Chrome
-  for making web development so easy and enjoyable.
+  Buddhism* which is equally great and provided some more clarifications.
+* Tony Duff and friends for producing all these beautiful Tibetan fonts,
+  software and fine translations.
+* Everybody involved in building and maintaining Vue.js, SemanticUI, FontAwesome,
+  SublimeText, jQuery, Sugar.js, Underscore.js, DevDocs, Zeal, Google Chrome
+  and Mozilla Firefox for making web development so easy and enjoyable, even in
+  an offline environment.
 
 Through the virtue coming from this work, may all beings human and
-otherwise reach absolute freedom.
+otherwise reach absolute freedom and peace.
 
 License
 -----------
 
 This software is licensed under the MIT License.
 
-Copyright Padmakara, 2021.
+Copyright Padmakara, 2020-present.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
