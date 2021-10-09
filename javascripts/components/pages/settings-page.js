@@ -311,7 +311,10 @@ var SettingsPage = Vue.component('settings-page', {
 
       <div v-if="isExceptionsPage" class="ui text container active tab">
 
-        <div class="ui large segment dev-mode">
+        <div
+          v-if="isDevMode"
+          class="ui large segment dev-mode"
+        >
           <div class="left">
             Dev mode
           </div>
