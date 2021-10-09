@@ -3,7 +3,7 @@ var startedAt;
 
 // We don't want to use the Storage'd settings & exceptions but only the default ones.
 Settings.initializeFromDefaults();
-Exceptions.generalExceptions = normalizeExceptions(originalGeneralExceptions);
+Exceptions.generalExceptions = normalizeExceptions(defaultGeneralExceptions);
 
 $(function() {
   new Vue({

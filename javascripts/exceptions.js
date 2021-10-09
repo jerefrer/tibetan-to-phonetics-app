@@ -93,7 +93,7 @@ var normalizeExceptions = function (exceptions) {
 Exceptions.initializeFromStorage = function(callback) {
   Storage.get(
     'general-exceptions',
-    normalizeExceptions(originalGeneralExceptions),
+    normalizeExceptions(defaultGeneralExceptions),
     (value) => {
       this.generalExceptions = value;
       callback();
@@ -102,7 +102,7 @@ Exceptions.initializeFromStorage = function(callback) {
 }
 
 Exceptions.initializeFromDefaults = function() {
-  this.generalExceptions = normalizeExceptions(originalGeneralExceptions);
+  this.generalExceptions = normalizeExceptions(defaultGeneralExceptions);
 }
 
 Exceptions.generalExceptionsAsArray = function() {
@@ -120,5 +120,5 @@ Exceptions.updateGeneralExceptions = function(exceptions, callback) {
 }
 
 Exceptions.resetGeneralExceptions = function(callback) {
-  this.updateGeneralExceptions(originalGeneralExceptions, callback);
+  this.updateGeneralExceptions(defaultGeneralExceptions, callback);
 }

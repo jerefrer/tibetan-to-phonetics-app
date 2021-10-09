@@ -30,7 +30,7 @@
 | Then སངས་རྒྱས་ would be transliterated as sanGYE,  ignoring the first rule.
 ----------------------------------------------------------------------------*/
 
-var originalGeneralExceptions = {
+var defaultGeneralExceptions = {
 
   // Mute suffixes
   'བདག': 'སྡ',
