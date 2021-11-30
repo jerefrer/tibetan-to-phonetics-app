@@ -135,6 +135,8 @@ var Group = function(tibetan, options = {}) {
       else if (syllable == 'བོར')  return t('wa') + t('o') + t('raSuffix');
       else if (syllable == 'བོས') return t('wa') + t('ö');
       else if (syllable == 'བོའི') return t('wa') + t('ö');
+      else if (syllable == 'བའམ') return t('wa') + t('a') + t('endLinkChar') + t('a') + t('maSuffix');
+      else if (syllable == 'བའང') return t('wa') + t('a') + t('endLinkChar') + t('a') + t('ngaSuffix');
     },
     AngOrAm (tibetan) {
       return tibetan.match(/.+འ[ངམ]$/);

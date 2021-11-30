@@ -9,5 +9,7 @@ testGroups.push({
     { tibetan: 'བར་བོས་', transliteration: 'parwö' },
     { tibetan: 'བར་བས་',  transliteration: 'parwé' },
     { tibetan: 'བར་བའི་', transliteration: 'parwé' },
+    { tibetan: 'བར་བའམ་', transliteration: 'parwa-am' },
+    { tibetan: 'བར་བའང་', transliteration: 'parwa-ang' },
   ]
 })

@@ -145,7 +145,7 @@ var Group = function Group(tibetan) {
       if (this.groupNumberOfSyllables > 1 && this.syllables.length == 0) return this.BaAsWaWhenSecondSyllable(syllable);
     },
     BaAsWaWhenSecondSyllable: function BaAsWaWhenSecondSyllable(syllable) {
-      if (syllable == 'བ') return t('wa') + t('a');else if (syllable == 'བར') return t('wa') + t('a') + t('raSuffix');else if (syllable == 'བས') return t('wa') + t('drengbu');else if (syllable == 'བའི') return t('wa') + t('aKikuI');else if (syllable == 'བའོ') return t('wa') + t('a') + t('endLinkChar') + t('o');else if (syllable == 'བོ') return t('wa') + t('o');else if (syllable == 'བོར') return t('wa') + t('o') + t('raSuffix');else if (syllable == 'བོས') return t('wa') + t('ö');else if (syllable == 'བོའི') return t('wa') + t('ö');
+      if (syllable == 'བ') return t('wa') + t('a');else if (syllable == 'བར') return t('wa') + t('a') + t('raSuffix');else if (syllable == 'བས') return t('wa') + t('drengbu');else if (syllable == 'བའི') return t('wa') + t('aKikuI');else if (syllable == 'བའོ') return t('wa') + t('a') + t('endLinkChar') + t('o');else if (syllable == 'བོ') return t('wa') + t('o');else if (syllable == 'བོར') return t('wa') + t('o') + t('raSuffix');else if (syllable == 'བོས') return t('wa') + t('ö');else if (syllable == 'བོའི') return t('wa') + t('ö');else if (syllable == 'བའམ') return t('wa') + t('a') + t('endLinkChar') + t('a') + t('maSuffix');else if (syllable == 'བའང') return t('wa') + t('a') + t('endLinkChar') + t('a') + t('ngaSuffix');
     },
     AngOrAm: function AngOrAm(tibetan) {
       return tibetan.match(/.+འ[ངམ]$/);
