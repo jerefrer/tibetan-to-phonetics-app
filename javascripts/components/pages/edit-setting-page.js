@@ -361,13 +361,13 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           <slider-checkbox
             v-if="currentTab == 'rules'"
             v-model="showActiveRulesOnly"
-            text="Show only the rules used in transliterating your text"
+            text="Show only the rules used in transliterating your text below"
           />
 
           <slider-checkbox
             v-if="currentTab == 'exceptions'"
             v-model="showActiveExceptionsOnly"
-            text="Show only the exceptions used in transliterating your text or being worked on"
+            text="Show only the exceptions used in transliterating your text below or those being worked on"
           />
 
         </div>

@@ -399,7 +399,7 @@ var SettingsPage = Vue.component('settings-page', {
 
           <slider-checkbox
             v-model="showActiveExceptionsOnly"
-            text="Show only the exceptions used in transliterating your text or being worked on"
+            text="Show only the exceptions used in transliterating your text below or those being worked on"
           />
 
         </div>
