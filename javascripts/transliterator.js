@@ -91,7 +91,7 @@ var Group = function(tibetan, options = {}) {
             secondTransliteration = new Syllable(secondSyllable).transliterate();
         }
         if (firstTransliteration) {
-          if (this.AngOrAm(firstTibetan)) {
+          if (this.AngOrAm(firstTibetan) || new Syllable(firstTibetan).endingO()) {
             this.group += firstTransliteration + ' ';
             // Because *-am is two syllables, we add back the second syllable
             // to the array and return so that it gets processed as the first
