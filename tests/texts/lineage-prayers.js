@@ -23,7 +23,7 @@ testGroups.push({
     { tibetan: 'དོན་གྱི་གྲག༵ས་པ༵་མཐའ་ཡས་འབྱུང་བའི་གཞི། །', transliteration: "tönkyi trakpa thayé jungwé zhi" },
     { tibetan: 'གསན་བསམ་སྒོམ་པས་ཐུབ་བསྟན་ལེགས་འཛིན་བཤེས། །', transliteration: "sensam gompé thupten lekdzin shé" },
     { tibetan: 'དགེ༵་ལེ༵གས་དཔ༵ལ་འབ༵ར་ཞབས་ལ་གསོལ་བ་འདེབས། །', transliteration: "gélek pelbar zhapla sölwa dep" },
-    { tibetan: 'འོག་མིན་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཕོ་བྲང་ནས། །', transliteration: "okmin chökyi yingkyi p'otrang né" },
+    { tibetan: 'འོག་མིན་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཕོ་བྲང་ནས། །', transliteration: "omin chökyi yingkyi p'otrang né" },
     { tibetan: 'དུས་གསུམ་སངས་རྒྱས་ཀུན་གྱི་ངོ་བོ་ཉིད། །', transliteration: "tüsum sangyé künkyi ngowo nyi" },
     { tibetan: 'རང་སེམས་ཆོས་སྐུར་མངོན་སུམ་སྟོན་མཛད་པ། །', transliteration: "rangsem chökur ngönsum töndzé pa" },
     { tibetan: 'རྩ་བའི་བླ་མའི་ཞབས་ལ་གསོལ་བ་འདེབས།། །།', transliteration: "tsawé lamé zhapla sölwa dep" },

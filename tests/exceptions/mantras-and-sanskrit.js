@@ -20,6 +20,13 @@ testGroups.push({
     { tibetan: 'ཝཱཀ་', transliteration: 'waka'},
     { tibetan: 'ཙིཏྟ་', transliteration: 'chitta'},
 
+    { tibetan: 'ཀྲི་ཡ', transliteration: 'kriya' },
+    { tibetan: 'ཨུ་པ', transliteration: 'upa' },
+    { tibetan: 'ཡོ་ག', transliteration: 'yoga' },
+    { tibetan: 'མ་ཧཱ', transliteration: 'maha' },
+    { tibetan: 'ཨ་ནུ', transliteration: 'anu' },
+    { tibetan: 'ཨ་ཏི', transliteration: 'ati' },
+
     { tibetan: 'སྭ་སྟི།' , transliteration: 'svasti' },
     { tibetan: 'ༀ་སྭ་སྟི།' , transliteration: 'om svasti' },
 

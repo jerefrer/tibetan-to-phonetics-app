@@ -23,6 +23,8 @@ testGroups.push({
     { tibetan: 'ཌཱཀྐིའི་', transliteration: 'daki' },
     { tibetan: 'ཌཱཀྐིའོ་', transliteration: 'daki-o' },
 
+    { tibetan: 'ཨ་ཏིས', transliteration: 'ati' },
+
     { tibetan: 'མཉྫུ་གྷོ་ཥས', transliteration: 'manjugoshé'},
   ]
 })

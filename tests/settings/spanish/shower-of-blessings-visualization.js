@@ -6,7 +6,7 @@ testGroups.push({
   tests: [
     { tibetan: 'སྣང་སྲིད་གདོད་ནས་ཀ་དག་གདངས༔', transliteration: "nangsi do-ne katak dang" },
     { tibetan: 'རང་སྣང་ཡེ་ཤེས་དག་པའི་ཞིང་༔', transliteration: "rang-nang yeshe takpe shing" },
-    { tibetan: 'མཁའ་སྤྱོད་འོག་མིན་གྲོང་ཁྱེར་དབུས༔', transliteration: "kacho okmin trongkhyer u" },
+    { tibetan: 'མཁའ་སྤྱོད་འོག་མིན་གྲོང་ཁྱེར་དབུས༔', transliteration: "kacho omin trongkhyer u" },
     { tibetan: 'རང་རིག་རྡོ་རྗེ་རྣལ་འབྱོར་མ༔', transliteration: "rangrik dorye nelyor ma" },
     { tibetan: 'དམར་གསལ་པདྨ་རཱ་གའི་མདངས༔', transliteration: "marsel padma rake dang" },
     { tibetan: 'ཞལ་གཅིག་ཕྱག་གཉིས་གྲི་ཐོད་འཛིན༔', transliteration: "shelchik chakñi trito dsin" },
