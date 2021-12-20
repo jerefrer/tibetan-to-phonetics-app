@@ -66,7 +66,7 @@ Vue.component('transliterated-lines', {
     lines: Array
   },
   computed: {
-    transliteratedLines: function() {
+    transliteratedLines () {
       rulesUsedForThisText = {};
       exceptionsUsedForThisText = {};
       var transliteratedLines = this.lines.map((line) => {
@@ -74,13 +74,24 @@ Vue.component('transliterated-lines', {
           setting: this.setting,
           capitalize: this.options.capitalize
         }).transliterate(line);
-      }).join("\n");
+      });
       this.$store.commit('updateRulesUsedForThisText', rulesUsedForThisText);
       this.$store.commit('updateExceptionsUsedForThisText', exceptionsUsedForThisText);
       return transliteratedLines;
     },
+    transliteratedLinesAsString () {
+      return this.transliteratedLines.join("\n").trim();
+    }
   },
   template: `
-    <div class="result">{{transliteratedLines}}</div>
+    <div class="result">
+      <template v-if="options.alternateTibetanAndTransliteration">
+        <template v-for="(line, index) in lines">
+          <div class="tibetan">{{line}}</div>
+          <div class="transliteration">{{transliteratedLines[index]}}</div>
+        </template>
+      </template>
+      <template v-else>{{transliteratedLinesAsString}}</template>
+    </div>
   `
 })

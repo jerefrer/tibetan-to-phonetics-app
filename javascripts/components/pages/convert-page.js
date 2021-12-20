@@ -6,7 +6,10 @@ var ConvertPage = Vue.component('convert-page', {
       loadedFields: [],
       numberOfFieldsToLoad: 2,
       selectedSettingId: Settings.defaultSettingId,
-      options: { capitalize: true },
+      options: {
+        capitalize: true,
+        alternateTibetanAndTransliteration: false
+      },
     }
   },
   watch: {
@@ -41,6 +44,11 @@ var ConvertPage = Vue.component('convert-page', {
           <slider-checkbox
             v-model="options.capitalize"
             text="Capital letter at the beginning of each group"
+          />
+
+          <slider-checkbox
+            v-model="options.alternateTibetanAndTransliteration"
+            text="Alternate Tibetan and transliteration"
           />
 
         </div>

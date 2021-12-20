@@ -60,11 +60,14 @@ Vue.component('transliterated-lines', {
           setting: _this2.setting,
           capitalize: _this2.options.capitalize
         }).transliterate(line);
-      }).join("\n");
+      });
       this.$store.commit('updateRulesUsedForThisText', rulesUsedForThisText);
       this.$store.commit('updateExceptionsUsedForThisText', exceptionsUsedForThisText);
       return transliteratedLines;
+    },
+    transliteratedLinesAsString: function transliteratedLinesAsString() {
+      return this.transliteratedLines.join("\n").trim();
     }
   },
-  template: "\n    <div class=\"result\">{{transliteratedLines}}</div>\n  "
+  template: "\n    <div class=\"result\">\n      <template v-if=\"options.alternateTibetanAndTransliteration\">\n        <template v-for=\"(line, index) in lines\">\n          <div class=\"tibetan\">{{line}}</div>\n          <div class=\"transliteration\">{{transliteratedLines[index]}}</div>\n        </template>\n      </template>\n      <template v-else>{{transliteratedLinesAsString}}</template>\n    </div>\n  "
 });

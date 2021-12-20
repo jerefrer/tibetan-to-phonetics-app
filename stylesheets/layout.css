@@ -85,9 +85,11 @@ body.pushable>.pusher {
       border-bottom-right-radius: 0;
     }
     #menu .settings .button {
-      margin-right: 17px;
       border-left: none;
       box-shadow: none !important;
+    }
+    #menu .slider {
+      margin-left: 17px;
     }
 
 #options {
