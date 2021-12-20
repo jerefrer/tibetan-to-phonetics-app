@@ -24,13 +24,16 @@ var Exceptions = function(setting, tibetan) {
         exception = this.tryException(tibetan);
       if (exception) {
         if (modifier) {
-          if (modifier == 'ས' && exception.last() == 'a')
-            exception = exception.slice(0, -1) + t('drengbu');
-          else if (modifier == 'ས' && exception.last() == 'o')
-            exception = exception.slice(0, -1) + t('ö');
-          else if (modifier == 'ས' && exception.last() == 'u')
-            exception = exception.slice(0, -1) + t('ü');
-          else
+          if (modifier == 'ས') {
+            if (exception.last() == 'a')
+              exception = exception.slice(0, -1) + t('drengbu');
+            else if (exception.last() == 'o')
+              exception = exception.slice(0, -1) + t('ö');
+            else if (exception.last() == 'u')
+              exception = exception.slice(0, -1) + t('ü');
+            else if (!['i', 'e', 'é', 'è'].includes(exception.last()))
+              exception += modifier;
+          } else
             exception += modifier;
         }
         transliteration = this.transcribeTibetanParts(exception);
