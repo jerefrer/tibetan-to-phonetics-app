@@ -6,13 +6,27 @@
   through npm and other package managers.
 
 ## Features
+* Maybe distinguish between endLinkChars that result in being pronounced as
+  one syllable, and the ones that result in two syllables. For instance in the
+  CYDZO the suffix 'ang doesn't add an extra syllable, but the suffix -o adds
+  one. Can we consider these behaviors to be reliable across all prayers or
+  should it be turned into an option at the top.
+  How detailed should the option be?
+    * For each SUFFIX: "Character to use when linking SUFFIX: ..."
+    * Or just distinguishing between some of them?
+* Maybe handle bo as ending particle when coming after a syllabe that ends
+  with ba. For example chub bo should be chup po and not chup wo.
+  Seen in CYDZO:
+    སྤྲོས་བྲལ་ཐིག་ལེའི་ངང་དུ་འུབ་ཆུབ་བོ། །
 * For exception modifiers check thoroughly what could be every possible modifiers.
   * For now we handle འི་, ས་ and ར་ but there might be more.
 * Add dash before nga more often (for instance yum-ngé)
   * Maybe always before vowels, for instance ལུས་ངག་ lü-ngak
+  * Handle སྟེ་ལྔ་ as té-nga
 * Optionally use dictionary to group words together? Is that even possible?
 
 ## Tests
+* Pass the test of "Künkyi tsémo ösel chokmin_gyur" in Exceptions - Spaces
 * Add tests for spaces before/after, exception or not
 
 ## Questions to Tibetan savants
@@ -35,6 +49,28 @@
 * How to pronounce དབའ?
   * Wa?
   * Ba?
+* དྭངས
+  * Tang?
+  * Dang?
+  * General rule or exception?
+* སྨྲ
+  * Ma?
+  * Mra? (Orgyenla pronounces 'mra' in CYDZO #5 and CYDZO #11)
+* འལ་འོལ
+  * el-öl?
+  * al-öl?
+* ཕྱད་ཆད་
+  * chéché?
+  * cham-ché?
+  * chang-ché?
+* པ་མིའམ་ཅི་ཡིས་
+  * pami-am chiyi?
+  * pami amchi yi?
+  * See a-am and a-ang test file
+* འོག་མ་
+  * Okma?
+  * Oma?
+  * O-ma?
 
 ## Questions about style
 * ཆ་ : cha? ch'a?
