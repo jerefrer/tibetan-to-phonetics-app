@@ -211,4 +211,6 @@ var defaultGeneralExceptions = {
   'ཏུཏྟཱ': 'tut_ta',
   'ཏུཏྟཱ་ར': 'tut_ta_ra',
   'རསྟུ': 'ར_sཏུ',
+  'བཻ་ཌཱུརྻ': 'ben_du_rya',
+  'སེངྒེ': 'སེང་སྒེ'
 }
