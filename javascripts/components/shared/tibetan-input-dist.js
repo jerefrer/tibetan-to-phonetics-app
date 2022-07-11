@@ -13,5 +13,5 @@ Vue.component('tibetan-input', {
       $('#tibetan').focus();
     }
   },
-  template: "\n    <div class=\"ui form\" style=\"position: relative;\">\n      <div v-if=\"!value\" id=\"tibetan-placeholder\" @click=\"selectTextarea\">\n        Try inputing some Tibetan here...\n      </div>\n      <textarea\n        :value=\"value\"\n        @input=\"checkInput($event.target.value)\"\n        id=\"tibetan\"\n        class=\"tibetan\"\n        autofocus=\"true\"\n        spellcheck=\"false\"\n      ></textarea>\n    </div>\n  "
+  template: "\n    <div class=\"ui form\" style=\"position: relative;\">\n      <div v-if=\"!value\" id=\"tibetan-placeholder\" @click=\"selectTextarea\">\n        Try inputting some Tibetan here...\n      </div>\n      <textarea\n        :value=\"value\"\n        @input=\"checkInput($event.target.value)\"\n        id=\"tibetan\"\n        class=\"tibetan\"\n        autofocus=\"true\"\n        spellcheck=\"false\"\n      ></textarea>\n    </div>\n  "
 });
