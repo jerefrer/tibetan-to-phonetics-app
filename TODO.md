@@ -4,6 +4,7 @@
 * Wrap the code nicely like modern apps do, so that nothing leaks outside
   of the library scope and that it can be imported easily in other projects
   through npm and other package managers.
+* Add a complete normalization of combined letters (like  for སྤྲ).
 
 ## Features
 * Maybe distinguish between endLinkChars that result in being pronounced as
