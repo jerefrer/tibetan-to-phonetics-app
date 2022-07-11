@@ -15,7 +15,7 @@ Vue.component('tibetan-input', {
   template: `
     <div class="ui form" style="position: relative;">
       <div v-if="!value" id="tibetan-placeholder" @click="selectTextarea">
-        Try inputing some Tibetan here...
+        Try inputting some Tibetan here...
       </div>
       <textarea
         :value="value"
