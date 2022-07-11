@@ -88,7 +88,7 @@ initializeStorage(() => {
           </router-link>
           <router-link
             class="item" to="/settings"
-            :class="{active: $route.name && $route.name.match(/setting/)}"
+            :class="{active: $route.name && ($route.name.match(/setting/) || $route.name.match(/exceptions/))}"
           >
             <i class="cogs icon"></i>
             Settings
