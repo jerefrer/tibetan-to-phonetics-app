@@ -66,10 +66,13 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         return hash;
       }, {});
     },
+    normalizedExceptionsAsObject () {
+      return normalizeExceptions(this.exceptionsAsObject);
+    },
     fakeSettingForLivePreview () {
       return {
         rules: this.rules,
-        exceptions: this.exceptionsAsObject
+        exceptions: this.normalizedExceptionsAsObject
       }
     },
     groups () {
@@ -199,7 +202,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         this.$route.params.settingId,
         this.name,
         this.rules,
-        this.exceptionsAsObject
+        this.normalizedExceptionsAsObject
       );
     },
     addNewException () {
@@ -218,14 +221,17 @@ var EditSettingPage = Vue.component('edit-setting-page', {
         Setting.updateExceptions(this.setting.id, defaultSetting.exceptions);
         this.exceptions = this.setting.exceptions;
       }
+    },
+    exceptionsArrayFromObject (object) {
+      return _(object).map(function(value, key) {
+        return { key: key, value: value }
+      });
     }
   },
   mounted () {
     this.name = this.setting.name;
     this.rules = this.setting.rules;
-    this.exceptions = _(this.setting.exceptions).map(function(value, key) {
-      return { key: key, value: value }
-    });
+    this.exceptions = this.exceptionsArrayFromObject(this.setting.exceptions);
   },
   template: `
     <div
@@ -361,13 +367,13 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           <slider-checkbox
             v-if="currentTab == 'rules'"
             v-model="showActiveRulesOnly"
-            text="Show only the rules used in transliterating your text below"
+            text="Show only above the rules used in transliterating your text below"
           />
 
           <slider-checkbox
             v-if="currentTab == 'exceptions'"
             v-model="showActiveExceptionsOnly"
-            text="Show only the exceptions used in transliterating your text below or those being worked on"
+            text="Show only above the exceptions used in transliterating your text below and those that have just been added"
           />
 
         </div>

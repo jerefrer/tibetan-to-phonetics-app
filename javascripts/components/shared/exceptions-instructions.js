@@ -58,7 +58,7 @@ Vue.component('exceptions-instructions', {
               </table>
               <p>
                 Then <span class="tibetan">ཧཱུྃ</span> will be transliterated
-                as 'hung' for all rule sets.
+                as "hung" for all rule sets.
               </p>
               <p>Whereas if I define it as:</p>
               <table class="ui celled compact table">
@@ -67,30 +67,69 @@ Vue.component('exceptions-instructions', {
                   <td>hའུང </td>
                 </tr>
               </table>
-              Then <span class="tibetan">ཧཱུྃ</span> will result in "hung" in
-              English and in "h<u>o</u>ung" in French.
+              Then <span class="tibetan">ཧཱུྃ</span> will be "hung" in English
+              and "h<u>o</u>ung" in French.
             </p>
           </li>
           <li>
-            If using Latin characters, then between each syllable you need to
-            add an underscore to help the system determine how many syllables
-            the word is made of, even if it does not exactly match how the word
-            is composed. For instance if you want to have
-            <span class="tibetan">སངས་རྒྱས་</span> transliterated as "sangye",
-            you would do:
-            <table class="ui celled compact table">
-              <tr>
-                <td>སངས་རྒྱས</td>
-                <td>san_gye</td>
-              </tr>
-            </table>
-            but not
+            <p>
+              If using Latin characters, then between each syllable you need to
+              add an underscore to help the system determine how many syllables
+              the word is made of, even if it does not exactly match how the word
+              is composed. Those underscores are only used internally and will
+              be removed from the transliteration.
+            </p>
+            <p>
+              For instance if you want to have
+              <span class="tibetan">སངས་རྒྱས་</span> transliterated as "sangye",
+              you would logically think about defining:
+            </p>
             <table class="ui celled compact table">
               <tr>
                 <td>སངས་རྒྱས</td>
                 <td>sang_gye</td>
               </tr>
             </table>
+            But this would result in "sanggye".
+            So instead you could define:
+            <table class="ui celled compact table">
+              <tr>
+                <td>སངས་རྒྱས</td>
+                <td>san_gye</td>
+              </tr>
+            </table>
+            Or even:
+            <table class="ui celled compact table">
+              <tr>
+                <td>སངས་རྒྱས</td>
+                <td>s_angye</td>
+              </tr>
+            </table>
+            Since the underscores is really there only to determine the number
+            of syllables and will be removed, they can be really anywhere as
+            long as they properly match the number of syllables.
+          </li>
+          <li>
+            <p>
+              <u>
+                If you define an exception and the resulting transliteration has
+                repeating syllables, this means that you most probably forgot
+                to add underscores.
+              </u>
+            </p>
+            <p>
+              For instance if you define:
+            </p>
+            <table class="ui celled compact table">
+              <tr>
+                <td>སངས་རྒྱས</td>
+                <td>SANGYE</td>
+              </tr>
+            </table>
+            You will end up with "SANGYEgyé" because the system considers that
+            SANGYE is meant to represent only the first tibetan syllable
+            <span class="tibetan">སངས་</span> and then goes on to transliterate
+            <span class="tibetan">རྒྱས་</span> as it would normally do.
           </li>
           <li>
             If a line is defined with a left value that is included in another
@@ -198,8 +237,7 @@ Vue.component('exceptions-instructions', {
             other style will be the same as defining an exception for each.
           </li>
           <li>
-            If you input the same thing on both sides the line will be ignored
-            to prevent infinite loops.
+            If you input the same thing on both sides the line will be ignored.
           </li>
         </ul>
       </div>
