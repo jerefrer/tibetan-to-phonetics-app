@@ -1,6 +1,7 @@
 testGroups.push({
   name: 'Numbers',
   tests: [
+    { tibetan: '༧ཞབས་',  transliteration:  'zhap'},
     { tibetan: '༠',  transliteration:  '0'},
     { tibetan: '༡',  transliteration:  '1'},
     { tibetan: '༢',  transliteration:  '2'},

@@ -16,6 +16,7 @@ var TibetanTransliterator = function(options = {}) {
     options: options,
     transliterate: function(tibetan, options) {
       tibetan = removeUntranscribedPunctuationAndNormalize(tibetan);
+      tibetan = this.substitute7Zhabs(tibetan);
       tibetan = this.substituteNumbers(tibetan);
       var groups = this.splitBySpacesOrNumbers(tibetan);
       return groups.map((tibetanGroup, index) => {
@@ -40,6 +41,9 @@ var TibetanTransliterator = function(options = {}) {
         text = text.replace(new RegExp(tibetan, 'g'), arabic);
       })
       return text;
+    },
+    substitute7Zhabs (text) {
+      return text.replace(/༧ཞབས/, 'ཞབས');
     }
   }
 }
