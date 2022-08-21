@@ -137,7 +137,7 @@ var TibetanParser = function(syllable, options) {
       if (match) return match[0];
     },
     achung: function() {
-      var match = this.syllable.match('ཱ');
+      var match = this.syllable.match(/[ཱྰ]/);
       if (match) return match[0];
     },
     anusvara: function() {
