@@ -8,7 +8,7 @@ var ConvertPage = Vue.component('convert-page', {
       selectedSettingId: Settings.defaultSettingId,
       options: {
         capitalize: true,
-        alternateTibetanAndTransliteration: false
+        includeTibetan: false
       },
     }
   },
@@ -47,8 +47,8 @@ var ConvertPage = Vue.component('convert-page', {
           />
 
           <slider-checkbox
-            v-model="options.alternateTibetanAndTransliteration"
-            text="Alternate Tibetan and transliteration"
+            v-model="options.includeTibetan"
+            text="Include Tibetan in the output"
           />
 
         </div>

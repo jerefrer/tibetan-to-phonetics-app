@@ -1,13 +1,6 @@
 Vue.component('tibetan-input', {
   props: ['value'],
   methods: {
-    checkInput: function(value) {
-      var anyNonTibetanCharacter =
-        /[^  \n†◌卍卐\u{f00}-\u{fda}\u{f021}-\u{f042}\u{f162}-\u{f588}]/giu;
-      var sanitized = value.replace(anyNonTibetanCharacter, '');
-      $('#tibetan').val(sanitized);
-      this.$emit('input', sanitized);
-    },
     selectTextarea: function() {
       $('#tibetan').focus();
     }
@@ -19,7 +12,7 @@ Vue.component('tibetan-input', {
       </div>
       <textarea
         :value="value"
-        @input="checkInput($event.target.value)"
+        @input="$emit('input', $event.target.value)"
         id="tibetan"
         class="tibetan"
         autofocus="true"

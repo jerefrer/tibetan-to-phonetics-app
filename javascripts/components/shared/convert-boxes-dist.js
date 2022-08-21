@@ -50,24 +50,46 @@ Vue.component('transliterated-lines', {
     lines: Array
   },
   computed: {
-    transliteratedLines: function transliteratedLines() {
+    processedLines: function processedLines() {
       var _this2 = this;
 
       rulesUsedForThisText = {};
       exceptionsUsedForThisText = {};
-      var transliteratedLines = this.lines.map(function (line) {
-        return new TibetanTransliterator({
-          setting: _this2.setting,
-          capitalize: _this2.options.capitalize
-        }).transliterate(line);
+      var processedLines = this.lines.map(function (line) {
+        var tibetanGroupsRegExp = /([\u0F00-\u0FDA\u2020\u25CC\u534D\u5350\uF021-\uF042\uF162-\uF588])+/gi;
+        var tibetanParts = line.match(tibetanGroupsRegExp);
+
+        if (tibetanParts) {
+          var lineWithTibetanReplaced = line;
+          tibetanParts.each(function (tibetanPart) {
+            var transliterated = new TibetanTransliterator({
+              setting: _this2.setting,
+              capitalize: _this2.options.capitalize
+            }).transliterate(tibetanPart);
+            lineWithTibetanReplaced = lineWithTibetanReplaced.replace(tibetanPart, transliterated);
+          });
+          return {
+            type: 'tibetan',
+            source: line,
+            text: lineWithTibetanReplaced
+          };
+        } else return {
+          type: 'translation',
+          text: line
+        };
       });
       this.$store.commit('updateRulesUsedForThisText', rulesUsedForThisText);
       this.$store.commit('updateExceptionsUsedForThisText', exceptionsUsedForThisText);
-      return transliteratedLines;
+      return processedLines;
     },
-    transliteratedLinesAsString: function transliteratedLinesAsString() {
-      return this.transliteratedLines.join("\n").trim();
+    processedLinesAsString: function processedLinesAsString() {
+      return this.processedLines.map('text').join("\n").trim();
+    },
+    isAlternated: function isAlternated() {
+      return !!this.processedLines.find({
+        type: 'translation'
+      });
     }
   },
-  template: "\n    <div class=\"result\">\n      <template v-if=\"options.alternateTibetanAndTransliteration\">\n        <template v-for=\"(line, index) in lines\">\n          <div class=\"tibetan\">{{line}}</div>\n          <div class=\"transliteration\">{{transliteratedLines[index]}}</div>\n        </template>\n      </template>\n      <template v-else>{{transliteratedLinesAsString}}</template>\n    </div>\n  "
+  template: "\n    <div class=\"result\">\n      <template v-if=\"isAlternated || options.includeTibetan\">\n        <template v-for=\"(line, index) in processedLines\">\n          <template v-if=\"line.type == 'tibetan'\">\n            <div\n              v-if=\"options.includeTibetan\"\n              class=\"tibetan\"\n            >{{line.source}}</div>\n            <div class=\"transliteration\">{{line.text}}</div>\n          </template>\n          <div v-else class=\"translation\">{{line.text}}</div>\n        </template>\n      </template>\n      <template v-else>{{processedLinesAsString}}</template>\n    </div>\n  "
 });

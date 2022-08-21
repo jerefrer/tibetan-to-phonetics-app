@@ -10,7 +10,7 @@ var ConvertPage = Vue.component('convert-page', {
       selectedSettingId: Settings.defaultSettingId,
       options: {
         capitalize: true,
-        alternateTibetanAndTransliteration: false
+        includeTibetan: false
       }
     };
   },
@@ -36,5 +36,5 @@ var ConvertPage = Vue.component('convert-page', {
       capitalize: true
     });
   },
-  template: "\n    <transition name=\"fade\" appear>\n\n      <div v-if=\"!loading\" class=\"ui fluid container\">\n\n        <div id=\"menu\">\n\n          <settings-dropdown v-model=\"selectedSettingId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n          <slider-checkbox\n            v-model=\"options.alternateTibetanAndTransliteration\"\n            text=\"Alternate Tibetan and transliteration\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :setting=\"setting\"\n          :options=\"options\"\n          tibetanStorageKey=\"convert-page\"\n        />\n\n      </div>\n\n    </transition>\n  "
+  template: "\n    <transition name=\"fade\" appear>\n\n      <div v-if=\"!loading\" class=\"ui fluid container\">\n\n        <div id=\"menu\">\n\n          <settings-dropdown v-model=\"selectedSettingId\" />\n\n          <slider-checkbox\n            v-model=\"options.capitalize\"\n            text=\"Capital letter at the beginning of each group\"\n          />\n\n          <slider-checkbox\n            v-model=\"options.includeTibetan\"\n            text=\"Include Tibetan in the output\"\n          />\n\n        </div>\n\n        <convert-boxes\n          :setting=\"setting\"\n          :options=\"options\"\n          tibetanStorageKey=\"convert-page\"\n        />\n\n      </div>\n\n    </transition>\n  "
 });

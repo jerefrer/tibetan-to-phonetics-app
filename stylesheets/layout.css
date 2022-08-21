@@ -138,6 +138,16 @@ body.pushable>.pusher {
   border: 1px solid rgba(34,36,38,.15);
   border-radius: 4px;
 }
+.scrollable-area .result .transliteration {
+  font-family: Calibri;
+  line-height: 1em;
+}
+.scrollable-area .result .translation {
+  font-family: "Times New Roman";
+  margin-left: 1em;
+  margin-bottom: 1em;
+  line-height: 1em;
+}
 
 .compare #transliteration,
 .compare #transliterated {
