@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Exceptions - Tibetan',
+  name: 'Exceptions - Liaisons',
   tests: [
     { tibetan: 'འོད་མཐའ་ཡས་', transliteration: 'önthayé' }, // འོན་མཐའ་ཡས
   ]
