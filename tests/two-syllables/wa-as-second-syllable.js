@@ -1,3 +1,22 @@
+/*
+
+  Rules found in Gilbert BUÉSO's "Parlons Tibétain":
+
+    p.94:
+      When BA is the last syllable of a word, it's pronounced WA.
+
+    p.135:
+      The rules for adding the suffix of infinitive to a verb are as follows:
+        If the root ends with nga / 'a / ra / la then the suffix is BA
+        If not the suffix is PA
+
+  This leads to the question:
+  When a BA follows something else than these four suffixes,
+  Does it necessarily mean that it is not part of the previous word,
+  And therefore should be transcribed as PA?
+
+*/
+
 testGroups.push({
   name: 'Wa as second syllable - First syllable ending with ra should yield Wa',
   tests: [
@@ -46,11 +65,12 @@ testGroups.push({
   ]
 })
 
-// For now we don't cover this one because it actually generates
-// more inaccurate transliterations in other weird cases
-testGroups.push({
-  name: 'Wa as second syllable - First syllable ending with anything else should yield Pa',
-  tests: [
-    { tibetan: 'བྱེད་བ་',  transliteration: 'chépa' },
-  ]
-})
+// Trying to cover this one actually generates many inaccurate transliterations
+// in other weird cases, and it might not be necessary at all. See question above.
+//
+// testGroups.push({
+//   name: 'Wa as second syllable - First syllable ending with anything else should yield Pa',
+//   tests: [
+//     { tibetan: 'བྱེད་བ་',  transliteration: 'chépa' },
+//   ]
+// })
