@@ -13,7 +13,6 @@ testGroups.push({
 
     // Regular consonants
     { tibetan: 'ག', transliteration: "ga" },
-    { tibetan: 'ག', transliteration: "ga" },
     { tibetan: 'ཇ', transliteration: "ja" },
     { tibetan: 'ད', transliteration: "da" },
     { tibetan: 'ཕ', transliteration: "pa" },
