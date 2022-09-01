@@ -76,7 +76,7 @@ var defaultRules = {
   'jaMod': 'j',            // རྗ
   'daMod': 'd',            // རྡ
   'baMod': 'b',            // རྦ
-  'zaMod': 'z',            // བཟ
+  'zaMod': 'z',            // བཟའ
 
   // Ratas
   'rata1': 'tr',           // ཏྲ  / 1st col with rata
