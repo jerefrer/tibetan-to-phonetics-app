@@ -25,6 +25,7 @@
       width: 50px;
       padding: 10px;
       text-align: center;
+      font-weight: normal;
     }
 
     .edit-setting .group .rule .label:first-child:not(.tibetan) {
