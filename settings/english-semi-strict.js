@@ -34,8 +34,6 @@ defaultSettings.push({
 
     // Regular consonants
     'cha': 'ch',             // ཆ
-    'ja': 'ch',              // ཇ
-    'ba': 'p',               // བ
     'tsha': 'ts',            // ཚ
 
     // Yatas
