@@ -129,7 +129,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           ['jaMod', 'j',  'རྗ'],
           ['daMod', 'd',  'རྡ'],
           ['baMod', 'b',  'རྦ'],
-          ['zaMod', 'z',  'བཟ'],
+          ['zaMod', 'z',  'འཟ'],
         ],
 
         'Ratas': [
