@@ -51,10 +51,10 @@ defaultSettings.push({
     'hra': 'hr',             // ཧྲ
 
     // Yatas
-    'kaYata': 'ky',          // ཀྱ
-    'khaYata': 'ky',         // ཁྱ
-    'gaYata': 'ky',          // གྱ
-    'gaModYata': 'ky',       // སྒྱ / ga with yata and prefix/superscribed
+    'kaYata': 'k',           // ཀྱ
+    'khaYata': 'k',          // ཁྱ
+    'gaYata': 'k',           // གྱ
+    'gaModYata': 'k',        // སྒྱ / ga with yata and prefix/superscribed
     'paYata': 'ch',          // པྱ
     'phaYata': 'ch',         // ཕྱ
     'baYata': 'ch',          // བྱ

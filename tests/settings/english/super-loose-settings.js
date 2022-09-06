@@ -35,16 +35,6 @@ testGroups.push({
     { tibetan: 'ཕ', transliteration: 'pa' },
     { tibetan: 'ཞ', transliteration: 'sha' },
 
-    // Ratas
-    { tibetan: 'ཁྲ', transliteration: 'tra' },
-    { tibetan: 'བྲ', transliteration: 'tra' },
-
-    // Yatas
-    { tibetan: 'གྱ', transliteration: 'kya' },
-    { tibetan: 'གྱ', transliteration: 'kya' },
-    { tibetan: 'ཕྱ', transliteration: 'cha' },
-    { tibetan: 'བྱ', transliteration: 'cha' },
-
     // Modified consonants (with prefix or superscribed)
     { tibetan: 'རྒ', transliteration: 'ka' },
     { tibetan: 'རྗ', transliteration: 'cha' },
@@ -60,10 +50,13 @@ testGroups.push({
     { tibetan: 'ཧྲ', transliteration: 'hra' },
 
     // Yatas
-    { tibetan: 'ཀྱ', transliteration: 'kya' },
-    { tibetan: 'ཁྱ', transliteration: 'kya' },
-    { tibetan: 'གྱ', transliteration: 'kya' },
-    { tibetan: 'སྒྱ', transliteration: 'kya' },
+    { tibetan: 'ཀྱ', transliteration: 'ka' },
+    { tibetan: 'ཁྱ', transliteration: 'ka' },
+    { tibetan: 'གྱ', transliteration: 'ka' },
+    { tibetan: 'ཀྱི', transliteration: 'ki' },
+    { tibetan: 'ཁྱི', transliteration: 'ki' },
+    { tibetan: 'གྱི', transliteration: 'ki' },
+    { tibetan: 'སྒྱ', transliteration: 'ka' },
     { tibetan: 'པྱ', transliteration: 'cha' },
     { tibetan: 'ཕྱ', transliteration: 'cha' },
     { tibetan: 'བྱ', transliteration: 'cha' },
