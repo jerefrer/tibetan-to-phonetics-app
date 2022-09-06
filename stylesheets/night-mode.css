@@ -163,10 +163,12 @@ body.night.pushable>.pusher {
   background-color: #545454!important
 }
 
+.night #paste-from-clipboard,
 .night #copy-to-clipboard {
   color:  rgba(255,255,255,0.7);
   background: #333;
 }
+.night #paste-from-clipboard:hover,
 .night #copy-to-clipboard:hover {
   color: rgba(255,255,255,0.9);
   background: #363636;

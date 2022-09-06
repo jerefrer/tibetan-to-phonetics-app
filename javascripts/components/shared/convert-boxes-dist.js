@@ -41,7 +41,7 @@ Vue.component('convert-boxes', {
       return $(window).resize();
     });
   },
-  template: "\n    <div class=\"scrollable-area-container\">\n      <clipboard-button v-if=\"tibetan\" />\n      <div class=\"scrollable-area\">\n        <tibetan-input v-model=\"tibetan\" />\n        <transliterated-lines\n          class=\"clipboard-target\"\n          :lines=\"lines\"\n          :setting=\"setting\"\n          :options=\"options\"\n        />\n      </div>\n    </div>\n  "
+  template: "\n    <div class=\"scrollable-area-container\">\n\n      <copy-to-clipboard-button\n        v-if=\"tibetan\"\n      />\n\n      <div class=\"scrollable-area\">\n\n        <tibetan-input\n          v-model=\"tibetan\"\n        />\n\n        <transliterated-lines\n          class=\"clipboard-target\"\n          :lines=\"lines\"\n          :setting=\"setting\"\n          :options=\"options\"\n        />\n\n      </div>\n\n    </div>\n  "
 });
 Vue.component('transliterated-lines', {
   props: {

@@ -167,17 +167,21 @@ body.pushable>.pusher {
   cursor: text;
 }
 
+#paste-from-clipboard,
 #copy-to-clipboard {
   position: absolute;
-  top: 0px;
-  right: 18px;
+  top: 0;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  cursor: pointer;
   z-index: 999;
 }
-#copy-to-clipboard:hover {
-  cursor: pointer;
+#paste-from-clipboard {
+  right: -4px;
+}
+#copy-to-clipboard {
+  right: 18px;
 }
 
 .with-live-preview {

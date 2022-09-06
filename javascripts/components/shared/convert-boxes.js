@@ -45,16 +45,26 @@ Vue.component('convert-boxes', {
   },
   template: `
     <div class="scrollable-area-container">
-      <clipboard-button v-if="tibetan" />
+
+      <copy-to-clipboard-button
+        v-if="tibetan"
+      />
+
       <div class="scrollable-area">
-        <tibetan-input v-model="tibetan" />
+
+        <tibetan-input
+          v-model="tibetan"
+        />
+
         <transliterated-lines
           class="clipboard-target"
           :lines="lines"
           :setting="setting"
           :options="options"
         />
+
       </div>
+
     </div>
   `
 })
