@@ -1,5 +1,6 @@
 "use strict";
 
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
 var app;
 
 var initializeStorage = function initializeStorage(callback) {
