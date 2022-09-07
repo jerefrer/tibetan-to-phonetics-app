@@ -67,6 +67,7 @@ defaultSettings.push({
 
     // Special cases
     'lha': 'l',              // ལྷ
+    'baAsWa': 'p'
 
   },
 

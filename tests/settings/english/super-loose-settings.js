@@ -69,5 +69,6 @@ testGroups.push({
 
     // Special cases
     { tibetan: 'ལྷ', transliteration: 'la' },
+    { tibetan: 'དགའ་བ་', transliteration: 'kapa' },
   ]
 });

@@ -102,6 +102,7 @@ var defaultRules = {
 
   // Special cases
   'lha': 'lh',             // ལྷ
+  'baAsWa': 'w',           // དགའ་བ་
 
   // Suffixes
   'kaSuffix': 'k',         // དག
