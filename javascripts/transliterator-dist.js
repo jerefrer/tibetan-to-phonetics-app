@@ -28,7 +28,7 @@ var TibetanTransliterator = function TibetanTransliterator() {
       var _this = this;
 
       tibetan = removeUntranscribedPunctuationAndNormalize(tibetan);
-      tibetan = this.substitute7Zhabs(tibetan);
+      tibetan = this.substituteWordsWith7(tibetan);
       tibetan = this.substituteNumbers(tibetan);
       var groups = this.splitBySpacesOrNumbers(tibetan);
       return groups.map(function (tibetanGroup, index) {
@@ -60,8 +60,8 @@ var TibetanTransliterator = function TibetanTransliterator() {
 
       return text;
     },
-    substitute7Zhabs: function substitute7Zhabs(text) {
-      return text.replace(/༧ཞབས/, 'ཞབས');
+    substituteWordsWith7: function substituteWordsWith7(text) {
+      return text.replace(/༧ཞབས/g, 'ཞབས').replace(/༧སྐྱབས/g, 'སྐྱབས');
     }
   };
 };
