@@ -5,6 +5,8 @@ testGroups.push({
   tests: [
 
     { tibetan: 'ཀེ', transliteration: 'ke' },
+    { tibetan: 'ཀོས', transliteration: 'ko' },
+    { tibetan: 'ཀུས', transliteration: 'ku' },
     { tibetan: 'ཀེམ', transliteration: 'kem' },
     { tibetan: 'ཀན', transliteration: 'ken' },
     { tibetan: 'ཀེན', transliteration: 'ken' },

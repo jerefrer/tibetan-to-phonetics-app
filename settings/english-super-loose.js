@@ -17,6 +17,8 @@ defaultSettings.push({
     'endLinkChar': "'",
 
     // Vowels
+    'ü': 'u',                // འུས
+    'ö': 'o',                // འོས
     'drengbu': 'e',          // འེ
     'drengbuMaNaRa': 'e',    // མཁྱེན་ / drengbu and suffix ma, na, ra
     'drengbuGaBaLaNga': 'e', // འཕྲེང་ / drengbu and suffix ga, ba, la, nga
