@@ -19,7 +19,7 @@ testGroups.push({
         var transliterator = new TibetanTransliterator({ setting: 'english-loose' });
         transliterator.transliterate('གང་གི་བློ་གྲོས་');
       `,
-      expected: 'gangi lodrö'
+      expected: 'gang-gi lodrö'
     }
   ]
 })

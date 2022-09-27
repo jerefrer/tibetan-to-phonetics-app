@@ -9,9 +9,13 @@
 defaultSettings.push({
 
   id: 'english-super-loose',
-  name: 'English SuperLoose (for word searching by ear)',
+  name: 'English SuperLoose (for phonetic search)',
 
   rules: {
+
+    // End equals start (sang-gyé, tak-ki, ...)
+    // Value can be 'merge', 'dash', 'space', or 'leave'
+    'endEqualsStart': 'merge',
 
     // Linking char (as in pa-o or pe-u)
     'endLinkChar': "'",

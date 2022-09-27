@@ -105,9 +105,9 @@ var Group = function(tibetan, options = {}) {
             this.syllables.unshift(secondSyllable);
             return true;
           }
-          firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
-          firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
-          firstTransliteration = this.addDoubleSIfNecesary(firstTransliteration, secondTransliteration);
+          firstTransliteration = this.connectWithDashIfNecessaryForReadability(firstTransliteration, secondTransliteration);
+          firstTransliteration = this.handleDuplicateConnectingLetters(firstTransliteration, secondTransliteration);
+          firstTransliteration = this.handleDoubleS(firstTransliteration, secondTransliteration);
           this.group += firstTransliteration;
         }
         this.group += secondTransliteration + ' ';
@@ -147,7 +147,7 @@ var Group = function(tibetan, options = {}) {
     AngOrAm (tibetan) {
       return tibetan.match(/.+འ[ངམ]$/);
     },
-    connectWithDashIfNecessary: function(firstSyllable, secondSyllable) {
+    connectWithDashIfNecessaryForReadability: function(firstSyllable, secondSyllable) {
       var twoVowels = this.endsWithVowel(firstSyllable) && this.startsWithVowel(secondSyllable);
       var aFollowedByN = firstSyllable.last() == 'a' && secondSyllable.first() == 'n';
       var oFollowedByN = firstSyllable.last() == 'o' && secondSyllable.first() == 'n';
@@ -157,13 +157,20 @@ var Group = function(tibetan, options = {}) {
       else
         return firstSyllable;
     },
-    mergeDuplicateConnectingLettersWithPreviousSyllable: function(firstSyllable, secondSyllable) {
-      if (firstSyllable.last() == secondSyllable.first())
-        return firstSyllable.slice(0, firstSyllable.length-1);
-      else
-        return firstSyllable;
+    handleDuplicateConnectingLetters: function(firstSyllable, secondSyllable) {
+      var sameLetter = firstSyllable.last() == secondSyllable.first();
+      var endEqualsStartRule = t('endEqualsStart', false);
+      if (sameLetter) {
+        if (endEqualsStartRule == 'dash')
+          return firstSyllable + '-';
+        else if (endEqualsStartRule == 'space')
+          return firstSyllable + ' ';
+        else if (endEqualsStartRule == 'merge')
+          return firstSyllable.slice(0, firstSyllable.length-1);
+      }
+      return firstSyllable;
     },
-    addDoubleSIfNecesary: function(firstSyllable, secondSyllable) {
+    handleDoubleS: function(firstSyllable, secondSyllable) {
       if (
         t('doubleS', false) &&
         this.endsWithVowel(firstSyllable) &&

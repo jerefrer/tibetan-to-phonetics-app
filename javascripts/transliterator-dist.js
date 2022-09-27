@@ -124,9 +124,9 @@ var Group = function Group(tibetan) {
             return true;
           }
 
-          firstTransliteration = this.connectWithDashIfNecessary(firstTransliteration, secondTransliteration);
-          firstTransliteration = this.mergeDuplicateConnectingLettersWithPreviousSyllable(firstTransliteration, secondTransliteration);
-          firstTransliteration = this.addDoubleSIfNecesary(firstTransliteration, secondTransliteration);
+          firstTransliteration = this.connectWithDashIfNecessaryForReadability(firstTransliteration, secondTransliteration);
+          firstTransliteration = this.handleDuplicateConnectingLetters(firstTransliteration, secondTransliteration);
+          firstTransliteration = this.handleDoubleS(firstTransliteration, secondTransliteration);
           this.group += firstTransliteration;
         }
 
@@ -154,17 +154,24 @@ var Group = function Group(tibetan) {
     AngOrAm: function AngOrAm(tibetan) {
       return tibetan.match(/.+འ[ངམ]$/);
     },
-    connectWithDashIfNecessary: function connectWithDashIfNecessary(firstSyllable, secondSyllable) {
+    connectWithDashIfNecessaryForReadability: function connectWithDashIfNecessaryForReadability(firstSyllable, secondSyllable) {
       var twoVowels = this.endsWithVowel(firstSyllable) && this.startsWithVowel(secondSyllable);
       var aFollowedByN = firstSyllable.last() == 'a' && secondSyllable.first() == 'n';
       var oFollowedByN = firstSyllable.last() == 'o' && secondSyllable.first() == 'n';
       var gFollowedByN = firstSyllable.last() == 'g' && secondSyllable.first() == 'n';
       if (twoVowels || aFollowedByN || oFollowedByN || gFollowedByN) return firstSyllable + '-';else return firstSyllable;
     },
-    mergeDuplicateConnectingLettersWithPreviousSyllable: function mergeDuplicateConnectingLettersWithPreviousSyllable(firstSyllable, secondSyllable) {
-      if (firstSyllable.last() == secondSyllable.first()) return firstSyllable.slice(0, firstSyllable.length - 1);else return firstSyllable;
+    handleDuplicateConnectingLetters: function handleDuplicateConnectingLetters(firstSyllable, secondSyllable) {
+      var sameLetter = firstSyllable.last() == secondSyllable.first();
+      var endEqualsStartRule = t('endEqualsStart', false);
+
+      if (sameLetter) {
+        if (endEqualsStartRule == 'dash') return firstSyllable + '-';else if (endEqualsStartRule == 'space') return firstSyllable + ' ';else if (endEqualsStartRule == 'merge') return firstSyllable.slice(0, firstSyllable.length - 1);
+      }
+
+      return firstSyllable;
     },
-    addDoubleSIfNecesary: function addDoubleSIfNecesary(firstSyllable, secondSyllable) {
+    handleDoubleS: function handleDoubleS(firstSyllable, secondSyllable) {
       if (t('doubleS', false) && this.endsWithVowel(firstSyllable) && secondSyllable.match(/^s[^h]/)) {
         rulesUsedForThisText['doubleS'] = true;
         return firstSyllable + 's';

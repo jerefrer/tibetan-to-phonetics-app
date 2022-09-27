@@ -8,7 +8,7 @@ testGroups.push({
     { tibetan: 'གསོལ་བ་འདེབས་སོ་ཕྱི་ནང་བར་ཆད་སོལ།', transliteration: 'sölwa depso chinang parché söl' },
     { tibetan: 'བྱིན་གྱིས་རློབས་ཤིག་མ་ཧཱ་གུ་རུ་རྗེ།', transliteration: 'chinkyi lopshik maha guru jé' },
     { tibetan: 'མཆོག་ཐུན་དངོས་གྲུབ་གེགས་མེད་འགྲུབ་མཛད་གསོལ།', transliteration: 'chokthün ngötrup kekmé drupdzé söl' },
-    { tibetan: 'ལོངས་སྤྱོད་རྫོགས་སྐུ་འཕགས་མཆོག་སྙིང་རྗེའི་གཏེར།', transliteration: "longchö dzoku p'akchok nyingjé ter" },
+    { tibetan: 'ལོངས་སྤྱོད་རྫོགས་སྐུ་འཕགས་མཆོག་སྙིང་རྗེའི་གཏེར།', transliteration: "longchö dzok-ku p'akchok nyingjé ter" },
     { tibetan: 'གསོལ་བ་འདེབས་སོ་ཕྱི་ནང་བར་ཆད་སོལ།', transliteration: 'sölwa depso chinang parché söl' },
     { tibetan: 'བྱིན་གྱིས་རློབས་ཤིག་མ་ཧཱ་གུ་རུ་རྗེ།', transliteration: 'chinkyi lopshik maha guru jé' },
     { tibetan: 'མཆོག་ཐུན་དངོས་གྲུབ་གེགས་མེད་འགྲུབ་མཛད་གསོལ།', transliteration: 'chokthün ngötrup kekmé drupdzé söl' },
@@ -20,7 +20,7 @@ testGroups.push({
     { tibetan: 'གསོལ་བ་འདེབས་སོ་ཕྱི་ནང་བར་ཆད་སོལ།', transliteration: 'sölwa depso chinang parché söl' },
     { tibetan: 'བྱིན་གྱིས་རློབས་ཤིག་མ་ཧཱ་གུ་རུ་རྗེ།', transliteration: 'chinkyi lopshik maha guru jé' },
     { tibetan: 'མཆོག་ཐུན་དངོས་གྲུབ་གེགས་མེད་འགྲུབ་མཛད་གསོལ།', transliteration: 'chokthün ngötrup kekmé drupdzé söl' },
-    { tibetan: 'དེ་ལྟར་གསོལ་བ་བཏབ་པའི་བྱིན་རླབས་ཀྱིས།', transliteration: 'tétar sölwa tapé chinlap kyi' },
+    { tibetan: 'དེ་ལྟར་གསོལ་བ་བཏབ་པའི་བྱིན་རླབས་ཀྱིས།', transliteration: 'tétar sölwa tap-pé chinlap kyi' },
     { tibetan: 'རིག་འཛིན་རྣམ་བཞིའི་གོ་འཕང་བདེ་བླག་བགྲོད།', transliteration: "rikdzin namzhi komp'ang délak drö" },
     { tibetan: 'ཀ་དག་གདོད་མའི་དགོངས་པ་མངོན་གྱུར་ནས།', transliteration: 'katak dömé gongpa ngönkyur né' },
     { tibetan: 'མཐའ་ཡས་འགྲོ་ཀུན་སྤྲུལ་པས་འདྲེན་པར་ཤོག', transliteration: 'thayé drokün trülpé drenpar sho' }

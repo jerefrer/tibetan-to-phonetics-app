@@ -24,6 +24,10 @@
 
 var defaultRules = {
 
+  // End equals start (sang-gyé, tak-ki, ...)
+    // Value can be 'merge', 'dash', 'space', or 'leave'
+  'endEqualsStart': 'dash',
+
   // End link char (as in pa-o or be-u)
   'endLinkChar': '-',
 

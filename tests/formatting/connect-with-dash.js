@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Exceptions - Connect with dash',
+  name: 'Formatting - Connect with dash for readability',
   tests: [
     // Dash if first ends and second starts with vowel
     { tibetan: 'བའི་འོས', transliteration: 'pé-ö' },

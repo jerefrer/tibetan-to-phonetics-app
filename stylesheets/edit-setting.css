@@ -21,6 +21,12 @@
     margin: 0 0.7em 0.7em 0;
   }
 
+    .edit-setting .group .rule .label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .edit-setting .group .rule .label:first-child {
       width: 50px;
       padding: 10px;
@@ -32,7 +38,7 @@
       line-height: 36px;
     }
     .edit-setting .group .rule .label:first-child.large {
-      width: 60px;
+      width: 70px;
     }
     .edit-setting .group .rule .label:first-child.auto {
       width: auto;
@@ -55,6 +61,34 @@
     .edit-setting .group .rule .slider.checkbox[readonly] {
       pointer-events: none;
     }
+    .edit-setting .group .rule .dropdown {
+      display: flex;
+      min-width: 172px;
+      padding-right: 10px;
+      border-radius: 0;
+      align-items: center;
+    }
+      .edit-setting .group .rule .dropdown.disabled {
+        opacity: 1;
+      }
+      .edit-setting .group .rule .dropdown.disabled .text {
+        color: rgba(0, 0, 0, 0.6) !important
+      }
+      .edit-setting .group .rule .dropdown.disabled .icon {
+        display: none;
+      }
+      .edit-setting .group .rule .dropdown .text {
+        flex: 1;
+      }
+      .edit-setting .group .rule .dropdown .dropdown.icon {
+        flex: 0 0 28px;
+        position: relative;
+        top: 0;
+        right: 0;
+        min-width: 0;
+        order: 2;
+      }
+    .edit-setting .group .rule .dropdown + .label,
     .edit-setting .group .rule .slider.checkbox + .label {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
@@ -90,6 +124,15 @@
     }
     .edit-setting .group .rule.different .revert.button:active {
       background-color: #1a69a4;
+    }
+    .edit-setting .group .rule.different .dropdown .revert.button {
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      left: unset;
+      border-radius: 0;
+      border-bottom-left-radius: 4px;
+      z-index: 4;
     }
 
 

@@ -1,5 +1,5 @@
 testGroups.push({
-  name: 'Exceptions - Double S enabled',
+  name: 'Formatting - Double S enabled',
   rules: {
     'doubleS': true
   },
@@ -33,7 +33,7 @@ testGroups.push({
 })
 
 testGroups.push({
-  name: 'Exceptions - Double S disabled',
+  name: 'Formatting - Double S disabled',
   rules: {
     'doubleS': false
   },

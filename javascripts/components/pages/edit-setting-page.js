@@ -79,100 +79,112 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       return _({
 
         'Vowels': [
-          ['a', 'a',  'ཨ'],
-          ['drengbu', 'é',  'ཨེ'],
-          ['i', 'i',  'ཨི'],
-          ['o', 'o',  'ཨོ'],
-          ['u', 'u',  'ཨུ'],
-          ['ü', 'ü',  'ཨུད'],
-          ['ö', 'ö',  'ཨོད'],
-          ['aKikuI', "a'i",  '<span>པ</span>འི'],
-          ['drengbuMaNaRa', 'e',  'མཁྱེན་', 'drengbu and suffix ma, na, ra', true],
-          ['drengbuGaBaLaNga', 'e', 'འཕྲེང་', 'drengbu and suffix ga, ba, la, nga', true],
-          ['aNa', 'e',  'རྒྱན་', 'no vowel and suffix na', true],
-          ['aLa', 'e',  'རྒྱལ་', 'no vowel and suffix la', true],
+          ['a', 'ཨ'],
+          ['drengbu', 'ཨེ'],
+          ['i', 'ཨི'],
+          ['o', 'ཨོ'],
+          ['u', 'ཨུ'],
+          ['ü', 'ཨུད'],
+          ['ö', 'ཨོད'],
+          ['aKikuI', '<span>པ</span>འི'],
+          ['drengbuMaNaRa', 'མཁྱེན་', 'drengbu and suffix ma, na, ra', true],
+          ['drengbuGaBaLaNga', 'འཕྲེང་', 'drengbu and suffix ga, ba, la, nga', true],
+          ['aNa', 'རྒྱན་', 'no vowel and suffix na', true],
+          ['aLa', 'རྒྱལ་', 'no vowel and suffix la', true],
         ],
 
         'Regular consonants': [
-          ['ka', 'k',  'ཀ'],
-          ['kha', 'kh', 'ཁ'],
-          ['ga', 'k',  'ག'],
-          ['nga', 'ng', 'ང'],
-          ['ca', 'ch', 'ཅ'],
-          ['cha', "ch'",'ཆ'],
-          ['ja', "ch'",'ཇ'],
-          ['nya', 'ny', 'ཉ'],
-          ['ta', 't',  'ཏ'],
-          ['tha', 'th', 'ཐ'],
-          ['da', 't',  'ད'],
-          ['na', 'n',  'ན'],
-          ['pa', 'p',  'པ'],
-          ['pha', "p'", 'ཕ'],
-          ['ba', "p'", 'བ'],
-          ['ma', 'm',  'མ'],
-          ['tsa', 'ts', 'ཙ'],
-          ['tsha', "ts'",'ཚ'],
-          ['dza', 'dz', 'ཛ'],
-          ['wa', 'w',  'ཝ'],
-          ['zha', 'zh', 'ཞ'],
-          ['za', 's',  'ཟ'],
-          ['ya', 'y',  'ཡ'],
-          ['ra', 'r',  'ར'],
-          ['la', 'l',  'ལ'],
-          ['sha', 'sh', 'ཤ'],
-          ['sa', 's',  'ས'],
-          ['ha', 'h',  'ཧ'],
+          ['ka',   'ཀ'],
+          ['kha',  'ཁ'],
+          ['ga',   'ག'],
+          ['nga',  'ང'],
+          ['ca',   'ཅ'],
+          ['cha',  'ཆ'],
+          ['ja',   'ཇ'],
+          ['nya',  'ཉ'],
+          ['ta',   'ཏ'],
+          ['tha',  'ཐ'],
+          ['da',   'ད'],
+          ['na',   'ན'],
+          ['pa',   'པ'],
+          ['pha',  'ཕ'],
+          ['ba',   'བ'],
+          ['ma',   'མ'],
+          ['tsa',  'ཙ'],
+          ['tsha', 'ཚ'],
+          ['dza',  'ཛ'],
+          ['wa',   'ཝ'],
+          ['zha',  'ཞ'],
+          ['za',   'ཟ'],
+          ['ya',   'ཡ'],
+          ['ra',   'ར'],
+          ['la',   'ལ'],
+          ['sha',  'ཤ'],
+          ['sa',   'ས'],
+          ['ha',   'ཧ'],
         ],
 
         'Modified consonants (with prefix or superscribed)': [
-          ['gaMod', 'g',  'རྒ'],
-          ['jaMod', 'j',  'རྗ'],
-          ['daMod', 'd',  'རྡ'],
-          ['baMod', 'b',  'རྦ'],
-          ['zaMod', 'z',  'འཟ'],
+          ['gaMod', 'རྒ'],
+          ['jaMod', 'རྗ'],
+          ['daMod', 'རྡ'],
+          ['baMod', 'རྦ'],
+          ['zaMod', 'འཟ'],
         ],
 
         'Ratas': [
-          ['rata1', 'tr', 'ཏྲ', '1st column with rata'],
-          ['rata2', "tr'",'ཁྲ', '2nd column with rata'],
-          ['rata3', 'tr', 'བྲ', '3rd column with rata'],
-          ['rata3Mod', 'dr', 'སྒྲ', '3rd column with rata and prefix or superscribed'],
-          ['hra', 'hr', 'ཧྲ'],
+          ['rata1',    'ཏྲ',  '1st column with rata'],
+          ['rata2',    'ཁྲ',  '2nd column with rata'],
+          ['rata3',    'བྲ',  '3rd column with rata'],
+          ['rata3Mod', 'སྒྲ', '3rd column with rata and prefix or superscribed'],
+          ['hra',      'ཧྲ'],
         ],
 
         'Yatas': [
-          ['kaYata', 'ky', 'ཀྱ'],
-          ['khaYata', 'khy', 'ཁྱ'],
-          ['gaYata', 'ky', 'གྱ'],
-          ['gaModYata', 'gy', 'སྒྱ', 'ga with yata and prefix or superscribed'],
-          ['paYata', 'ch', 'པྱ'],
-          ['phaYata', "ch'", 'ཕྱ'],
-          ['baYata', "ch'", 'བྱ'],
-          ['baModYata', 'j', 'སྦྱ', 'ba with yata and prefix or superscribed'],
-          ['daoWaYata', 'y', 'དབྱ'],
+          ['kaYata',    'ཀྱ'],
+          ['khaYata',   'ཁྱ'],
+          ['gaYata',    'གྱ'],
+          ['gaModYata', 'སྒྱ', 'ga with yata and prefix or superscribed'],
+          ['paYata',    'པྱ'],
+          ['phaYata',   'ཕྱ'],
+          ['baYata',    'བྱ'],
+          ['baModYata', 'སྦྱ', 'ba with yata and prefix or superscribed'],
+          ['daoWaYata', 'དབྱ'],
         ],
 
         'Latas': [
-          ['lata', 'l', 'གླ'],
-          ['lataDa', 'd', 'ཟླ'],
+          ['lata',   'གླ'],
+          ['lataDa', 'ཟླ'],
         ],
 
         'Special cases': [
-          ['lha', 'lh', 'ལྷ'],
+          ['lha', 'ལྷ'],
         ],
 
         'Suffixes': [
-          ['kaSuffix', 'k', '<span>ད</span>ག'],
-          ['ngaSuffix', 'ng', '<span>ད</span>ང'],
-          ['naSuffix', 'n', '<span>ད</span>ན'],
-          ['baSuffix', 'p', '<span>ད</span>བ'],
-          ['maSuffix', 'm', '<span>ད</span>མ'],
-          ['raSuffix', 'r', '<span>ད</span>ར'],
-          ['laSuffix', 'l', '<span>ད</span>ལ'],
+          ['kaSuffix', '<span>ད</span>ག'],
+          ['ngaSuffix', '<span>ད</span>ང'],
+          ['naSuffix', '<span>ད</span>ན'],
+          ['baSuffix', '<span>ད</span>བ'],
+          ['maSuffix', '<span>ད</span>མ'],
+          ['raSuffix', '<span>ད</span>ར'],
+          ['laSuffix', '<span>ད</span>ལ'],
         ],
 
         'Formatting': [
-          ['endLinkChar', '-',  'པེའུ', "separator, as in be-u or pa-o"],
+          [
+            'endEqualsStart',
+            'གཞོན་ནུ',
+            "link between identical consonants",
+            true,
+            {
+              dash: 'Dash (zhön-nu)',
+              space: 'Space (zhön nu)',
+              merge: 'Merge (zhönu)',
+              leave: 'Do nothing (zhönnu)'
+            }
+          ],
+          ['endLinkChar', 'པེའུ', "separator, as in be-u or pa-o"],
         ],
 
       }).inject((hash, groupRules, groupName) => {
@@ -183,10 +195,15 @@ var EditSettingPage = Vue.component('edit-setting-page', {
           )
             return {
               key: array[0],
-              value: array[1],
-              example: array[2],
-              comment: array[3],
-              large: !!array[4]
+              example: array[1],
+              comment: array[2],
+              large: !!array[3],
+              selectOptions: array[4] && _(array[4]).map((value, key) => {
+                return {
+                  id: key,
+                  name: value
+                }
+              })
             }
         }).compact();
         return hash;
@@ -446,16 +463,24 @@ Vue.component('es-group', {
           </div>
         </div>
 
+        <rule-dropdown
+          v-if="rule.selectOptions"
+          v-model="rules[rule.key]"
+          :options="rule.selectOptions"
+          :isEditable="isEditable"
+          :isDifferent="isDifferentFromDefault(rule)"
+          @click:revert="revert(rule)"
+        />
+
         <input
+          v-else
           v-model="rules[rule.key]"
           spellcheck="false"
           :readonly="!isEditable"
         />
 
         <div class="ui label" v-if="rule.comment">
-          <span>
-            {{rule.comment}}
-          </span>
+          <span v-html="rule.comment" />
         </div>
 
       </div>
@@ -500,12 +525,67 @@ Vue.component('options-group', {
 
         <div class="ui label">
           <span>
-            Have the "s" letter doubled between vowels (i.e. in "sossor" or "tsassum")
+            have the "s" letter doubled between vowels (i.e. in "sossor" or "tsassum")
           </span>
         </div>
 
       </div>
 
+    </div>
+  `
+})
+
+Vue.component('rule-dropdown', {
+  model: {
+    prop: 'value',
+  },
+  props: {
+    value: String,
+    options: Array,
+    isEditable: Boolean,
+    isDifferent: Boolean
+  },
+  watch: {
+    value (value) {
+      $(this.$refs.dropdownDiv).dropdown('set selected', value);
+    }
+  },
+  mounted: function() {
+    $(this.$refs.dropdownDiv).dropdown({
+      values: _(this.options).map((option) => {
+        return {
+          value: option.id,
+          html: option.name,
+          name: option.name,
+          selected: this.value == option.id
+        }
+      }),
+      onChange: () => {
+        setTimeout(() => {
+          var value = $(this.$refs.dropdownDiv).dropdown('get value');
+          this.$emit('input', value);
+        }, 0);
+      }
+    })
+  },
+  template: `
+    <div
+      class="ui normal selection dropdown"
+      ref="dropdownDiv"
+      :class="{ disabled: !isEditable }"
+    >
+      <input type="hidden" />
+      <i class="dropdown icon"></i>
+      <div class="text"></div>
+      <div class="menu">
+      </div>
+      <div
+        v-if="isDifferent && isEditable"
+        class="ui icon blue button revert"
+        @click.stop="$emit('click:revert')"
+      >
+        <i class="undo icon" />
+      </div>
     </div>
   `
 })
