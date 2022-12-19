@@ -1,23 +1,25 @@
 if (navigator.storage && navigator.storage.persist)
   navigator.storage.persist();
 
-var app;
-
-var initializeStorage = function(callback) {
-  var nbReady = 0;
-  var callbackIfReady = function() {
-    nbReady++;
-    if (nbReady >= 2)
-      callback();
-  }
-  Settings.initializeFromStorage(callbackIfReady);
-  Storage.get('ignoreGeneralExceptionsStorage', false, (value) => {
-    ignoreGeneralExceptionsStorage = value;
-    if (ignoreGeneralExceptionsStorage) {
-      Exceptions.initializeFromDefaults();
-      callbackIfReady();
-    } else
-      Exceptions.initializeFromStorage(callbackIfReady);
+const fetchStoredSettingsAndExceptions = function() {
+  return new Promise((resolve, reject) => {
+    Storage.get('settings', undefined, (value) => {
+      if (value)
+        Settings.replaceAllWith(value);
+      Storage.get('ignoreGeneralExceptionsStorage', undefined, (ignoreGeneralExceptionsStorage) => {
+        if (ignoreGeneralExceptionsStorage)
+          resolve();
+        else
+          Storage.get(
+            'general-exceptions',
+            Exceptions.normalize(defaultGeneralExceptions),
+            (value) => {
+              Exceptions.generalExceptions = value;
+              resolve();
+            }
+          );
+      });
+    })
   });
 }
 
@@ -28,7 +30,9 @@ $(function() {
   }
 })
 
-initializeStorage(() => {
+var app;
+
+fetchStoredSettingsAndExceptions().then(() => {
 
   app = new Vue({
     router,

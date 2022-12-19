@@ -67,7 +67,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
       }, {});
     },
     normalizedExceptionsAsObject () {
-      return normalizeExceptions(this.exceptionsAsObject);
+      return Exceptions.normalize(this.exceptionsAsObject);
     },
     fakeSettingForLivePreview () {
       return {
@@ -212,7 +212,7 @@ var EditSettingPage = Vue.component('edit-setting-page', {
   },
   methods: {
     transliterated (text) {
-      return new TibetanTransliterator(this.setting).transliterate(text);
+      return new TibetanToPhonetics(this.setting).convert(text);
     },
     updateSetting() {
       Settings.update(
@@ -422,10 +422,10 @@ Vue.component('es-group', {
   },
   methods: {
     isDifferentFromDefault (rule) {
-      return defaultRules[rule.key] != this.rules[rule.key];
+      return baseRules[rule.key] != this.rules[rule.key];
     },
     revert (rule) {
-      this.rules[rule.key] = defaultRules[rule.key];
+      this.rules[rule.key] = baseRules[rule.key];
     }
   },
   template: `
@@ -502,7 +502,7 @@ Vue.component('options-group', {
   },
   methods: {
     isBooleanDifferentFromDefault (key) {
-      return !!defaultRules[key] != !!this.rules[key];
+      return !!baseRules[key] != !!this.rules[key];
     }
   },
   template: `

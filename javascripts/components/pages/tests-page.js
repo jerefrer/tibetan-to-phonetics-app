@@ -3,7 +3,7 @@ var startedAt;
 
 // We don't want to use the Storage'd settings & exceptions but only the default ones.
 Settings.initializeFromDefaults();
-Exceptions.generalExceptions = normalizeExceptions(defaultGeneralExceptions);
+Exceptions.initializeFromDefaults();
 
 $(function() {
   new Vue({
@@ -39,16 +39,17 @@ var TestsPage = Vue.component('tests-page', {
               testGroup.setting
               ? Settings.findOriginal(testGroup.setting)
               : Settings.originalDefault();
-            if (testGroup.rules) {
-              setting = Object.clone(setting, true);
+            setting = Object.clone(setting, true);
+            if (testGroup.rules)
               _(setting.rules).extend(testGroup.rules);
-            }
-            this.transliterated = new TibetanTransliterator(
+            if (testGroup.exceptions)
+              _(setting.exceptions).extend(testGroup.exceptions);
+            this.transliterated = new TibetanToPhonetics(
               {
                 setting: setting,
                 capitalize: testGroup.capitalize
               }
-            ).transliterate(this.tibetan);
+            ).convert(this.tibetan);
             return this.transliterated == this.transliteration;
           }
         }

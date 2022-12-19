@@ -1,6 +1,6 @@
-# tibetan-transliterator
+# tibetan-to-phonetics
 
-A naive attempt at automatically generating reliable Tibetan transliterations
+A naive attempt at automatically generating reliable Tibetan phonetics
 based on customizable sets of rules.
 
 Getting started
@@ -13,61 +13,61 @@ Usage
 
 ![Demo](./docs/index-small.jpg)
 
-* Choose your prefered transliteration setting at the top
+* Choose your prefered phonetics setting at the top
 * Paste your Tibetan in the left box
 * Click *Copy to clipboard* at the top of the right box to copy the
-  transliteration
+  phonetics
 
 #### Compare page
 
 ![Compare](./docs/compare-small.jpg)
 
-* Choose your prefered transliteration setting at the top
+* Choose your prefered phonetics setting at the top
 * Paste your Tibetan in the left box
-* Paste your existing transliteration in the middle box
+* Paste your existing phonetics in the middle box
 * See the differences in the right box
   * In red are the things that are present in the existing but missing from the auto-generated.
   * In blue are the things that are present in the auto-generated but missing from the existing.
 * Clicking on a difference will make the necessary change in the existing
-  transliteration so that it will disappear from the right box, allowing you
+  phonetics so that it will disappear from the right box, allowing you
   to quickly prune those that are irrelevant to you.
 
 ### Using as a library
 
 ```js
-var transliterator = new TibetanTransliterator(); // using default 'english-strict'
-transliterator.transliterate('གང་གི་བློ་གྲོས་');
+var phonetics = new TibetanToPhonetics(); // using default 'english-strict'
+phonetics.convert('གང་གི་བློ་གྲོས་');
 // => 'kangki lotrö'
-transliterator.transliterate('སྒྲིབ་གཉིས་སྤྲིན་བྲལ་');
+phonetics.convert('སྒྲིབ་གཉིས་སྤྲིན་བྲལ་');
 // => 'dripnyi trintrel'
 ```
 Use the `capitalize` option to capitalize the first letter of every group,
 either passing it to the constructor:
 ```js
-var transliterator = new TibetanTransliterator({ capitalize: true });
-transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
+var phonetics = new TibetanToPhonetics({ capitalize: true });
+phonetics.convert('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
 // => 'Émaho Trötrel chökyi yingkyi zhingkham su'
-transliterator.transliterate('གང་གི་བློ་གྲོས་');
+phonetics.convert('གང་གི་བློ་གྲོས་');
 // => 'Kangki lotrö'
 ```
 Or on a per-call basis:
 ```js
-var transliterator = new TibetanTransliterator();
-transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', { capitalize: true });
+var phonetics = new TibetanToPhonetics();
+phonetics.convert('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', { capitalize: true });
 // => 'Émaho Trötrel chökyi yingkyi zhingkham su'
-transliterator.transliterate('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
+phonetics.convert('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
 // => 'émaho trötrel chökyi yingkyi zhingkham su'
 ```
 Use different settings, either by passing the name of an existing setting:
 ```js
-new TibetanTransliterator({ setting: 'english-loose' }).transliterate('གང་གི་བློ་གྲོས་');
+new TibetanToPhonetics({ setting: 'english-loose' }).convert('གང་གི་བློ་གྲོས་');
 // => 'gangi lodrö'
 
 ```
 Or the setting itself:
 ```js
 var frenchRuletset = Settings.find('french');
-new TibetanTransliterator({ setting: frenchRuletset }).transliterate('གང་གི་བློ་གྲོས་');
+new TibetanToPhonetics({ setting: frenchRuletset }).convert('གང་གི་བློ་གྲོས་');
 // => 'kangki lotreu'
 ```
 Or any object that quacks like a setting, meaning it returns objects for `rules` and `exceptions`:
@@ -76,7 +76,7 @@ var dummyRuleSet = {
   rules: { 'ö': 'eu' },
   exceptions: {}
 };
-new TibetanTransliterator({ setting: dummyRuleSet }).transliterate('གང་གི་བློ་གྲོས་');
+new TibetanToPhonetics({ setting: dummyRuleSet }).convert('གང་གི་བློ་གྲོས་');
 // => 'kangki lotreu'
 ```
 
@@ -101,7 +101,7 @@ since they form the basis upon which all other sets are built.
 
 Rules are defined as key-value pairs, the left-hand side being the internal
 code used by the app, the right-hand side what you want it to be substituted
-with in the generated transliteration.
+with in the generated phonetics.
 
 For instance the rule for "kha" (2nd column "ka") in `default.js` is:
 ```js
@@ -152,7 +152,7 @@ Exceptions
 
 Define here exceptions that will apply to all settings. Basically the left-hand
 side value will be substituted by the right-hand side value, and every Tibetan
-part in the right-hand side value will be itself transliterated.
+part in the right-hand side value will be itself converted to phonetics.
 
 ### Editing default exceptions
 

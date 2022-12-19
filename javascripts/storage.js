@@ -1,5 +1,5 @@
 var Storage = {
-  appKey: 'TibetanTransliterator',
+  appKey: 'TibetanToPhonetics',
   scopedKey: function(keyName) {
     return this.appKey + '.' + keyName;
   },

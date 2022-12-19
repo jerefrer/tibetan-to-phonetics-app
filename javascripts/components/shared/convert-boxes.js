@@ -77,8 +77,10 @@ Vue.component('transliterated-lines', {
   },
   computed: {
     processedLines () {
-      rulesUsedForThisText = {};
-      exceptionsUsedForThisText = {};
+      var phonetics = new TibetanToPhonetics({
+        setting: this.setting,
+        capitalize: this.options.capitalize
+      });
       var processedLines = this.lines.map((line) => {
         var tibetanGroupsRegExp =
           /([†◌卍卐\u{f00}-\u{fda}\u{f021}-\u{f042}\u{f162}-\u{f588}])+/giu;
@@ -86,10 +88,7 @@ Vue.component('transliterated-lines', {
         if (tibetanParts) {
           var lineWithTibetanReplaced = line;
           tibetanParts.each((tibetanPart) => {
-            var transliterated = new TibetanTransliterator({
-              setting: this.setting,
-              capitalize: this.options.capitalize
-            }).transliterate(tibetanPart);
+            var transliterated = phonetics.convert(tibetanPart);
             lineWithTibetanReplaced = lineWithTibetanReplaced.replace(tibetanPart, transliterated)
           })
           return {
@@ -103,8 +102,8 @@ Vue.component('transliterated-lines', {
             text: line
           }
       });
-      this.$store.commit('updateRulesUsedForThisText', rulesUsedForThisText);
-      this.$store.commit('updateExceptionsUsedForThisText', exceptionsUsedForThisText);
+      this.$store.commit('updateRulesUsedForThisText', phonetics.rulesUsed);
+      this.$store.commit('updateExceptionsUsedForThisText', phonetics.exceptionsUsed);
       return processedLines;
     },
     processedLinesAsString () {

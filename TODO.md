@@ -15,6 +15,8 @@
   How detailed should the option be?
     * For each SUFFIX: "Character to use when linking SUFFIX: ..."
     * Or just distinguishing between some of them?
+* ཉི་ཟླའི་གའུ་འོད་འབར་དབུས༔
+  * "Nyidé ka-u-ö barü" should be "Nyidé ka-u öbar ü"
 * Maybe handle bo as ending particle when coming after a syllabe that ends
   with ba. For example chub bo should be chup po and not chup wo.
   Seen in CYDZO:
@@ -23,7 +25,8 @@
   * For now we handle འི་, ས་ and ར་ but there might be more.
 * Add dash before nga more often (for instance yum-ngé)
   * Maybe always before vowels, for instance ལུས་ངག་ lü-ngak
-  * Handle སྟེ་ལྔ་ as té-nga
+  * Handle སྟེ་ལྔ་ as té-nga or གནས་ལྔར་ཚེ as né-ngar
+  * རིགས་ལྔའི་ as rik-ngé?
 * Optionally use dictionary to group words together? Is that even possible?
 
 ## Tests
@@ -100,6 +103,8 @@
 * jiktral? jigdrel?
 * rapjam? rabjam?
 * ngakwang
+* མ་འགག་ maNgak?
+* མི་འགག་ miNgak?
 * སྣང་སྲིད་ཟིལ་གནོན་ : silnön? zilnön?
 * བཅུ་གསུམ་ : chuksum? chusum?
 * ཚེ་དཔག་མེད་ : tsepakme? tsepame?

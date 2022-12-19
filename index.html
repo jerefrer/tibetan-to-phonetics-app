@@ -33,42 +33,40 @@
     <script src="vendor/javascripts/vuex.js"></script>
     <script src="vendor/javascripts/vue-router.js"></script>
 
+    <script src="../tibetan-to-phonetics/dist/tibetan-to-phonetics.umd.js"></script>
+    <script>
+      const {
+        Settings,
+        Exceptions,
+        syllablesWithUnknownConsonant,
+        removeUntranscribedPunctuationAndNormalize,
+        baseRules,
+        defaultSettings,
+        defaultGeneralExceptions
+      } = TibetanToPhonetics;
+      TibetanToPhonetics = TibetanToPhonetics.TibetanToPhonetics;
+    </script>
+
     <script src="javascripts/global-variables.js"></script>
-    <script src="settings/default.js"></script>
-    <script src="settings/english-strict.js"></script>
-    <script src="settings/english-semi-strict.js"></script>
-    <script src="settings/english-loose.js"></script>
-    <script src="settings/french.js"></script>
-    <script src="settings/spanish.js"></script>
-    <script src="settings/exceptions.js"></script>
+    <script src="javascripts/store.js"></script>
+    <script src="javascripts/storage.js"></script>
 
-    <script src="javascripts/tibetan-parser-dist.js"></script>
-    <script src="../tibetan-normalizer/tibetan-normalizer.js"></script>
-
-    <script src="javascripts/utils-dist.js"></script>
-
-    <script src="javascripts/store-dist.js"></script>
-    <script src="javascripts/storage-dist.js"></script>
-    <script src="javascripts/settings-dist.js"></script>
-    <script src="javascripts/exceptions-dist.js"></script>
-    <script src="javascripts/transliterator-dist.js"></script>
-
-    <script src="javascripts/components/shared/convert-boxes-dist.js"></script>
+    <script src="javascripts/components/shared/convert-boxes.js"></script>
     <script src="javascripts/components/shared/paste-from-clipboard-button.js"></script>
     <script src="javascripts/components/shared/copy-to-clipboard-button.js"></script>
-    <script src="javascripts/components/shared/exceptions-instructions-dist.js"></script>
-    <script src="javascripts/components/shared/initialize-fields-mixin-dist.js"></script>
-    <script src="javascripts/components/shared/settings-dropdown-dist.js"></script>
-    <script src="javascripts/components/shared/back-button-dist.js"></script>
-    <script src="javascripts/components/shared/link-to-edit-setting-dist.js"></script>
-    <script src="javascripts/components/shared/slider-checkbox-dist.js"></script>
-    <script src="javascripts/components/shared/tab-link-dist.js"></script>
-    <script src="javascripts/components/shared/tibetan-input-dist.js"></script>
+    <script src="javascripts/components/shared/exceptions-instructions.js"></script>
+    <script src="javascripts/components/shared/initialize-fields-mixin.js"></script>
+    <script src="javascripts/components/shared/settings-dropdown.js"></script>
+    <script src="javascripts/components/shared/back-button.js"></script>
+    <script src="javascripts/components/shared/link-to-edit-setting.js"></script>
+    <script src="javascripts/components/shared/slider-checkbox.js"></script>
+    <script src="javascripts/components/shared/tab-link.js"></script>
+    <script src="javascripts/components/shared/tibetan-input.js"></script>
 
-    <script src="javascripts/components/pages/convert-page-dist.js"></script>
-    <script src="javascripts/components/pages/compare-page-dist.js"></script>
-    <script src="javascripts/components/pages/edit-setting-page-dist.js"></script>
-    <script src="javascripts/components/pages/settings-page-dist.js"></script>
+    <script src="javascripts/components/pages/convert-page.js"></script>
+    <script src="javascripts/components/pages/compare-page.js"></script>
+    <script src="javascripts/components/pages/edit-setting-page.js"></script>
+    <script src="javascripts/components/pages/settings-page.js"></script>
   </head>
 
   <body class="pushable">
@@ -79,8 +77,12 @@
 
     <div id="app"></div>
 
-    <script src="javascripts/router-dist.js"></script>
-    <script src="javascripts/app-dist.js"></script>
+    <script>
+      isDevMode = true;
+    </script>
+
+    <script src="javascripts/router.js"></script>
+    <script src="javascripts/app.js"></script>
 
   </body>
 
