@@ -1,0 +1,34 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  tibetan-to-phonetics:
+    specifier: ^0.8.0
+    version: 0.8.0
+
+packages:
+
+  /tibetan-normalizer@0.1.0:
+    resolution: {integrity: sha512-QRdaDKBLcL11B+MjGBwTzUMUkDcThUnqC+xYfYUwiFnNQXociaMi9AFiaY31nEJPsyiEL6HXnc6sSplNBytzhQ==}
+    dev: false
+
+  /tibetan-syllable-parser@1.0.3:
+    resolution: {integrity: sha512-BDdfScXAJ4xCi3ncRN4vEe744cj/wf8lHw4LMIFx9eSJCKykixvVnJY90VuUiyMyB4MVsJIAi8ch0uKjHAYv5g==}
+    dependencies:
+      underscore: 1.13.6
+    dev: false
+
+  /tibetan-to-phonetics@0.8.0:
+    resolution: {integrity: sha512-Qs074lG1LjI3oGE3tE8Uer3Ei39hi6HxQIH9xOsfn0tzQjk9XwR2qpZvYnrHZnFiNz1kbZmNYLJhjnVfS98TgA==}
+    dependencies:
+      tibetan-normalizer: 0.1.0
+      tibetan-syllable-parser: 1.0.3
+      underscore: 1.13.6
+    dev: false
+
+  /underscore@1.13.6:
+    resolution: {integrity: sha512-+A5Sja4HP1M08MaXya7p5LvjuM7K6q/2EaC0+iovj/wOcMsTzMvDFbasi/oSapiwOlt252IqsKqPjCl7huKS0A==}
+    dev: false

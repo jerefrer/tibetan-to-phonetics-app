@@ -32,54 +32,6 @@ Usage
   phonetics so that it will disappear from the right box, allowing you
   to quickly prune those that are irrelevant to you.
 
-### Using as a library
-
-```js
-var phonetics = new TibetanToPhonetics(); // using default 'english-strict'
-phonetics.convert('གང་གི་བློ་གྲོས་');
-// => 'kangki lotrö'
-phonetics.convert('སྒྲིབ་གཉིས་སྤྲིན་བྲལ་');
-// => 'dripnyi trintrel'
-```
-Use the `capitalize` option to capitalize the first letter of every group,
-either passing it to the constructor:
-```js
-var phonetics = new TibetanToPhonetics({ capitalize: true });
-phonetics.convert('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
-// => 'Émaho Trötrel chökyi yingkyi zhingkham su'
-phonetics.convert('གང་གི་བློ་གྲོས་');
-// => 'Kangki lotrö'
-```
-Or on a per-call basis:
-```js
-var phonetics = new TibetanToPhonetics();
-phonetics.convert('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ', { capitalize: true });
-// => 'Émaho Trötrel chökyi yingkyi zhingkham su'
-phonetics.convert('ཨེ་མ་ཧོཿ སྤྲོས་བྲལ་ཆོས་ཀྱི་དབྱིངས་ཀྱི་ཞིང་ཁམས་སུ༔ ');
-// => 'émaho trötrel chökyi yingkyi zhingkham su'
-```
-Use different settings, either by passing the name of an existing setting:
-```js
-new TibetanToPhonetics({ setting: 'english-loose' }).convert('གང་གི་བློ་གྲོས་');
-// => 'gangi lodrö'
-
-```
-Or the setting itself:
-```js
-var frenchRuletset = Settings.find('french');
-new TibetanToPhonetics({ setting: frenchRuletset }).convert('གང་གི་བློ་གྲོས་');
-// => 'kangki lotreu'
-```
-Or any object that quacks like a setting, meaning it returns objects for `rules` and `exceptions`:
-```js
-var dummyRuleSet = {
-  rules: { 'ö': 'eu' },
-  exceptions: {}
-};
-new TibetanToPhonetics({ setting: dummyRuleSet }).convert('གང་གི་བློ་གྲོས་');
-// => 'kangki lotreu'
-```
-
 Settings
 -----------
 

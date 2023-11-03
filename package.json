@@ -1,0 +1,17 @@
+{
+  "name": "tibetan-to-phonetics-app",
+  "version": "0.8.0",
+  "description": "A nice interface to convert Unicode Tibetan to phonetics using fully customizable sets of rules.",
+  "dependencies": {
+    "tibetan-to-phonetics": "^0.8.0"
+  },
+  "keywords": [
+    "tibetan",
+    "unicode",
+    "phonetics",
+    "languages",
+    "linguistics",
+    "transliteration"
+  ],
+  "license": "MIT"
+}
