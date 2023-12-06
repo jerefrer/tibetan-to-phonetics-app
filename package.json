@@ -3,7 +3,9 @@
   "version": "0.8.0",
   "description": "A nice interface to convert Unicode Tibetan to phonetics using fully customizable sets of rules.",
   "dependencies": {
-    "tibetan-to-phonetics": "^0.8.0"
+    "tibetan-normalizer": "^0.1.0",
+    "tibetan-syllable-parser": "^1.0.5",
+    "tibetan-to-phonetics": "^0.8.5"
   },
   "keywords": [
     "tibetan",
